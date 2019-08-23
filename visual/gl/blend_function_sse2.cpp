@@ -4,6 +4,15 @@
 #include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#endif
+
 #include "simd_def_x86x64.h"
 
 //#include <windows.h>
@@ -173,6 +182,15 @@ void TVPReverse8_sse2_c(tjs_uint8 *pixels, tjs_int len){
 		pixels++;
 	}
 }
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("ssse3")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("ssse3"))), apply_to=function)
+#endif
+
 void TVPReverse8_ssse3_c(tjs_uint8 *pixels, tjs_int len){
 	tjs_uint8 *dest = pixels + len -1;
 	len/=2;
@@ -199,6 +217,14 @@ void TVPReverse8_ssse3_c(tjs_uint8 *pixels, tjs_int len){
 		pixels++;
 	}
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
 struct sse2_make_alpha_from_key_functor {
 	const tjs_uint32 key_;
 	const __m128i mmkey;
@@ -267,6 +293,14 @@ struct sse2_do_gray_scale {
 	}
 };
 
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("ssse3")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("ssse3"))), apply_to=function)
+#endif
+
 struct ssse3_do_gray_scale {
 	const __m128i zero_;
 	const __m128i alphamask_;
@@ -301,6 +335,14 @@ struct ssse3_do_gray_scale {
 		return ms1;
 	}
 };
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
 // 通常のアルファから乗算済みアルファへ
 struct sse2_alpha_to_premulalpha {
 	const __m128i zero_;
@@ -1216,6 +1258,15 @@ void TVPDoGrayScale_ssse3_c(tjs_uint32 *dest, tjs_int len ) {
 	convert_func_sse2<ssse3_do_gray_scale>( dest, len );
 }
 #else
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("ssse3")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("ssse3"))), apply_to=function)
+#endif
+
 void TVPDoGrayScale_ssse3_c(tjs_uint32 *dest, tjs_int len ) {
 	do_gray_scale_functor dogray;
 	tjs_int count = (tjs_int)((unsigned)dest & 0xF);
@@ -1280,6 +1331,14 @@ void TVPDoGrayScale_ssse3_c(tjs_uint32 *dest, tjs_int len ) {
 		dest++;
 	}
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
 #endif
 void TVPConvertAdditiveAlphaToAlpha_sse2_c(tjs_uint32 *buf, tjs_int len){
 	convert_func_sse2<sse2_premulalpha_to_alpha>( buf, len );
@@ -1287,6 +1346,14 @@ void TVPConvertAdditiveAlphaToAlpha_sse2_c(tjs_uint32 *buf, tjs_int len){
 void TVPConvertAlphaToAdditiveAlpha_sse2_c(tjs_uint32 *buf, tjs_int len){
 	convert_func_sse2<sse2_alpha_to_premulalpha>( buf, len );
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
 extern void TVPGL_AVX2_Init();
 extern void TVPInitializeResampleSSE2();
 void TVPGL_SSE2_Init() {

@@ -1,11 +1,19 @@
 
 // universal transition blender
 
-
 #include "tjsCommHead.h"
-#include "simd_def_x86x64.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#endif
+
+#include "simd_def_x86x64.h"
 
 // basic algorithm
 //  opacity = table[*rule]
@@ -375,3 +383,9 @@ void TVPUnivTransBlend_switch_d_sse2_c(tjs_uint32 *dest, const tjs_uint32 *src1,
 	sse2_univ_trans_switch<sse2_univ_trans_d_blend_func>(dest,src1,src2,rule,table,len,src1lv,src2lv);
 }
 
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif

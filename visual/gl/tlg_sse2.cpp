@@ -2,6 +2,15 @@
 #include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#endif
+
 #include "simd_def_x86x64.h"
 
 #if 0	// 偏りが多い場合は速いが、通常ケースでは遅い
@@ -410,15 +419,15 @@ void TVPTLG5ComposeColors4To4_sse2_c(tjs_uint8 *outp, const tjs_uint8 *upper, tj
 // This does reordering, color correlation filter, MED/AVG
 #define TVP_TLG6_W_BLOCK_SIZE		8
 
-static const __m128i g_mask( _mm_set1_epi32( 0x0000ff00 ) );
-static const __m128i b_mask( _mm_set1_epi32( 0x000000ff ) );
-static const __m128i r_mask( _mm_set1_epi32( 0x00ff0000 ) );
-static const __m128i a_mask( _mm_set1_epi32( 0xff000000 ) );
-static const __m128i g_d_mask( _mm_set1_epi32( 0x0000fe00 ) );
-static const __m128i r_d_mask( _mm_set1_epi32( 0x00fe0000 ) );
-static const __m128i b_d_mask( _mm_set1_epi32( 0x000000fe ) );
-static const __m128i avg_mask_fe( _mm_set1_epi32( 0xfefefefe ) );
-static const __m128i avg_mask_01( _mm_set1_epi32( 0x01010101 ) );
+#define g_mask _mm_set1_epi32( 0x0000ff00 )
+#define b_mask _mm_set1_epi32( 0x000000ff )
+#define r_mask _mm_set1_epi32( 0x00ff0000 )
+#define a_mask _mm_set1_epi32( 0xff000000 )
+#define g_d_mask _mm_set1_epi32( 0x0000fe00 )
+#define r_d_mask _mm_set1_epi32( 0x00fe0000 )
+#define b_d_mask _mm_set1_epi32( 0x000000fe )
+#define avg_mask_fe _mm_set1_epi32( 0xfefefefe )
+#define avg_mask_01 _mm_set1_epi32( 0x01010101 )
 
 // ( 0, IB, IG, IR)
 struct filter_insts_0_sse2 {
@@ -1131,6 +1140,14 @@ void TVPTLG6DecodeLine_sse2_sse_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs
 		filtertypes, skipblockbytes, in, initialp, oddskip, dir);
 }
 #endif
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
 //#define LZSS_TEST
 #ifdef LZSS_TEST
 #include <windows.h>

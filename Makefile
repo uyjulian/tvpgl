@@ -16,7 +16,7 @@ GIT_TAG := nothing
 INCFLAGS += -I. -I.. -Itjs2 -Ivisual -Ivisual/gl -Ivisual/IA32
 ALLSRCFLAGS += $(INCFLAGS) -DGIT_TAG=\"$(GIT_TAG)\"
 ASMFLAGS += $(ALLSRCFLAGS) -fwin32 -DWIN32
-CFLAGS += -O2 -mmmx -msse2 -mssse3 -msse4 -msse4.1 -mavx -mavx2 -mfma
+CFLAGS += -O2 
 CFLAGS += $(ALLSRCFLAGS) -Wall -Wno-unused-value -Wno-format -DNDEBUG -DWIN32 -D_WIN32 -D_WINDOWS 
 CFLAGS += -D_USRDLL -DMINGW_HAS_SECURE_API -DUNICODE -D_UNICODE -DNO_STRICT
 CXXFLAGS += $(CFLAGS) -fpermissive

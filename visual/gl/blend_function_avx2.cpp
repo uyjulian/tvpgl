@@ -4,6 +4,15 @@
 #include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("avx2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("avx2"))), apply_to=function)
+#endif
+
 #include "simd_def_x86x64.h"
 
 #include "blend_functor_avx2.h"
@@ -231,6 +240,14 @@ static void TVPAdditiveAlphaBlend_HDA_avx2_c(tjs_uint32 *dest, const tjs_uint32 
 static void TVPAdditiveAlphaBlend_a_avx2_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len){
 	copy_func_avx2<avx2_premul_alpha_blend_a_functor>( dest, src, len );
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
 /*
 DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsAlphaBlend, ps_alpha_blend )
 DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsAddBlend, ps_add_blend )

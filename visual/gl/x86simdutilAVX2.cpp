@@ -10,6 +10,14 @@
  *				ので、AVX2 も必要。
  *****************************************************************************/
 
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("avx2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("avx2"))), apply_to=function)
+#endif
+
 #include <immintrin.h> // AVX/AVX2
 
 #undef _PS_CONST
@@ -299,3 +307,10 @@ __m256 mm256_cos_ps(__m256 x) {
   _mm256_zeroupper();
   return y;
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif

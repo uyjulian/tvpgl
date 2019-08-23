@@ -12,10 +12,12 @@ extern __m128 sin_ps(__m128 x);
 extern __m128 cos_ps(__m128 x);
 extern void sincos_ps(__m128 x, __m128 *s, __m128 *c);
 
+#ifdef __AVX__
 // SIMD版数学系関数 ( AVX+AVX2使用 ) 8要素一気に計算する
 extern __m256 mm256_sin_ps(__m256 x);
 extern __m256 mm256_exp_ps(__m256 x);
 extern __m256 mm256_cos_ps(__m256 x);
+#endif
 
 // exp(y*log(x)) for pow(x, y)
 inline __m128 pow_ps( __m128 x, __m128 y ) {
@@ -53,6 +55,7 @@ inline float rcp_sse( float a ) {
 	return ret;
 }
 
+#ifdef __AVX__
 /**
  * 22bit 精度で逆数を求める(8要素版)
  * aの逆数 = 2 * a - rcpa * a * a を用いる
@@ -64,7 +67,9 @@ inline __m256 m256_rcp_22bit_ps( const __m256& a ) {
 	xm1 = _mm256_add_ps( xm1, xm1 );
 	return _mm256_sub_ps( xm1, xm0 );
 }
+#endif
 
+#ifdef __FMA__
 /**
  * 22bit 精度で逆数を求める(8要素版)
  * aの逆数 = 2 * a - rcpa * a * a を用いる
@@ -75,7 +80,9 @@ inline __m256 m256_rcp_22bit_fma_ps( const __m256& a ) {
 	__m256 xm1 = _mm256_rcp_ps(xm0);
 	return _mm256_fnmadd_ps( _mm256_mul_ps( xm0, xm1 ), xm1, _mm256_add_ps( xm1, xm1 ) );
 }
+#endif
 
+#ifdef __SSE__
 /**
  * SSEで4要素の合計値を求める
  * 合計値は全要素に入る
@@ -88,6 +95,8 @@ inline __m128 m128_hsum_sse1_ps( __m128 sum ) {
 	sum = _mm_shuffle_ps( sum, tmp, _MM_SHUFFLE(2,3,0,1) );
 	return _mm_add_ps( sum, tmp );
 }
+#endif
+#ifdef __SSE3__
 /**
  * SSEで4要素の合計値を求める
  * 合計値は全要素に入る
@@ -97,7 +106,9 @@ inline __m128 m128_hsum_sse3_ps( __m128 sum ) {
 	sum = _mm_hadd_ps( sum, sum );
 	return _mm_hadd_ps( sum, sum );
 }
+#endif
 
+#ifdef __AVX__
 /**
  * AVXで8要素の合計値を求める
  * 合計値は全要素に入る
@@ -110,6 +121,8 @@ inline __m256 m256_hsum_avx_ps( __m256 sum ) {
 	sum = _mm256_hadd_ps( sum, sum );
 	return sum;
 }
+#endif
+#ifdef __AVX__
 /**
  * AVX2で16要素の合計値を求める
  * 合計値は全要素に入る
@@ -121,4 +134,5 @@ inline __m256 m256_hsum_avx_epi16( __m256 sum ) {
 	return _mm256_hadd_ps( sum, sum );
 }
 */
+#endif
 #endif

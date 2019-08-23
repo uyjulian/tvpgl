@@ -3,6 +3,15 @@
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
 #include "tvpgl_mathutil.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#endif
+
 #include "simd_def_x86x64.h"
 #include <string.h>
 
@@ -776,3 +785,10 @@ void TVPBindMaskToMain_sse2_c(tjs_uint32 *main, const tjs_uint8 *mask, tjs_int l
 	sse2_bind_mask_to_main_functor func;
 	apply_color_map_func_sse2( main, mask, len , func );
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif

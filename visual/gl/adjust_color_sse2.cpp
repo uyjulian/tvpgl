@@ -1,7 +1,18 @@
 
+
+
 #include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#endif
+
 #include "simd_def_x86x64.h"
 #include "x86simdutil.h"
 
@@ -401,4 +412,9 @@ void TVPInitGammaAdjustTempData_sse2_c( tTVPGLGammaAdjustTempData *temp, const t
 	}
 }
 
-
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif

@@ -1,9 +1,18 @@
 
 
 #include "tjsCommHead.h"
-#include "simd_def_x86x64.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse2")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#endif
+
+#include "simd_def_x86x64.h"
 
 void TVPConvert24BitTo32Bit_sse2_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len) {
 	const __m128i alphamask( _mm_set1_epi32( 0xff000000 ) );
@@ -101,6 +110,13 @@ void TVPConvert24BitTo32Bit_sse2_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_i
 	}
 }
 
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("ssse3")
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("ssse3"))), apply_to=function)
+#endif
 
 // SSSE3
 void TVPConvert24BitTo32Bit_ssse3_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len) {
@@ -148,3 +164,16 @@ void TVPConvert24BitTo32Bit_ssse3_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_
 	}
 }
 
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#endif

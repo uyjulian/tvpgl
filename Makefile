@@ -11,8 +11,7 @@ CC = i686-w64-mingw32-gcc
 CXX = i686-w64-mingw32-g++
 ASM := nasm
 WINDRES := i686-w64-mingw32-windres
-# GIT_TAG := $(shell git describe --abbrev=0 --tags)
-GIT_TAG := nothing
+GIT_TAG := $(shell git describe --abbrev=0 --tags)
 INCFLAGS += -I. -I.. -Itjs2 -Ivisual -Ivisual/gl -Ivisual/IA32
 ALLSRCFLAGS += $(INCFLAGS) -DGIT_TAG=\"$(GIT_TAG)\"
 ASMFLAGS += $(ALLSRCFLAGS) -fwin32 -DWIN32

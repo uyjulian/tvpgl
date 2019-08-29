@@ -14,6 +14,8 @@ EOF
 
 $rev = "0.1";
 
+$should_unroll = 0;
+
 ;#-----------------------------------------------------------------
 ;# file content retrieving
 ;#-----------------------------------------------------------------
@@ -59,25 +61,38 @@ sub loop_unroll_c
 	$times = $_[1];
 	$unroll_times = $_[2];
 
-	print FC <<EOF;
-  if($times > 0)
-  {
-	int lu_n = ($times + ($unroll_times-1)) / $unroll_times;
-	switch($times % $unroll_times)
-	{
-	case 0: do { $content;
-EOF
-	for($i = $unroll_times-1; $i>=1; $i--)
+	if($should_unroll == 1)
 	{
 		print FC <<EOF;
-	case $i: $content;
+	  if($times > 0)
+	  {
+		int lu_n = ($times + ($unroll_times-1)) / $unroll_times;
+		switch($times % $unroll_times)
+		{
+		case 0: do { $content;
+EOF
+		for($i = $unroll_times-1; $i>=1; $i--)
+		{
+			print FC <<EOF;
+		case $i: $content;
+EOF
+		}
+		print FC <<EOF;
+		   } while(-- lu_n);
+		}
+	  }
 EOF
 	}
-	print FC <<EOF;
-	   } while(-- lu_n);
-	}
-  }
+	else
+	{
+		print FC <<EOF;
+		for(int lu_n = 0; lu_n < $times; lu_n++)
+		{
+			$content
+		}
 EOF
+	}
+
 }
 
 ;# type 2 for more simple case
@@ -88,37 +103,55 @@ sub loop_unroll_c_2_backward
 	$content = $_[0];
 	$times = $_[1];
 	$unroll_times = $_[2];
-
-	print FC <<EOF;
-	$times --;
-
-	while($times >= ($unroll_times -1))
+	if($should_unroll == 1)
 	{
-EOF
-
-	for($i = 0; $i<$unroll_times; $i++)
-	{
-		$con = $content;
-		$con =~ s/\{ofs\}/($times-$i)/g;
-		print FC $con;
-	}
-
-  	print FC <<EOF;
-		$times -= $unroll_times;
-	}
-
-	while($times >= 0)
-	{
-EOF
-
-	$con = $content;
-	$con =~ s/\{ofs\}/$times/g;
-	print FC $con;
-
-  	print FC <<EOF;
+		print FC <<EOF;
 		$times --;
-	}
+
+		while($times >= ($unroll_times -1))
+		{
 EOF
+
+		for($i = 0; $i<$unroll_times; $i++)
+		{
+			$con = $content;
+			$con =~ s/\{ofs\}/($times-$i)/g;
+			print FC $con;
+		}
+
+	  	print FC <<EOF;
+			$times -= $unroll_times;
+		}
+
+		while($times >= 0)
+		{
+EOF
+
+		$con = $content;
+		$con =~ s/\{ofs\}/$times/g;
+		print FC $con;
+
+	  	print FC <<EOF;
+			$times --;
+		}
+EOF
+	}
+	else
+	{
+	  	print FC <<EOF;
+		while($times >= 0)
+		{
+EOF
+
+		$con = $content;
+		$con =~ s/\{ofs\}/$times/g;
+		print FC $con;
+
+	  	print FC <<EOF;
+			$times --;
+		}
+EOF
+	}
 }
 
 ;# type 2 forward
@@ -129,41 +162,64 @@ sub loop_unroll_c_2
 	$times = $_[1];
 	$unroll_times = $_[2];
 
-	print FC <<EOF;
+	if($should_unroll == 1)
 	{
-		int ___index = 0;
-		$times -= ($unroll_times-1);
-
-		while(___index < $times)
+		print FC <<EOF;
 		{
+			int ___index = 0;
+			$times -= ($unroll_times-1);
+
+			while(___index < $times)
+			{
 EOF
 
-	for($i = 0; $i<$unroll_times; $i++)
-	{
-		$con = $content;
-		$con =~ s/\{ofs\}/(___index+$i)/g;
-		print FC $con;
-	}
-
-  	print FC <<EOF;
-			___index += $unroll_times;
+		for($i = 0; $i<$unroll_times; $i++)
+		{
+			$con = $content;
+			$con =~ s/\{ofs\}/(___index+$i)/g;
+			print FC $con;
 		}
 
-		$times += ($unroll_times-1);
+	  	print FC <<EOF;
+				___index += $unroll_times;
+			}
 
-		while(___index < $times)
-		{
+			$times += ($unroll_times-1);
+
+			while(___index < $times)
+			{
 EOF
 
-		$con = $content;
-		$con =~ s/\{ofs\}/___index/g;
-		print FC $con;
+			$con = $content;
+			$con =~ s/\{ofs\}/___index/g;
+			print FC $con;
 
-  		print FC <<EOF;
-			___index ++;
+	  		print FC <<EOF;
+				___index ++;
+			}
 		}
-	}
 EOF
+	}
+	else
+	{
+		print FC <<EOF;
+		{
+			int ___index = 0;
+
+			while(___index < $times)
+			{
+EOF
+
+			$con = $content;
+			$con =~ s/\{ofs\}/___index/g;
+			print FC $con;
+
+	  		print FC <<EOF;
+				___index ++;
+			}
+		}
+EOF
+	}
 }
 
 
@@ -176,55 +232,78 @@ sub loop_unroll_c_int_2
 	$times = $_[2];
 	$unroll_times = $_[3];
 
-	print FC <<EOF;
+	if($should_unroll == 1)
 	{
-		int ___index = 0;
-		$times -= ($unroll_times-1);
-
-		while(___index < $times)
+		print FC <<EOF;
 		{
+			int ___index = 0;
+			$times -= ($unroll_times-1);
+
+			while(___index < $times)
+			{
 EOF
 
-	for($i = 0; $i<$unroll_times/2; $i++)
-	{
-		local($j);
+		for($i = 0; $i<$unroll_times/2; $i++)
+		{
+			local($j);
+			$con = $content;
+			$con =~ s/\{ofs\}/(___index+($i*2))/g;
+			$con2 = $content2;
+			$con2 =~ s/\{ofs\}/(___index+($i*2+1))/g;
+			$con =~ s/\n//g;
+			$con2 =~ s/\n//g;
+			@cont = split(/;;/, $con);
+			@cont2 = split(/;;/, $con2);
+
+			for($j = 0; $j <= $#cont; $j++)
+			{
+				print FC $cont[$j];
+				print FC ";\n";
+				print FC $cont2[$j];
+				print FC ";\n";
+			}
+		}
+
+	  	print FC <<EOF;
+				___index += $unroll_times;
+			}
+
+			$times += ($unroll_times-1);
+
+			while(___index < $times)
+			{
+EOF
+
 		$con = $content;
-		$con =~ s/\{ofs\}/(___index+($i*2))/g;
-		$con2 = $content2;
-		$con2 =~ s/\{ofs\}/(___index+($i*2+1))/g;
-		$con =~ s/\n//g;
-		$con2 =~ s/\n//g;
-		@cont = split(/;;/, $con);
-		@cont2 = split(/;;/, $con2);
+		$con =~ s/\{ofs\}/___index/g;
+		print FC $con;
 
-		for($j = 0; $j <= $#cont; $j++)
-		{
-			print FC $cont[$j];
-			print FC ";\n";
-			print FC $cont2[$j];
-			print FC ";\n";
+	  	print FC <<EOF;
+				___index ++;
+			}
 		}
+EOF
 	}
-
-  	print FC <<EOF;
-			___index += $unroll_times;
-		}
-
-		$times += ($unroll_times-1);
-
-		while(___index < $times)
+	else
+	{
+		print FC <<EOF;
 		{
+			int ___index = 0;
+
+			while(___index < $times)
+			{
 EOF
 
-	$con = $content;
-	$con =~ s/\{ofs\}/___index/g;
-	print FC $con;
+		$con = $content;
+		$con =~ s/\{ofs\}/___index/g;
+		print FC $con;
 
-  	print FC <<EOF;
-			___index ++;
+	  	print FC <<EOF;
+				___index ++;
+			}
 		}
-	}
 EOF
+	}
 }
 
 
@@ -1116,7 +1195,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAlphaBlend_o_c, (tjs_uint32 *dest, tjs_int len,
 	tjs_uint32 d1, s, d, sopa;
 EOF
 
-
 $content = <<EOF;
 {
 	s = src[srcstart >> 16];
@@ -1180,7 +1258,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAlphaBlend_d_c, (tjs_uint32 *dest, tjs_int len,
 	tjs_uint32 d1, s, d, sopa, addr, destalpha;
 EOF
 
-
 $content = <<EOF;
 {
 	s = src[srcstart >> 16];
@@ -1213,7 +1290,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len,
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_a_d(*dest, src[srcstart >> 16]);
@@ -1237,7 +1313,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAlphaBlend_do_c, (tjs_uint32 *dest, tjs_int len
 {
 	tjs_uint32 d1, s, d, sopa, addr, destalpha;
 EOF
-
 
 $content = <<EOF;
 {
@@ -1271,7 +1346,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAlphaBlend_ao_c, (tjs_uint32 *dest, tjs_int len
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_a_d_o(*dest, src[srcstart >> 16], opa);
@@ -1303,7 +1377,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, tjs_in
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_n_a(*dest, src[srcstart >> 16]);
@@ -1331,30 +1404,39 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, 
 
 	blend_y += blend_y >> 7; /* adjust blend ratio */
 
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y));
-		srcstart += srcstep;
+EOF
 
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[1] = TVPAddAlphaBlend_n_a(dest[1], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y));
-		srcstart += srcstep;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y));
+			srcstart += srcstep;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[1] = TVPAddAlphaBlend_n_a(dest[1], TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y));
+			srcstart += srcstep;
 
-	destlen += 1;
+			dest += 2;
+			destlen -= 2;
+		}
+
+		destlen += 1;
+EOF
+}
+
+print FC <<EOF;
 
 	while(destlen > 0)
 	{
@@ -1405,7 +1487,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_o_c, (tjs_uint32 *dest, tjs_
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_n_a_o(*dest, src[srcstart >> 16], opa);
@@ -1434,31 +1515,38 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_o_c, (tjs_uint32 *dest
 
 	blend_y += blend_y >> 7; /* adjust blend ratio */
 
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y), opa);
-		srcstart += srcstep;
+EOF
 
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[1] = TVPAddAlphaBlend_n_a_o(dest[1], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y), opa);
-		srcstart += srcstep;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y), opa);
+			srcstart += srcstep;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[1] = TVPAddAlphaBlend_n_a_o(dest[1], TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y), opa);
+			srcstart += srcstep;
 
-	destlen += 1;
+			dest += 2;
+			destlen -= 2;
+		}
+		destlen += 1;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
@@ -1507,7 +1595,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_d_c, (tjs_uint32 *dest, tjs_
 {/*YET NOT IMPLEMENTED*//*MAY LOOSE ADDITIVE STUFF*/
 EOF
 
-
 $content = <<EOF;
 {
 	srcstart += srcstep;
@@ -1530,7 +1617,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -1555,7 +1641,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_do_c, (tjs_uint32 *dest, tjs
 {/*YET NOT IMPLEMENTED*//*MAY LOOSE ADDITIVE STUFF*/
 EOF
 
-
 $content = <<EOF;
 {
 	srcstart += srcstep;
@@ -1579,7 +1664,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_ao_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -1613,7 +1697,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, 
 {
 	tjs_uint32 d1, s, d, sopa;
 EOF
-
 
 $content = <<EOF;
 {
@@ -1682,7 +1765,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAlphaBlend_o_c, (tjs_uint32 *dest, tjs_int len
 	tjs_uint32 d1, s, d, sopa;
 EOF
 
-
 $content = <<EOF;
 {
 	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
@@ -1748,7 +1830,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAlphaBlend_d_c, (tjs_uint32 *dest, tjs_int len
 	tjs_uint32 d1, s, d, sopa, addr, destalpha;
 EOF
 
-
 $content = <<EOF;
 {
 	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
@@ -1783,7 +1864,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_a_d(*dest, 
@@ -1809,7 +1889,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAlphaBlend_do_c, (tjs_uint32 *dest, tjs_int le
 {
 	tjs_uint32 d1, s, d, sopa, addr, destalpha;
 EOF
-
 
 $content = <<EOF;
 {
@@ -1844,7 +1923,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAlphaBlend_ao_c, (tjs_uint32 *dest, tjs_int le
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_a_d_o(*dest, 
@@ -1878,7 +1956,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAdditiveAlphaBlend_c, (tjs_uint32 *dest, tjs_i
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_n_a(*dest, 
@@ -1905,42 +1982,49 @@ TVP_GL_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *dest,
 {
 	/* bilinear interpolation version */
 	/* note that srcpitch unit is in byte */
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		int blend_x, blend_y;
-		const tjs_uint32 *p0, *p1;
+EOF
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y));
-		sx += stepx, sy += stepy;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			int blend_x, blend_y;
+			const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[1] = TVPAddAlphaBlend_n_a(dest[1], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y));
-		sx += stepx, sy += stepy;
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y));
+			sx += stepx, sy += stepy;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[1] = TVPAddAlphaBlend_n_a(dest[1], TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y));
+			sx += stepx, sy += stepy;
 
-	destlen += 1;
+			dest += 2;
+			destlen -= 2;
+		}
+		destlen += 1;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		int blend_x, blend_y;
@@ -2002,7 +2086,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAdditiveAlphaBlend_o_c, (tjs_uint32 *dest, tjs
 {
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = TVPAddAlphaBlend_n_a_o(*dest, 
@@ -2029,43 +2112,49 @@ TVP_GL_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32 *des
 	/* bilinear interpolation version */
 	/* note that srcpitch unit is in byte */
 	opa += opa >> 7;
+EOF
 
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		int blend_x, blend_y;
-		const tjs_uint32 *p0, *p1;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			int blend_x, blend_y;
+			const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y), opa);
-		sx += stepx, sy += stepy;
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y), opa);
+			sx += stepx, sy += stepy;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[1] = TVPAddAlphaBlend_n_a_o(dest[1], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y), opa);
-		sx += stepx, sy += stepy;
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[1] = TVPAddAlphaBlend_n_a_o(dest[1], TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y), opa);
+			sx += stepx, sy += stepy;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			dest += 2;
+			destlen -= 2;
+		}
+		destlen += 1;
+EOF
+}
 
-	destlen += 1;
-
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		int blend_x, blend_y;
@@ -2125,7 +2214,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAdditiveAlphaBlend_d_c, (tjs_uint32 *dest, tjs
 {/*YET NOT IMPLEMENTED*//*MAY LOOSE ADDITIVE STUFF*/
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = 0;
@@ -2149,7 +2237,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPLinTransAdditiveAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -2176,7 +2263,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransAdditiveAlphaBlend_do_c, (tjs_uint32 *dest, tj
 {/*YET NOT IMPLEMENTED*//*MAY LOOSE ADDITIVE STUFF*/
 EOF
 
-
 $content = <<EOF;
 {
 	*dest = 0;
@@ -2200,7 +2286,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPLinTransAdditiveAlphaBlend_ao_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -2235,7 +2320,6 @@ TVP_GL_FUNC_DECL(void, TVPCopyOpaqueImage_c, (tjs_uint32 *dest, const tjs_uint32
 	tjs_uint32 t1, t2;
 EOF
 
-
 $content = <<EOF;
 	t1 = src[{ofs}];;
 	t1 |= 0xff000000;;
@@ -2248,7 +2332,6 @@ $content2 = <<EOF;
 	dest[{ofs}] = t2;;
 EOF
 	
-
 &loop_unroll_c_int_2($content, $content2, 'len', 8);
 
 print FC <<EOF;
@@ -2264,7 +2347,6 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32
 {
 	tjs_uint32 d1, s, d;
 EOF
-
 
 $content = <<EOF;
 {
@@ -2295,7 +2377,6 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_HDA_c, (tjs_uint32 *dest, const tjs_ui
 {
 	tjs_uint32 d1, s, d;
 EOF
-
 
 $content = <<EOF;
 {
@@ -2384,24 +2465,30 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPStretchCopyOpaqueImage_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
+EOF
 
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = 0xff000000 | src[srcstart >> 16];
-		srcstart += srcstep;
-		dest[1] = 0xff000000 | src[srcstart >> 16];
-		srcstart += srcstep;
-		dest[2] = 0xff000000 | src[srcstart >> 16];
-		srcstart += srcstep;
-		dest[3] = 0xff000000 | src[srcstart >> 16];
-		srcstart += srcstep;
-		dest += 4;
-		destlen -= 4;
-	}
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = 0xff000000 | src[srcstart >> 16];
+			srcstart += srcstep;
+			dest[1] = 0xff000000 | src[srcstart >> 16];
+			srcstart += srcstep;
+			dest[2] = 0xff000000 | src[srcstart >> 16];
+			srcstart += srcstep;
+			dest[3] = 0xff000000 | src[srcstart >> 16];
+			srcstart += srcstep;
+			dest += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
-	destlen += 3;
-
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = 0xff000000 | src[srcstart >> 16];
@@ -2422,7 +2509,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs_int l
 {
 	tjs_uint32 d1, s, d;
 EOF
-
 
 $content = <<EOF;
 {
@@ -2457,31 +2543,38 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs
 	blend_y += blend_y >> 7; /* adjust blend ratio */
 	opa += opa > 7; /* adjust opa */
 
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y), opa);
-		srcstart += srcstep;
+EOF
 
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[1] = TVPBlendARGB(dest[1], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y), opa);
-		srcstart += srcstep;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y), opa);
+			srcstart += srcstep;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[1] = TVPBlendARGB(dest[1], TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y), opa);
+			srcstart += srcstep;
 
-	destlen += 1;
+			dest += 2;
+			destlen -= 2;
+		}
+		destlen += 1;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
@@ -2506,7 +2599,6 @@ TVP_GL_FUNC_DECL(void, TVPStretchConstAlphaBlend_HDA_c, (tjs_uint32 *dest, tjs_i
 {
 	tjs_uint32 d1, s, d;
 EOF
-
 
 $content = <<EOF;
 {
@@ -2602,28 +2694,34 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPLinTransCopyOpaqueImage_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch))
 {
+EOF
 
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx;
-		sy += stepy;
-		dest[1] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx;
-		sy += stepy;
-		dest[2] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx;
-		sy += stepy;
-		dest[3] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx;
-		sy += stepy;
-		dest += 4;
-		destlen -= 4;
-	}
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx;
+			sy += stepy;
+			dest[1] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx;
+			sy += stepy;
+			dest[2] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx;
+			sy += stepy;
+			dest[3] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx;
+			sy += stepy;
+			dest += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
-	destlen += 3;
-
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
@@ -2645,7 +2743,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransConstAlphaBlend_c, (tjs_uint32 *dest, tjs_int 
 {
 	tjs_uint32 d1, s, d;
 EOF
-
 
 $content = <<EOF;
 {
@@ -2678,43 +2775,50 @@ TVP_GL_FUNC_DECL(void, TVPInterpLinTransConstAlphaBlend_c, (tjs_uint32 *dest, tj
 	/* bilinear interpolation version */
 	/* note that srcpitch unit is in byte */
 	opa += opa >> 7; /* adjust opacity */
+EOF
 
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		int blend_x, blend_y;
-		const tjs_uint32 *p0, *p1;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			int blend_x, blend_y;
+			const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y), opa);
-		sx += stepx, sy += stepy;
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y), opa);
+			sx += stepx, sy += stepy;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[1] = TVPBlendARGB(dest[1], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y), opa);
-		sx += stepx, sy += stepy;
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[1] = TVPBlendARGB(dest[1], TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y), opa);
+			sx += stepx, sy += stepy;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			dest += 2;
+			destlen -= 2;
+		}
 
-	destlen += 1;
+		destlen += 1;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		int blend_x, blend_y;
@@ -2748,7 +2852,6 @@ TVP_GL_FUNC_DECL(void, TVPLinTransConstAlphaBlend_HDA_c, (tjs_uint32 *dest, tjs_
 {
 	tjs_uint32 d1, s, d;
 EOF
-
 
 $content = <<EOF;
 {
@@ -2852,7 +2955,6 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_c, (tjs_uint32 *dest, const tjs_uin
 	tjs_uint32 s1_, s1, s2;
 EOF
 
-
 $content = <<EOF;
 {
 	s1 = *src1;
@@ -2882,7 +2984,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_a_c, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa))
 {
 EOF
-
 
 $content = <<EOF;
 	dest[{ofs}] = TVPBlendARGB(src1[{ofs}], src2[{ofs}], opa);
@@ -3007,7 +3108,6 @@ TVP_GL_FUNC_DECL(void, TVPUnivTransBlend_c, (tjs_uint32 *dest, const tjs_uint32 
 	tjs_int opa;
 EOF
 
-
 $content = <<EOF;
 {
 	opa = table[*rule];
@@ -3041,7 +3141,6 @@ TVP_GL_FUNC_DECL(void, TVPUnivTransBlend_switch_c, (tjs_uint32 *dest, const tjs_
 	tjs_uint32 s1_, s1, s2;
 	tjs_int opa;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3114,7 +3213,6 @@ $content = <<EOF;
 	dest++;
 }
 EOF
-
 
 &loop_unroll_c($content, 'len', 4);
 
@@ -3192,7 +3290,6 @@ $content = <<EOF;
 	dest[{ofs}] = TVPBlendARGB(src1[{ofs}], src2[{ofs}], table[rule[{ofs}]]);
 EOF
 
-
 &loop_unroll_c_2($content, 'len', 4);
 
 print FC <<EOF;
@@ -3250,7 +3347,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_c, (tjs_uint32 *dest, const
 	color = color & 0x00ff00;
 EOF
 
-
 $content = <<EOF;
 {
 	d = *dest;
@@ -3280,7 +3376,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_o_c, (tjs_uint32 *dest, con
 	tjs_uint32 c1 = color & 0xff00ff;
 	color = color & 0x00ff00;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3328,7 +3423,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_HDA_c, (tjs_uint32 *dest, c
 	color = color & 0x00ff00;
 EOF
 
-
 $content = <<EOF;
 {
 	d = *dest;
@@ -3358,7 +3452,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_HDA_o_c, (tjs_uint32 *dest,
 	tjs_uint32 c1 = color & 0xff00ff;
 	color = color & 0x00ff00;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3395,7 +3488,6 @@ sub alpha_color_map_d
 	local($namesuffix);
 	$namesuffix = $_[0];
 
-
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_d_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
@@ -3404,7 +3496,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_d_c, (tjs_uint32 *dest, con
 	tjs_uint32 c1 = color & 0xff00ff;
 	color = color & 0x00ff00;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3443,7 +3534,6 @@ sub alpha_color_map_a
 	$namesuffix = $_[0];
 	$shift = $_[1];
 
-
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_a_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
@@ -3451,7 +3541,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_a_c, (tjs_uint32 *dest, con
 	tjs_uint32 c1 = color & 0xff00ff;
 	color = color & 0x00ff00;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3487,7 +3576,6 @@ sub alpha_color_map_do
 	local($namesuffix);
 	$namesuffix = $_[0];
 
-
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_do_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color, tjs_int opa))
@@ -3496,7 +3584,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_do_c, (tjs_uint32 *dest, co
 	tjs_uint32 c1 = color & 0xff00ff;
 	color = color & 0x00ff00;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3535,7 +3622,6 @@ sub alpha_color_map_ao
 	$namesuffix = $_[0];
 	$shift = $_[1];
 
-
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_ao_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color, tjs_int opa))
@@ -3543,7 +3629,6 @@ TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_ao_c, (tjs_uint32 *dest, co
 	tjs_uint32 c1 = color & 0xff00ff;
 	color = color & 0x00ff00;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3586,7 +3671,6 @@ TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_c, (tjs_uint32 *dest, tjs_int len
 	color = (color & 0xff00)*opa ;
 	opa = 255 - opa;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3676,7 +3760,6 @@ TVP_GL_FUNC_DECL(void, TVPRemoveConstOpacity_c, (tjs_uint32 *dest, tjs_int len, 
 
 EOF
 
-
 $content = <<EOF;
 	d = dest[{ofs}];;
 	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24)*strength) << 16) & 0xff000000);;
@@ -3686,7 +3769,6 @@ $content2 = <<EOF;
 	d2 = dest[{ofs}];;
 	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24)*strength) << 16) & 0xff000000);;
 EOF
-
 
 &loop_unroll_c_int_2($content, $content2, 'len', 4);
 
@@ -3703,7 +3785,6 @@ TVP_GL_FUNC_DECL(void, TVPRemoveOpacity_c, (tjs_uint32 *dest, const tjs_uint8 *s
 {
 	tjs_uint32 d, d2;
 EOF
-
 
 $content = <<EOF;
 	d = dest[{ofs}];;
@@ -3757,7 +3838,6 @@ TVP_GL_FUNC_DECL(void, TVPRemoveOpacity65_c, (tjs_uint32 *dest, const tjs_uint8 
 	tjs_uint32 d, d2;
 EOF
 
-
 $content = <<EOF;
 	d = dest[{ofs}];;
 	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24) * (64-src[{ofs}])) << 18) & 0xff000000);;
@@ -3789,6 +3869,7 @@ $content = <<EOF;
 	d = dest[{ofs}];;
 	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24) * (16384-src[{ofs}]*strength )) << 10) & 0xff000000);;
 EOF
+
 $content2 = <<EOF;
 	d2 = dest[{ofs}];;
 	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24) * (16384-src[{ofs}]*strength )) << 10) & 0xff000000);;
@@ -3868,7 +3949,6 @@ TVP_GL_FUNC_DECL(void, TVPAddBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, 
 register tjs_uint32 tmp;
 EOF
 
-
 $content = <<EOF;
 {
 tmp = (  ( *src & *dest ) + ( ((*src^*dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
@@ -3895,7 +3975,6 @@ TVP_GL_FUNC_DECL(void, TVPAddBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *s
 {
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3924,7 +4003,6 @@ TVP_GL_FUNC_DECL(void, TVPAddBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src
 register tjs_uint32 s;
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3955,7 +4033,6 @@ TVP_GL_FUNC_DECL(void, TVPAddBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 
 register tjs_uint32 s;
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -3989,7 +4066,6 @@ TVP_GL_FUNC_DECL(void, TVPSubBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, 
 register tjs_uint32 tmp;
 EOF
 
-
 $content = <<EOF;
 {
 tmp = (  ( *src & *dest ) + ( ((*src ^ *dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
@@ -4015,7 +4091,6 @@ TVP_GL_FUNC_DECL(void, TVPSubBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *s
 {
 register tjs_uint32 tmp, s;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4044,7 +4119,6 @@ TVP_GL_FUNC_DECL(void, TVPSubBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src
 register tjs_uint32 s;
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4075,7 +4149,6 @@ TVP_GL_FUNC_DECL(void, TVPSubBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 
 register tjs_uint32 s/*, d*/;
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4108,7 +4181,6 @@ TVP_GL_FUNC_DECL(void, TVPMulBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, 
 register tjs_uint32 tmp;
 EOF
 
-
 $content = <<EOF;
 {
 tmp  = (*dest & 0xff) * (*src & 0xff) & 0xff00;
@@ -4136,7 +4208,6 @@ TVP_GL_FUNC_DECL(void, TVPMulBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *s
 {
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4167,7 +4238,6 @@ TVP_GL_FUNC_DECL(void, TVPMulBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src
 register tjs_uint32 s;
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4202,7 +4272,6 @@ register tjs_uint32 s;
 register tjs_uint32 tmp;
 EOF
 
-
 $content = <<EOF;
 {
 s = ~*src;
@@ -4236,7 +4305,6 @@ TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_c, (tjs_uint32 *dest, const tjs_uint32
 register tjs_uint32 tmp, tmp2, tmp3;
 EOF
 
-
 $content = <<EOF;
 {
 tmp2 = ~*src;
@@ -4269,7 +4337,6 @@ TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_HDA_c, (tjs_uint32 *dest, const tjs_ui
 register tjs_uint32 tmp, tmp2, tmp3;
 EOF
 
-
 $content = <<EOF;
 {
 tmp2 = ~*src;
@@ -4300,7 +4367,6 @@ TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_o_c, (tjs_uint32 *dest, const tjs_uint
 {
 register tjs_uint32 tmp, tmp2, tmp3;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4333,7 +4399,6 @@ TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_
 {
 register tjs_uint32 tmp, tmp2, tmp3;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4369,7 +4434,6 @@ TVP_GL_FUNC_DECL(void, TVPDarkenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *sr
 register tjs_uint32 tmp, m_src;
 EOF
 
-
 $content = <<EOF;
 {
 m_src = ~*src;
@@ -4397,7 +4461,6 @@ TVP_GL_FUNC_DECL(void, TVPDarkenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32
 register tjs_uint32 tmp, m_src;
 EOF
 
-
 $content = <<EOF;
 {
 m_src = ~*src;
@@ -4424,7 +4487,6 @@ TVP_GL_FUNC_DECL(void, TVPDarkenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *
 {
 register tjs_uint32 tmp, m_src, d1;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4458,7 +4520,6 @@ TVP_GL_FUNC_DECL(void, TVPDarkenBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint
 {
 register tjs_uint32 tmp, m_src, d1;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4494,7 +4555,6 @@ TVP_GL_FUNC_DECL(void, TVPLightenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *s
 register tjs_uint32 tmp, m_dest;
 EOF
 
-
 $content = <<EOF;
 {
 m_dest = ~*dest;
@@ -4521,7 +4581,6 @@ TVP_GL_FUNC_DECL(void, TVPLightenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint3
 {
 register tjs_uint32 tmp, m_dest;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4550,7 +4609,6 @@ TVP_GL_FUNC_DECL(void, TVPLightenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 
 {
 register tjs_uint32 tmp, m_dest, d1;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4586,7 +4644,6 @@ TVP_GL_FUNC_DECL(void, TVPLightenBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uin
 register tjs_uint32 tmp, m_dest, d1;
 EOF
 
-
 $content = <<EOF;
 {
 m_dest = ~*dest;
@@ -4621,7 +4678,6 @@ TVP_GL_FUNC_DECL(void, TVPScreenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *sr
 register tjs_uint32 tmp, s, d;
 EOF
 
-
 $content = <<EOF;
 {
 s = ~*src;
@@ -4653,7 +4709,6 @@ TVP_GL_FUNC_DECL(void, TVPScreenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32
 register tjs_uint32 tmp, s, d;
 EOF
 
-
 $content = <<EOF;
 {
 s = ~*src;
@@ -4684,7 +4739,6 @@ TVP_GL_FUNC_DECL(void, TVPScreenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *
 register tjs_uint32 s, d;
 register tjs_uint32 tmp;
 EOF
-
 
 $content = <<EOF;
 {
@@ -4720,7 +4774,6 @@ register tjs_uint32 s, d;
 register tjs_uint32 tmp;
 EOF
 
-
 $content = <<EOF;
 {
 d = ~*dest;
@@ -4753,24 +4806,30 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPStretchCopy_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
+EOF
 
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = src[srcstart >> 16];
-		srcstart += srcstep;
-		dest[1] = src[srcstart >> 16];
-		srcstart += srcstep;
-		dest[2] = src[srcstart >> 16];
-		srcstart += srcstep;
-		dest[3] = src[srcstart >> 16];
-		srcstart += srcstep;
-		dest += 4;
-		destlen -= 4;
-	}
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = src[srcstart >> 16];
+			srcstart += srcstep;
+			dest[1] = src[srcstart >> 16];
+			srcstart += srcstep;
+			dest[2] = src[srcstart >> 16];
+			srcstart += srcstep;
+			dest[3] = src[srcstart >> 16];
+			srcstart += srcstep;
+			dest += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
-	destlen += 3;
-
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = src[srcstart >> 16];
@@ -4793,32 +4852,38 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchCopy_c, (tjs_uint32 *dest, tjs_int destle
 	tjs_int sp;
 
 	blend_y += blend_y >> 7; /* adjust blend ratio */
+EOF
 
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y);
-		srcstart += srcstep;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[0] = TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y);
+			srcstart += srcstep;
 
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[1] = TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
-				blend_y);
-		srcstart += srcstep;
+			blend_x = (srcstart & 0xffff) >> 8;
+			sp = srcstart >> 16;
+			dest[1] = TVPBlendARGB(
+				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
+				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+					blend_y);
+			srcstart += srcstep;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			dest += 2;
+			destlen -= 2;
+		}
+		destlen += 1;
+EOF
+}
 
-	destlen += 1;
-
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
@@ -4902,21 +4967,28 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPFastLinearInterpV2_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src0, const tjs_uint32 *src1))
 {
 	/* vertical 2x fast linear interpolation */
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = AVG_PACKED(src0[0], src1[0]);
-		dest[1] = AVG_PACKED(src0[1], src1[1]);
-		dest[2] = AVG_PACKED(src0[2], src1[2]);
-		dest[3] = AVG_PACKED(src0[3], src1[3]);
-		dest += 4;
-		src0 += 4;
-		src1 += 4;
-		destlen -= 4;
-	}
+EOF
 
-	destlen += 3;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = AVG_PACKED(src0[0], src1[0]);
+			dest[1] = AVG_PACKED(src0[1], src1[1]);
+			dest[2] = AVG_PACKED(src0[2], src1[2]);
+			dest[3] = AVG_PACKED(src0[3], src1[3]);
+			dest += 4;
+			src0 += 4;
+			src1 += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = AVG_PACKED(src0[0], src1[0]);
@@ -4936,23 +5008,30 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPStretchColorCopy_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
 	/* this performs only color(main) copy */
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = (dest[0] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
-		srcstart += srcstep;
-		dest[1] = (dest[1] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
-		srcstart += srcstep;
-		dest[2] = (dest[2] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
-		srcstart += srcstep;
-		dest[3] = (dest[3] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
-		srcstart += srcstep;
-		dest += 4;
-		destlen -= 4;
-	}
+EOF
 
-	destlen += 3;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = (dest[0] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			srcstart += srcstep;
+			dest[1] = (dest[1] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			srcstart += srcstep;
+			dest[2] = (dest[2] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			srcstart += srcstep;
+			dest[3] = (dest[3] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			srcstart += srcstep;
+			dest += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = (dest[0] & 0xff0000) + (src[srcstart >> 16] & 0xffffff);
@@ -4975,24 +5054,31 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPLinTransCopy_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch))
 {
 	/* note that srcpitch unit is in byte */
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx, sy += stepy;
-		dest[1] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx, sy += stepy;
-		dest[2] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx, sy += stepy;
-		dest[3] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
-		sx += stepx, sy += stepy;
+EOF
 
-		dest += 4;
-		destlen -= 4;
-	}
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx, sy += stepy;
+			dest[1] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx, sy += stepy;
+			dest[2] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx, sy += stepy;
+			dest[3] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			sx += stepx, sy += stepy;
 
-	destlen += 3;
+			dest += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
@@ -5012,42 +5098,49 @@ TVP_GL_FUNC_DECL(void, TVPInterpLinTransCopy_c, (tjs_uint32 *dest, tjs_int destl
 {
 	/* bilinear interpolation version */
 	/* note that srcpitch unit is in byte */
-	destlen -= 1;
-	while(destlen > 0)
-	{
-		int blend_x, blend_y;
-		const tjs_uint32 *p0, *p1;
+EOF
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y);
-		sx += stepx, sy += stepy;
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 1;
+		while(destlen > 0)
+		{
+			int blend_x, blend_y;
+			const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
-		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[1] = TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
-				blend_y);
-		sx += stepx, sy += stepy;
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[0] = TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y);
+			sx += stepx, sy += stepy;
 
-		dest += 2;
-		destlen -= 2;
-	}
+			blend_x = (sx & 0xffff) >> 8;
+			blend_x += blend_x >> 7;
+			blend_y = (sy & 0xffff) >> 8;
+			blend_y += blend_y >> 7;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
+			dest[1] = TVPBlendARGB(
+				TVPBlendARGB(p0[0], p0[1], blend_x),
+				TVPBlendARGB(p1[0], p1[1], blend_x),
+					blend_y);
+			sx += stepx, sy += stepy;
 
-	destlen += 1;
+			dest += 2;
+			destlen -= 2;
+		}
+		destlen += 1;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		int blend_x, blend_y;
@@ -5079,24 +5172,31 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPLinTransColorCopy_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch))
 {
 	/* note that srcpitch unit is in byte */
-	destlen -= 3;
-	while(destlen > 0)
-	{
-		dest[0] = (dest[0] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
-		sx += stepx, sy += stepy;
-		dest[1] = (dest[1] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
-		sx += stepx, sy += stepy;
-		dest[2] = (dest[2] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
-		sx += stepx, sy += stepy;
-		dest[3] = (dest[3] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
-		sx += stepx, sy += stepy;
+EOF
 
-		dest += 4;
-		destlen -= 4;
-	}
+if($should_unroll == 1)
+{
+	print FC <<EOF;
+		destlen -= 3;
+		while(destlen > 0)
+		{
+			dest[0] = (dest[0] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			sx += stepx, sy += stepy;
+			dest[1] = (dest[1] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			sx += stepx, sy += stepy;
+			dest[2] = (dest[2] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			sx += stepx, sy += stepy;
+			dest[3] = (dest[3] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			sx += stepx, sy += stepy;
 
-	destlen += 3;
+			dest += 4;
+			destlen -= 4;
+		}
+		destlen += 3;
+EOF
+}
 
+print FC <<EOF;
 	while(destlen > 0)
 	{
 		dest[0] = (dest[0] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
@@ -5121,12 +5221,12 @@ TVP_GL_FUNC_DECL(void, TVPMakeAlphaFromKey_c, (tjs_uint32 *dest, tjs_int len, tj
 	tjs_uint32 a, b;
 EOF
 
-
 $content = <<EOF;
 	a = dest[{ofs}] & 0xffffff;;
 	if(a != key) a |= 0xff000000;;
 	dest[{ofs}] = a;;
 EOF
+
 $content2 = <<EOF;
 	b = dest[{ofs}] & 0xffffff;;
 	if(b != key) b |= 0xff000000;;
@@ -5151,6 +5251,7 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPCopyMask_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 EOF
+
 $content = <<EOF;
 		{
 			dest[{ofs}] = (dest[{ofs}] & 0xffffff) +
@@ -5163,14 +5264,18 @@ print FC <<EOF;
 	{
 		/* backward */
 EOF
+
 &loop_unroll_c_2_backward($content, 'len', 8);
+
 print FC <<EOF;
 	}
 	else
 	{
 		/* forward */
 EOF
+
 &loop_unroll_c_2($content, 'len', 8);
+
 print FC <<EOF;
 	}
 }
@@ -5187,6 +5292,7 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPCopyColor_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 EOF
+
 $content = <<EOF;
 {
 	dest[{ofs}] = (dest[{ofs}] & 0xff000000) +
@@ -5199,14 +5305,18 @@ print FC <<EOF;
 	{
 		/* backward */
 EOF
+
 &loop_unroll_c_2_backward($content, 'len', 8);
+
 print FC <<EOF;
 	}
 	else
 	{
 		/* forward */
 EOF
+
 &loop_unroll_c_2($content, 'len', 8);
+
 print FC <<EOF;
 	}
 }
@@ -5222,7 +5332,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBindMaskToMain_c, (tjs_uint32 *main, const tjs_uint8 *mask, tjs_int len))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -5303,6 +5412,7 @@ $content = <<EOF;
 	t1 += color;;
 	dest[{ofs}] = t1;;
 EOF
+
 $content2 = <<EOF;
 	t2 = dest[{ofs}];;
 	t2 &= 0xff000000;;
@@ -5335,6 +5445,7 @@ $content = <<EOF;
 	t1 += mask;;
 	dest[{ofs}] = t1;;
 EOF
+
 $content2 = <<EOF;
 	t2 = dest[{ofs}];;
 	t2 &= 0x00ffffff;;
@@ -5677,7 +5788,6 @@ EOF
 
 &loop_unroll_c($content, 'len', 4);
 
-
 print FC <<EOF;
 }
 
@@ -5706,7 +5816,6 @@ EOF
 
 &loop_unroll_c($content, 'len', 4);
 
-
 print FC <<EOF;
 }
 
@@ -5734,6 +5843,7 @@ $content = <<EOF;
 	d1 = (d1 >> 8) * 0x10101 + (s1 & 0xff000000);;
 	dest[{ofs}] = d1;;
 EOF
+
 $content2 = <<EOF;
 	s2 = dest[{ofs}];;
 	d2 = (s2&0xff)*19;;
@@ -5754,27 +5864,56 @@ EOF
 ;# BGRA to RGBA
 ;#-----------------------------------------------------------------
 
+
+
+
+
+
+
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRedBlueSwap_c, (tjs_uint32 *dest, tjs_int len))
 {
-	for( int i = 0; i < len; i++ ) {
-		tjs_uint32 s = dest[i];
-		dest[i] = ( ( ( s & 0xff0000 ) >> 16 ) | ( s & 0xff00ff00 ) | ( ( s & 0xff ) << 16 ) ); 
-	}
-}
+EOF
 
-/*export*/
-TVP_GL_FUNC_DECL(void, TVPRedBlueSwapCopy_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+$content = <<EOF;
 {
-	for( int i = 0; i < len; i++ ) {
-		tjs_uint32 s = src[i];
-		dest[i] = ( ( ( s & 0xff0000 ) >> 16 ) | ( s & 0xff00ff00 ) | ( ( s & 0xff ) << 16 ) ); 
-	}
+	tjs_uint32 s = *dest;
+	*dest = ( ( ( s & 0xff0000 ) >> 16 ) | ( s & 0xff00ff00 ) | ( ( s & 0xff ) << 16 ) );
+	dest++;
+}
+EOF
+
+&loop_unroll_c($content, 'len', 4);
+
+print FC <<EOF;
 }
 
 EOF
 
+;#-----------------------------------------------------------------
+
+print FC <<EOF;
+/*export*/
+TVP_GL_FUNC_DECL(void, TVPRedBlueSwapCopy_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+{
+EOF
+
+$content = <<EOF;
+{
+	tjs_uint32 s = *src;
+	*dest = ( ( ( s & 0xff0000 ) >> 16 ) | ( s & 0xff00ff00 ) | ( ( s & 0xff ) << 16 ) );
+	src++;
+	dest++;
+}
+EOF
+
+&loop_unroll_c($content, 'len', 4);
+
+print FC <<EOF;
+}
+
+EOF
 
 ;#-----------------------------------------------------------------
 ;# Gamma Adjustment
@@ -5968,6 +6107,7 @@ $content = <<EOF;
 	if(a>=64) a = 64;;
 	dest[{ofs}] = a;;
 EOF
+
 $content2 = <<EOF;
 	b = (src[{ofs}] * level >> 18);;
 	if(b>=64) b = 64;;
@@ -5997,6 +6137,7 @@ $content = <<EOF;
 	if(a>=64) a = 64;;
 	dest[{ofs}] = a;;
 EOF
+
 $content2 = <<EOF;
 	b = dest[{ofs}] +(src[{ofs}] * level >> 18);;
 	if(b>=64) b = 64;;
@@ -6095,6 +6236,10 @@ TVP_GL_FUNC_DECL(void, TVPChBlurMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 *sr
 	tjs_int a, b;
 	{
 		int ___index = 0;
+EOF
+
+if($should_unroll == 1) {
+	print FC <<EOF;
 		len -= (4-1);
 
 		while(___index < len)
@@ -6115,7 +6260,10 @@ TVP_GL_FUNC_DECL(void, TVPChBlurMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 *sr
 		}
 
 		len += (4-1);
+EOF
+}
 
+print FC <<EOF;
 		while(___index < len)
 		{
 			a = (src[___index] * level >> 18);;
@@ -6132,6 +6280,10 @@ TVP_GL_FUNC_DECL(void, TVPChBlurAddMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 
 	tjs_int a, b;
 	{
 		int ___index = 0;
+EOF
+
+if($should_unroll == 1) {
+	print FC <<EOF;
 		len -= (4-1);
 
 		while(___index < len)
@@ -6152,7 +6304,10 @@ TVP_GL_FUNC_DECL(void, TVPChBlurAddMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 
 		}
 
 		len += (4-1);
+EOF
+}
 
+print FC <<EOF;
 		while(___index < len)
 		{
 			a = dest[___index] +(src[___index] * level >> 18);;
@@ -6399,7 +6554,6 @@ TVP_GL_FUNC_DECL(void, TVPBLExpand8BitTo8BitPal_c, (tjs_uint8 *dest, const tjs_u
 {
 EOF
 
-
 $content = <<EOF;
 {
 	dest[{ofs}] = pal[buf[{ofs}]]&0xff;
@@ -6422,7 +6576,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLExpand8BitTo32BitPal_c, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len, const tjs_uint32 *pal))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -6472,7 +6625,6 @@ TVP_GL_FUNC_DECL(void, TVPBLConvert15BitTo8Bit_c, (tjs_uint8 *dest, const tjs_ui
 {
 EOF
 
-
 $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
@@ -6499,7 +6651,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLConvert15BitTo32Bit_c, (tjs_uint32 *dest, const tjs_uint16 *buf, tjs_int len))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -6534,16 +6685,24 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLConvert24BitTo8Bit_c, (tjs_uint8 *dest, const tjs_uint8 *buf, tjs_int len))
 {
 	tjs_uint8 *slimglim = dest + len;
-	tjs_uint8 *slimglims = slimglim - 3;
-	while(dest < slimglims)
-	{
-		dest[0] = compose_grayscale(buf[2], buf[1], buf[0]);
-		dest[1] = compose_grayscale(buf[5], buf[4], buf[3]);
-		dest[2] = compose_grayscale(buf[8], buf[7], buf[6]);
-		dest[3] = compose_grayscale(buf[11], buf[10], buf[9]);
-		dest += 4;
-		buf += 12;
-	}
+EOF
+
+if($should_unroll == 1) {
+	print FC <<EOF;
+		tjs_uint8 *slimglims = slimglim - 3;
+		while(dest < slimglims)
+		{
+			dest[0] = compose_grayscale(buf[2], buf[1], buf[0]);
+			dest[1] = compose_grayscale(buf[5], buf[4], buf[3]);
+			dest[2] = compose_grayscale(buf[8], buf[7], buf[6]);
+			dest[3] = compose_grayscale(buf[11], buf[10], buf[9]);
+			dest += 4;
+			buf += 12;
+		}
+EOF
+}
+
+print FC <<EOF;
 	while(dest < slimglim)
 	{
 		dest[0] = compose_grayscale(buf[2], buf[1], buf[0]);
@@ -6562,6 +6721,10 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLConvert24BitTo32Bit_c, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len))
 {
 	tjs_uint32 *slimglim = dest + len;
+EOF
+
+if($should_unroll == 1) {
+	print FC <<EOF;
 	tjs_uint32 *slimglims = slimglim - 7;
 	while(dest < slimglims)
 	{
@@ -6597,6 +6760,10 @@ TVP_GL_FUNC_DECL(void, TVPBLConvert24BitTo32Bit_c, (tjs_uint32 *dest, const tjs_
 		buf += 24;
 #endif
 	}
+EOF
+}
+
+print FC <<EOF;
 	while(dest < slimglim)
 	{
 #if TJS_HOST_IS_BIG_ENDIAN
@@ -6617,6 +6784,10 @@ TVP_GL_FUNC_DECL(void, TVPConvert24BitTo32Bit_c, (tjs_uint32 *dest, const tjs_ui
 {
 	/* this function does not matter the host endian */
 	tjs_uint32 *slimglim = dest + len;
+EOF
+
+if($should_unroll == 1) {
+	print FC <<EOF;
 	tjs_uint32 *slimglims = slimglim - 7;
 	while(dest < slimglims)
 	{
@@ -6637,6 +6808,10 @@ TVP_GL_FUNC_DECL(void, TVPConvert24BitTo32Bit_c, (tjs_uint32 *dest, const tjs_ui
 		dest += 8;
 		buf += 24;
 	}
+EOF
+}
+
+print FC <<EOF;
 	while(dest < slimglim)
 	{
 		*(dest++) = 0xff000000 + buf[0] + (buf[1]<<8) + (buf[2]<<16);
@@ -6652,7 +6827,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLConvert32BitTo8Bit_c, (tjs_uint8 *dest, const tjs_uint32 *buf, tjs_int len))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -6681,7 +6855,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLConvert32BitTo32Bit_NoneAlpha_c, (tjs_uint32 *dest, const tjs_uint32 *buf, tjs_int len))
 {
 EOF
-
 
 $content = <<EOF;
 {
@@ -6712,7 +6885,6 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPBLConvert32BitTo32Bit_MulAddAlpha_c, (tjs_uint32 *dest, const tjs_uint32 *buf, tjs_int len))
 {
 EOF
-
 
 $content = <<EOF;
 {

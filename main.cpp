@@ -13,8 +13,8 @@
 #include "tjsTypes.h"
 #include "tvpgl.h"
 #include "tvpgl_info.h"
-#include "tvpgl_ia32_intf.h"
 #if 0
+#include "tvpgl_ia32_intf.h"
 #include "detect_cpu.h"
 #endif
 

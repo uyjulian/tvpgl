@@ -2317,8 +2317,21 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPCopyOpaqueImage_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
+EOF
+
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 t1, t2;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 t1;
+EOF
+}
 
 $content = <<EOF;
 	t1 = src[{ofs}];;
@@ -3754,7 +3767,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveConstOpacity_c, (tjs_uint32 *dest, tjs_int len, tjs_int strength))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 d, d2;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 d;
+EOF
+}
+
+print FC <<EOF;
 
 	strength = 255 - strength;
 
@@ -3783,8 +3811,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 d, d2;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 d;
+EOF
+}
 
 $content = <<EOF;
 	d = dest[{ofs}];;
@@ -3808,7 +3848,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_int strength))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 d, d2;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 d;
+EOF
+}
+
+print FC <<EOF;
 
 	if(strength > 127) strength ++; /* adjust for error */
 EOF
@@ -3835,8 +3890,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity65_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 d, d2;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 d;
+EOF
+}
 
 $content = <<EOF;
 	d = dest[{ofs}];;
@@ -3860,7 +3927,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity65_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_int strength))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 d, d2;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 d;
+EOF
+}
+
+print FC <<EOF;
 
 	if(strength > 127) strength ++; /* adjust for error */
 EOF
@@ -5218,8 +5300,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPMakeAlphaFromKey_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 key))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 a, b;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 a;
+EOF
+}
 
 $content = <<EOF;
 	a = dest[{ofs}] & 0xffffff;;
@@ -5401,7 +5495,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFillColor_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 t1, t2;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 t1;
+EOF
+}
+
+print FC <<EOF;
 
 	color &= 0xffffff;
 EOF
@@ -5435,7 +5544,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFillMask_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 mask))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 t1, t2;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 t1;
+EOF
+}
+
+print FC <<EOF;
 	mask <<= 24;
 EOF
 
@@ -5742,8 +5866,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSwapLine32_c, (tjs_uint32 *line1, tjs_uint32 *line2, tjs_int len))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 tmp, tmp2;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 tmp;
+EOF
+}
 
 $content = <<EOF;
 	tmp = line1[{ofs}];;
@@ -5832,8 +5968,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDoGrayScale_c, (tjs_uint32 *dest, tjs_int len))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint32 s1, d1, s2, d2;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint32 s1, d1;
+EOF
+}
 
 $content = <<EOF;
 	s1 = dest[{ofs}];;
@@ -6099,8 +6247,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurMulCopy65_c, (tjs_uint8 *dest, const tjs_uint8 *src, tjs_int len, tjs_int level))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_int a, b;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_int a;
+EOF
+}
 
 $content = <<EOF;
 	a = (src[{ofs}] * level >> 18);;
@@ -6129,8 +6289,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurAddMulCopy65_c, (tjs_uint8 *dest, const tjs_uint8 *src, tjs_int len, tjs_int level))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_int a, b;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_int a;
+EOF
+}
 
 $content = <<EOF;
 	a = dest[{ofs}] +(src[{ofs}] * level >> 18);;
@@ -6233,7 +6405,22 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy65_c, (tjs_uint8 *dest, tjs_int destpitch, t
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 *src, tjs_int len, tjs_int level) )
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_int a, b;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_int a;
+EOF
+}
+
+print FC <<EOF;
 	{
 		int ___index = 0;
 EOF
@@ -6277,7 +6464,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurAddMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 *src, tjs_int len, tjs_int level) )
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_int a, b;
+EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_int a;
+EOF
+}
+
+print FC <<EOF;
 	{
 		int ___index = 0;
 EOF
@@ -6596,8 +6798,20 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPExpand8BitTo32BitGray_c, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len))
 {
+EOF
+if($should_unroll == 1)
+{
+	print FC <<EOF;
 	tjs_uint8 a, b;
 EOF
+}
+
+if($should_unroll == 0)
+{
+	print FC <<EOF;
+	tjs_uint8 a;
+EOF
+}
 
 $content = <<EOF;
 	a = buf[{ofs}];;

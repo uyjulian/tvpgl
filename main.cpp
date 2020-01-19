@@ -30,33 +30,40 @@ struct iTVPFunctionExporter
 
 static iTVPFunctionExporter * TVPFunctionExporter = NULL;
 
-#define TVPGL_DEFINE(funcname, signature, rettype, arg) \
+#define TVPGL_DEFINE(funcname, signature, rettype, arg, argnames) \
 	rettype (__cdecl * funcname##_old) arg; \
-	uintptr_t *funcname##_oldloc;
+	uintptr_t *funcname##_oldloc; \
+	rettype __cdecl funcname##_thunk arg \
+	{ \
+		return funcname argnames ; \
+	}
 
-#define TVPGL_OVERWRITE(funcname, signature, rettype, arg) \
+#define TVPGL_OVERWRITE(funcname, signature, rettype, arg, argnames) \
 	{ \
 		funcname##_oldloc = nullptr; \
 		const char *name = signature; \
 		void *funcptr; \
 		if (TVPFunctionExporter->QueryFunctionsByNarrowString(&name, &funcptr, 1)) { \
 			uint8_t *funcptrindex = reinterpret_cast<uint8_t*>(funcptr); \
-			for (int i = 0; i < 64; i += 1) { \
+			for (int i = 0; i < 128; i += 1) { \
 				if (funcptrindex[i] == 0xFF) { \
 					if (funcptrindex[i + 1] == 0x15) { \
 						uintptr_t *callloc = reinterpret_cast<uintptr_t*>(funcptrindex + (i + 2)); \
 						uintptr_t *ptrloc = reinterpret_cast<uintptr_t*>(*callloc); \
 						funcname##_oldloc = ptrloc; \
 						funcname##_old = reinterpret_cast<rettype (__cdecl *) arg>(*ptrloc); \
-						*ptrloc = reinterpret_cast<uintptr_t>(funcname); \
+						*ptrloc = reinterpret_cast<uintptr_t>(funcname##_thunk); \
 						break; \
 					} \
+				} \
+				if (funcptrindex[i] == 0xC2) { \
+					break; \
 				} \
 			} \
 		} \
 	}
 
-#define TVPGL_RESTORE(funcname, signature, rettype, arg) \
+#define TVPGL_RESTORE(funcname, signature, rettype, arg, argnames) \
 	{ \
 		if (funcname##_oldloc) { \
 			*funcname##_oldloc = reinterpret_cast<uintptr_t>(funcname##_old); \

@@ -101,7 +101,7 @@ sub make_exp_stub
 	$exceptargnames = except_arg_names($arg);
 
 print OFH <<EOF;
-	x($name, "$func_exp_name", $rettype, ($arg)) \\
+	x($name, "$func_exp_name", $rettype, ($arg), ($argnames)) \\
 EOF
 
 }

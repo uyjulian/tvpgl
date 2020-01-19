@@ -8,9 +8,7 @@
 /////////////////////////////////////////////
 
 #include <windows.h>
-#include <string>
-#include <stdio.h>
-#include "tjsTypes.h"
+#include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_info.h"
 #if 0

@@ -13,3 +13,5 @@
 *.dll
 *.o
 *.7z
+visual/glgen/tvpgl.c
+visual/glgen/tvpgl.h

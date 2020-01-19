@@ -12,13 +12,13 @@
   These three operations use pow()/divide, so table reference should be
   faster than normal calc.
 -------------------------------------------------------------------- */
-unsigned char TVPPsTableSoftLight[256][256];
-unsigned char TVPPsTableColorDodge[256][256];
-unsigned char TVPPsTableColorBurn[256][256];
+TVP_GL_DATA_INIT unsigned char TVPPsTableSoftLight[256][256];
+TVP_GL_DATA_INIT unsigned char TVPPsTableColorDodge[256][256];
+TVP_GL_DATA_INIT unsigned char TVPPsTableColorBurn[256][256];
 
 #ifdef TVPPS_USE_OVERLAY_TABLE
 /* only for C version */
-unsigned char TVPPsTableOverlay[256][256];
+TVP_GL_DATA_INIT unsigned char TVPPsTableOverlay[256][256];
 #endif
 
 
@@ -209,7 +209,7 @@ unsigned char TVPPsTableOverlay[256][256];
 /* --------------------------------------------------------------------
   Table initialize function
 -------------------------------------------------------------------- */
-void TVPPsMakeTable(void)
+TVP_GL_FUNC_STATIC_DECL(void, TVPPsMakeTable, (void))
 {
 	int s, d;
 	for (s=0; s<256; s++) {

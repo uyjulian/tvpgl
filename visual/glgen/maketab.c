@@ -1,22 +1,28 @@
 /*-----------------------------------------------------------------*/
-unsigned char TVPDivTable[256*256];
-unsigned char TVPOpacityOnOpacityTable[256*256];
-unsigned char TVPNegativeMulTable[256*256];
+TVP_GL_DATA_INIT unsigned char TVPDivTable[256*256];
+TVP_GL_DATA_INIT unsigned char TVPOpacityOnOpacityTable[256*256];
+TVP_GL_DATA_INIT unsigned char TVPNegativeMulTable[256*256];
 /* following two are for 65-level anti-aliased letter drawing */
 /* ( TVPApplyColorMap65_d and TVPApplyColorMap65_do ) */
-unsigned char TVPOpacityOnOpacityTable65[65*256];
-unsigned char TVPNegativeMulTable65[65*256];
-unsigned char TVPDitherTable_5_6[8][4][2][256];
-unsigned char TVPDitherTable_676[3][4][4][256];
-unsigned char TVP252DitherPalette[3][256];
-tjs_uint32 TVPRecipTable256[256]; /* 1/x  table  ( 65536 ) multiplied */
-tjs_uint16 TVPRecipTable256_16[256]; /* 1/x  table  ( 65536 ) multiplied,
+TVP_GL_DATA_INIT unsigned char TVPOpacityOnOpacityTable65[65*256];
+TVP_GL_DATA_INIT unsigned char TVPNegativeMulTable65[65*256];
+TVP_GL_DATA_INIT unsigned char TVPDitherTable_5_6[8][4][2][256];
+TVP_GL_DATA_INIT unsigned char TVPDitherTable_676[3][4][4][256];
+TVP_GL_DATA_INIT unsigned char TVP252DitherPalette[3][256];
+TVP_GL_DATA_INIT tjs_uint32 TVPRecipTable256[256]; /* 1/x  table  ( 65536 ) multiplied */
+TVP_GL_DATA_INIT tjs_uint16 TVPRecipTable256_16[256]; /* 1/x  table  ( 65536 ) multiplied,
 	but limitted to 32767 (signed 16bits) */
-static const tjs_uint8 TVPDither4x4[4][4] = {
- {   0, 12,  2, 14   },
- {   8,  4, 10,  6   },
- {   3, 15,  1, 13   },
- {  11,  7,  9,  5   }};
+TVP_GL_DATA_INIT const tjs_uint8 TVPDither4x4[4][4]
+#if TVP_GL_FUNC_DEFINE_DATA_GEN
+ = {
+   {   0, 12,  2, 14   },
+   {   8,  4, 10,  6   },
+   {   3, 15,  1, 13   },
+   {  11,  7,  9,  5   }
+ }
+#endif
+;
+
 
 #define TVP_TLG6_GOLOMB_HALF_THRESHOLD 8
 
@@ -24,22 +30,31 @@ static const tjs_uint8 TVPDither4x4[4][4] = {
 #define TVP_TLG6_GOLOMB_N_COUNT  4
 #define TVP_TLG6_LeadingZeroTable_BITS 12
 #define TVP_TLG6_LeadingZeroTable_SIZE  (1<<TVP_TLG6_LeadingZeroTable_BITS)
-tjs_uint8 TVPTLG6LeadingZeroTable[TVP_TLG6_LeadingZeroTable_SIZE];
-short int TVPTLG6GolombCompressed[TVP_TLG6_GOLOMB_N_COUNT][9] = {
+TVP_GL_DATA_INIT tjs_uint8 TVPTLG6LeadingZeroTable[TVP_TLG6_LeadingZeroTable_SIZE];
+TVP_GL_DATA_INIT short int TVPTLG6GolombCompressed[TVP_TLG6_GOLOMB_N_COUNT][9]
+#if TVP_GL_FUNC_DEFINE_DATA_GEN
+ = {
 		{3,7,15,27,63,108,223,448,130,},
 		{3,5,13,24,51,95,192,384,257,},
 		{2,5,12,21,39,86,155,320,384,},
 		{2,3,9,18,33,61,129,258,511,},
 	/* Tuned by W.Dee, 2004/03/25 */
-};
-char TVPTLG6GolombBitLengthTable
-	[TVP_TLG6_GOLOMB_N_COUNT*2*128][TVP_TLG6_GOLOMB_N_COUNT] =
-	{ { 0 } };
+ }
+#endif
+;
+TVP_GL_DATA_INIT char TVPTLG6GolombBitLengthTable
+	[TVP_TLG6_GOLOMB_N_COUNT*2*128][TVP_TLG6_GOLOMB_N_COUNT]
+#if TVP_GL_FUNC_DEFINE_DATA_GEN
+	= { { 0 } }
+#endif
+;
 
 
-static void TVPPsMakeTable(void);
+/*not export*/
+TVP_GL_FUNC_STATIC_DECL(void, TVPPsMakeTable, (void));
 
-static void TVPTLG6InitLeadingZeroTable(void)
+/*not export*/
+TVP_GL_FUNC_STATIC_DECL(void, TVPTLG6InitLeadingZeroTable, (void))
 {
 	/* table which indicates first set bit position + 1. */
 	/* this may be replaced by BSF (IA32 instrcution). */
@@ -57,7 +72,8 @@ static void TVPTLG6InitLeadingZeroTable(void)
 	}
 }
 
-void TVPTLG6InitGolombTable(void)
+/*not export*/
+TVP_GL_FUNC_STATIC_DECL(void, TVPTLG6InitGolombTable, (void))
 {
 	int n, i, j;
 	for(n = 0; n < TVP_TLG6_GOLOMB_N_COUNT; n++)
@@ -75,7 +91,8 @@ void TVPTLG6InitGolombTable(void)
 }
 
 
-static void TVPInitDitherTable(void)
+/*not export*/
+TVP_GL_FUNC_STATIC_DECL(void, TVPInitDitherTable, (void))
 {
 	/* create an ordered dither table for conversion of 8bit->6bit and 8bit->5bit and */
 	/* RGB ( 256*256*256 ) -> palettized 252 colors ( 6*7*6 ) */
@@ -158,7 +175,8 @@ static void TVPInitDitherTable(void)
 }
 
 
-static void TVPCreateTable(void)
+/*not export*/
+TVP_GL_FUNC_STATIC_DECL(void, TVPCreateTable, (void))
 {
 	int a,b;
 
@@ -237,13 +255,14 @@ static void TVPCreateTable(void)
 	}
 
 
-	TVPInitDitherTable();
-	TVPTLG6InitLeadingZeroTable();
-	TVPTLG6InitGolombTable();
-	TVPPsMakeTable();
+	TVP_GL_FUNCNAME(TVPInitDitherTable)();
+	TVP_GL_FUNCNAME(TVPTLG6InitLeadingZeroTable)();
+	TVP_GL_FUNCNAME(TVPTLG6InitGolombTable)();
+	TVP_GL_FUNCNAME(TVPPsMakeTable)();
 }
 
-static void TVPDestroyTable(void)
+/*not export*/
+TVP_GL_FUNC_STATIC_DECL(void, TVPDestroyTable, (void))
 {
 	/* nothing to do ... */
 }

@@ -91,7 +91,7 @@ EXPORT(HRESULT) V2Link(iTVPFunctionExporter *exporter) {
 	TVPCPUType &= ~ TVP_CPU_FEATURE_MASK;
 	TVPCPUType |= features;
 #endif
-	TVPInitTVPGL();
+	TVP_GL_FUNCNAME(TVPInitTVPGL)();
 #if 0
 	TVPGL_C_Init();
 	TVPGL_IA32_Init();
@@ -103,6 +103,6 @@ EXPORT(HRESULT) V2Link(iTVPFunctionExporter *exporter) {
 
 EXPORT(HRESULT) V2Unlink() {
 	TVPGL_EXPAND_MACRO(TVPGL_RESTORE);
-	TVPUninitTVPGL();
+	TVP_GL_FUNCNAME(TVPUninitTVPGL)();
 	return S_OK;
 }

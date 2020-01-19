@@ -431,16 +431,60 @@ typedef struct
 #pragma pack(pop)
 /*]*/
 
+#define CAT(a, ...) PRIMITIVE_CAT(a, __VA_ARGS__)
+#define PRIMITIVE_CAT(a, ...) a ## __VA_ARGS__
+
+#ifndef TVP_GL_FUNC_SUFFIX
+#define TVP_GL_FUNC_SUFFIX _generic
+#endif
+
+#ifndef TVP_GL_FUNC_DEFINE_FUNC_PTR
+#define TVP_GL_FUNC_DEFINE_FUNC_PTR 1
+#endif
+
+#ifndef TVP_GL_FUNC_DEFINE_DATA_GEN
+#define TVP_GL_FUNC_DEFINE_DATA_GEN 1
+#endif
+
+#if TVP_GL_FUNC_DEFINE_DATA_GEN
+#define TVP_GL_DATA_INIT
+#else
+#define TVP_GL_DATA_INIT extern
+#endif
+
+/* add here compiler specific inline directives */
+#if defined( __BORLANDC__ ) || ( _MSC_VER )
+	#define TVP_INLINE_FUNC __inline
+#elif defined(__GNUC__)
+	#define TVP_INLINE_FUNC inline
+#else
+	#define TVP_INLINE_FUNC
+#endif
+
+#define TVP_GL_FUNCNAME(funcname) CAT(funcname, TVP_GL_FUNC_SUFFIX)
+
 #ifdef _WIN32
-#define TVP_GL_FUNC_DECL(rettype, funcname, arg)  rettype __cdecl funcname arg
-#define TVP_GL_FUNC_EXTERN_DECL(rettype, funcname, arg)  extern rettype __cdecl funcname arg
+#define TVP_GL_FUNC_DECL(rettype, funcname, arg)  rettype __cdecl TVP_GL_FUNCNAME(funcname) arg
+#define TVP_GL_FUNC_EXTERN_DECL(rettype, funcname, arg)  extern rettype __cdecl TVP_GL_FUNCNAME(funcname) arg
+#define TVP_GL_FUNC_STATIC_DECL(rettype, funcname, arg)  static rettype __cdecl TVP_GL_FUNCNAME(funcname) arg
+#define TVP_GL_FUNC_INLINE_DECL(rettype, funcname, arg)  static rettype TVP_INLINE_FUNC __cdecl TVP_GL_FUNCNAME(funcname) arg
+#if TVP_GL_FUNC_DEFINE_FUNC_PTR
 #define TVP_GL_FUNC_PTR_DECL(rettype, funcname, arg) rettype (__cdecl * funcname) arg
+#else
+#define TVP_GL_FUNC_PTR_DECL(rettype, funcname, arg)
+#endif
 #define TVP_GL_FUNC_PTR_EXTERN_DECL_(rettype, funcname, arg) extern rettype (__cdecl * funcname) arg
 #define TVP_GL_FUNC_PTR_EXTERN_DECL TVP_GL_FUNC_PTR_EXTERN_DECL_
 #elif defined(__GNUC__)
-#define TVP_GL_FUNC_DECL(rettype, funcname, arg)  rettype funcname arg
-#define TVP_GL_FUNC_EXTERN_DECL(rettype, funcname, arg)  extern rettype funcname arg
+#define TVP_GL_FUNC_DECL(rettype, funcname, arg)  rettype TVP_GL_FUNCNAME(funcname) arg
+#define TVP_GL_FUNC_EXTERN_DECL(rettype, funcname, arg)  extern rettype TVP_GL_FUNCNAME(funcname) arg
+#define TVP_GL_FUNC_STATIC_DECL(rettype, funcname, arg)  static rettype TVP_GL_FUNCNAME(funcname) arg
+#define TVP_GL_FUNC_INLINE_DECL(rettype, funcname, arg)  static rettype TVP_INLINE_FUNC TVP_GL_FUNCNAME(funcname) arg
+#if TVP_GL_FUNC_DEFINE_FUNC_PTR
 #define TVP_GL_FUNC_PTR_DECL(rettype, funcname, arg) rettype (*funcname) arg
+#else
+#define TVP_GL_FUNC_PTR_DECL(rettype, funcname, arg)
+#endif
 #define TVP_GL_FUNC_PTR_EXTERN_DECL_(rettype, funcname, arg) extern rettype (*funcname) arg
 #define TVP_GL_FUNC_PTR_EXTERN_DECL TVP_GL_FUNC_PTR_EXTERN_DECL_
 #endif
@@ -473,16 +517,8 @@ print FC &get_file_content('maketab.c');
 
 $cnt =  <<EOF;
 
-/* add here compiler specific inline directives */
-#if defined( __BORLANDC__ ) || ( _MSC_VER )
-	#define TVP_INLINE_FUNC __inline
-#elif defined(__GNUC__)
-	#define TVP_INLINE_FUNC inline
-#else
-	#define TVP_INLINE_FUNC 
-#endif
-
-static tjs_uint32 TVP_INLINE_FUNC TVPSaturatedAdd(tjs_uint32 a, tjs_uint32 b)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPSaturatedAdd, (tjs_uint32 a, tjs_uint32 b))
 {
 	/* Add each byte of packed 8bit values in two 32bit uint32, with saturation. */
 	tjs_uint32 tmp = (  ( a & b ) + ( ((a ^ b)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
@@ -496,30 +532,35 @@ static tjs_uint32 TVP_INLINE_FUNC TVPSaturatedAdd(tjs_uint32 a, tjs_uint32 b)
 	_o          :    with opacity
 */
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_n_a(tjs_uint32 dest, tjs_uint32 src)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_n_a, (tjs_uint32 dest, tjs_uint32 src))
 {
 	tjs_uint32 sopa = (~src) >> 24;
-	return TVPSaturatedAdd((((dest & 0xff00ff)*sopa >> 8) & 0xff00ff) + 
+	return TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ff)*sopa >> 8) & 0xff00ff) + 
 		(((dest & 0xff00)*sopa >> 8) & 0xff00), src);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_HDA_n_a(tjs_uint32 dest, tjs_uint32 src)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_HDA_n_a, (tjs_uint32 dest, tjs_uint32 src))
 {
-	return (dest & 0xff000000) + (TVPAddAlphaBlend_n_a(dest, src) & 0xffffff);
+	return (dest & 0xff000000) + (TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest, src) & 0xffffff);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_n_a_o(tjs_uint32 dest, tjs_uint32 src, tjs_int opa)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_n_a_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
 	src = (((src & 0xff00ff)*opa >> 8) & 0xff00ff) + (((src >> 8) & 0xff00ff)*opa & 0xff00ff00);
-	return TVPAddAlphaBlend_n_a(dest, src);
+	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest, src);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_HDA_n_a_o(tjs_uint32 dest, tjs_uint32 src, tjs_int opa)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_HDA_n_a_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
-	return (dest & 0xff000000) + (TVPAddAlphaBlend_n_a_o(dest, src, opa) & 0xffffff);
+	return (dest & 0xff000000) + (TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest, src, opa) & 0xffffff);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_a(tjs_uint32 dest, tjs_uint32 src)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_a, (tjs_uint32 dest, tjs_uint32 src))
 {
 	/*
 		Di = sat(Si, (1-Sa)*Di)
@@ -533,11 +574,12 @@ static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_a(tjs_uint32 dest, tjs_uint
 	sopa ^= 0xff;
 	src &= 0xffffff;
 	return (dopa << 24) + 
-		TVPSaturatedAdd((((dest & 0xff00ff)*sopa >> 8) & 0xff00ff) +
+		TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ff)*sopa >> 8) & 0xff00ff) +
 			(((dest & 0xff00)*sopa >> 8) & 0xff00), src);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_ca(tjs_uint32 dest, tjs_uint32 sopa, tjs_uint32 sopa_inv, tjs_uint32 src)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_ca, (tjs_uint32 dest, tjs_uint32 sopa, tjs_uint32 sopa_inv, tjs_uint32 src))
 {
 	/*
 		Di = sat(Si, (1-Sa)*Di)
@@ -548,48 +590,55 @@ static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_ca(tjs_uint32 dest, tjs_uin
 	dopa = dopa + sopa - (dopa*sopa >> 8);
 	dopa -= (dopa >> 8); /* adjust alpha */
 	return (dopa << 24) + 
-		TVPSaturatedAdd((((dest & 0xff00ff)*sopa_inv >> 8) & 0xff00ff) +
+		TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ff)*sopa_inv >> 8) & 0xff00ff) +
 			(((dest & 0xff00)*sopa_inv >> 8) & 0xff00), src);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_a_o(tjs_uint32 dest, tjs_uint32 src, tjs_int opa)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_a_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
 	src = (((src & 0xff00ff)*opa >> 8) & 0xff00ff) + (((src >> 8) & 0xff00ff)*opa & 0xff00ff00);
-	return TVPAddAlphaBlend_a_a(dest, src);
+	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest, src);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPMulColor(tjs_uint32 color, tjs_uint32 fac)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPMulColor, (tjs_uint32 color, tjs_uint32 fac))
 {
 	return (((((color & 0x00ff00) * fac) & 0x00ff0000) +
 			(((color & 0xff00ff) * fac) & 0xff00ff00) ) >> 8);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAlphaAndColorToAdditiveAlpha(tjs_uint32 alpha, tjs_uint32 color)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAlphaAndColorToAdditiveAlpha, (tjs_uint32 alpha, tjs_uint32 color))
 {
-	return TVPMulColor(color, alpha) + (color & 0xff000000);
+	return TVP_GL_FUNCNAME(TVPMulColor)(color, alpha) + (color & 0xff000000);
 
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAlphaToAdditiveAlpha(tjs_uint32 a)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAlphaToAdditiveAlpha, (tjs_uint32 a))
 {
-	return TVPAlphaAndColorToAdditiveAlpha(a >> 24, a);
+	return TVP_GL_FUNCNAME(TVPAlphaAndColorToAdditiveAlpha)(a >> 24, a);
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_d(tjs_uint32 dest, tjs_uint32 src)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_d, (tjs_uint32 dest, tjs_uint32 src))
 {
-	return TVPAddAlphaBlend_a_a(dest, TVPAlphaToAdditiveAlpha(src));
+	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest, TVP_GL_FUNCNAME(TVPAlphaToAdditiveAlpha)(src));
 }
 
-static tjs_uint32 TVP_INLINE_FUNC TVPAddAlphaBlend_a_d_o(tjs_uint32 dest, tjs_uint32 src, tjs_int opa)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_d_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
 	src = (src & 0xffffff) + ((((src >> 24) * opa) >> 8) << 24);
-	return TVPAddAlphaBlend_a_d(dest, src);
+	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(dest, src);
 }
 
 /* TVPAddAlphaBlend_d_a is not yet implemented because the expression may loose precision. */
 
 
-static tjs_uint32 TVP_INLINE_FUNC TVPBlendARGB(tjs_uint32 b, tjs_uint32 a, tjs_int ratio)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPBlendARGB, (tjs_uint32 b, tjs_uint32 a, tjs_int ratio))
 {
 	/* returns a * ratio + b * (1 - ratio) */
 	tjs_uint32 b2;
@@ -789,7 +838,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_a_d(dest[{ofs}], src[{ofs}]);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(dest[{ofs}], src[{ofs}]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -845,7 +894,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_a_d_o(dest[{ofs}], src[{ofs}], opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d_o)(dest[{ofs}], src[{ofs}], opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -905,7 +954,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_n_a(dest[{ofs}], src[{ofs}]);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[{ofs}], src[{ofs}]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -927,7 +976,7 @@ TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_HDA_c, (tjs_uint32 *dest, const tjs
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_HDA_n_a(dest[{ofs}], src[{ofs}]);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a)(dest[{ofs}], src[{ofs}]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -947,7 +996,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_n_a_o(dest[{ofs}], src[{ofs}], opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[{ofs}], src[{ofs}], opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -967,7 +1016,7 @@ TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_HDA_o_c, (tjs_uint32 *dest, const t
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_HDA_n_a_o(dest[{ofs}], src[{ofs}], opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a_o)(dest[{ofs}], src[{ofs}], opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -1010,7 +1059,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_a_a(dest[{ofs}], src[{ofs}]);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest[{ofs}], src[{ofs}]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -1050,7 +1099,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_a_a_o(dest[{ofs}], src[{ofs}], opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a_o)(dest[{ofs}], src[{ofs}], opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -1104,7 +1153,7 @@ EOF
 
 
 $content = <<EOF;
-	buf[{ofs}] = TVPAlphaToAdditiveAlpha(buf[{ofs}]);
+	buf[{ofs}] = TVP_GL_FUNCNAME(TVPAlphaToAdditiveAlpha)(buf[{ofs}]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -1292,7 +1341,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_d(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(*dest, src[srcstart >> 16]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1348,7 +1397,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_d_o(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d_o)(*dest, src[srcstart >> 16], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1379,7 +1428,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_n_a(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(*dest, src[srcstart >> 16]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1414,17 +1463,17 @@ if($should_unroll == 1)
 		{
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y));
 			srcstart += srcstep;
 
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[1] = TVPAddAlphaBlend_n_a(dest[1], TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y));
 			srcstart += srcstep;
 
@@ -1442,9 +1491,9 @@ print FC <<EOF;
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
 		sp = srcstart >> 16;
-		dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 				blend_y));
 		srcstart += srcstep;
 		dest ++;
@@ -1466,7 +1515,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_HDA_n_a(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a)(*dest, src[srcstart >> 16]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1489,7 +1538,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_n_a_o(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(*dest, src[srcstart >> 16], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1525,17 +1574,17 @@ if($should_unroll == 1)
 		{
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[1] = TVPAddAlphaBlend_n_a_o(dest[1], TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
@@ -1551,9 +1600,9 @@ print FC <<EOF;
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
 		sp = srcstart >> 16;
-		dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 				blend_y), opa);
 		srcstart += srcstep;
 		dest ++;
@@ -1574,7 +1623,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_HDA_n_a_o(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a_o)(*dest, src[srcstart >> 16], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1620,7 +1669,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_a(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, src[srcstart >> 16]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1667,7 +1716,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_a_o(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a_o)(*dest, src[srcstart >> 16], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1866,7 +1915,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_d(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
 	sx += stepx;
 	sy += stepy;
@@ -1925,7 +1974,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_d_o(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d_o)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
 	sx += stepx;
 	sy += stepy;
@@ -1958,7 +2007,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_n_a(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
 	sx += stepx;
 	sy += stepy;
@@ -1999,9 +2048,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y));
 			sx += stepx, sy += stepy;
 
@@ -2011,9 +2060,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVPAddAlphaBlend_n_a(dest[1], TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y));
 			sx += stepx, sy += stepy;
 
@@ -2036,9 +2085,9 @@ print FC <<EOF;
 		blend_y += blend_y >> 7;
 		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPAddAlphaBlend_n_a(dest[0], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 				blend_y));
 		sx += stepx, sy += stepy;
 
@@ -2062,7 +2111,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_HDA_n_a(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
 	sx += stepx;
 	sy += stepy;
@@ -2088,7 +2137,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_n_a_o(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
 	sx += stepx;
 	sy += stepy;
@@ -2129,9 +2178,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
@@ -2141,9 +2190,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVPAddAlphaBlend_n_a_o(dest[1], TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
@@ -2166,9 +2215,9 @@ print FC <<EOF;
 		blend_y += blend_y >> 7;
 		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPAddAlphaBlend_n_a_o(dest[0], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 				blend_y), opa);
 		sx += stepx, sy += stepy;
 
@@ -2191,7 +2240,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_HDA_n_a_o(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a_o)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
 	sx += stepx;
 	sy += stepy;
@@ -2240,7 +2289,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_a(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
 	sx += stepx;
 	sy += stepy;
@@ -2289,7 +2338,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_a_o(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a_o)(*dest, 
 		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
 	sx += stepx;
 	sy += stepy;
@@ -2458,7 +2507,7 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_a_c, (tjs_uint32 *dest, const tjs_uint
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_a_a(dest[{ofs}], (src[{ofs}] & 0xffffff) | opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest[{ofs}], (src[{ofs}] & 0xffffff) | opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -2566,17 +2615,17 @@ if($should_unroll == 1)
 		{
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[1] = TVPBlendARGB(dest[1], TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
@@ -2592,9 +2641,9 @@ print FC <<EOF;
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
 		sp = srcstart >> 16;
-		dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 				blend_y), opa);
 		srcstart += srcstep;
 		dest ++;
@@ -2680,7 +2729,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_a(*dest, (src[srcstart >> 16] & 0xffffff) | opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, (src[srcstart >> 16] & 0xffffff) | opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -2805,9 +2854,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
@@ -2817,9 +2866,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVPBlendARGB(dest[1], TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
@@ -2843,9 +2892,9 @@ print FC <<EOF;
 		blend_y += blend_y >> 7;
 		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPBlendARGB(dest[0], TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 				blend_y), opa);
 		sx += stepx, sy += stepy;
 
@@ -2935,7 +2984,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVPAddAlphaBlend_a_a(*dest, 
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, 
 		((*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16))) & 0xffffff) | opa);
 	sx += stepx;
 	sy += stepy;
@@ -2999,7 +3048,7 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_a_c, (tjs_uint32 *dest, const tjs_u
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVPBlendARGB(src1[{ofs}], src2[{ofs}], opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPBlendARGB)(src1[{ofs}], src2[{ofs}], opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -3093,7 +3142,7 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPInitUnivTransBlendTable_d_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague))
 {
 	/* alias to TVPInitUnivTransBlendTable_c */
-	TVPInitUnivTransBlendTable_c(table, phase, vague);
+	TVP_GL_FUNCNAME(TVPInitUnivTransBlendTable_c)(table, phase, vague);
 }
 
 EOF
@@ -3105,7 +3154,7 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPInitUnivTransBlendTable_a_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague))
 {
 	/* alias to TVPInitUnivTransBlendTable_c */
-	TVPInitUnivTransBlendTable_c(table, phase, vague);
+	TVP_GL_FUNCNAME(TVPInitUnivTransBlendTable_c)(table, phase, vague);
 }
 
 EOF
@@ -3300,7 +3349,7 @@ TVP_GL_FUNC_DECL(void, TVPUnivTransBlend_a_c, (tjs_uint32 *dest, const tjs_uint3
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVPBlendARGB(src1[{ofs}], src2[{ofs}], table[rule[{ofs}]]);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPBlendARGB)(src1[{ofs}], src2[{ofs}], table[rule[{ofs}]]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -3327,7 +3376,7 @@ $content = <<EOF;
 	else if(opa < src2lv)
 		dest[{ofs}] = src2[{ofs}];
 	else
-		dest[{ofs}] = TVPBlendARGB(src1[{ofs}], src2[{ofs}], table[opa]);
+		dest[{ofs}] = TVP_GL_FUNCNAME(TVPBlendARGB)(src1[{ofs}], src2[{ofs}], table[opa]);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -3563,7 +3612,7 @@ $content = <<EOF;
 		((s_tmp * (color & 0x00ff00) >> $shift) & 0x00ff00);
 	s_tmp <<= (8 - $shift);
 	s_tmp -= (s_tmp >> 8); /* adjust alpha */
-	*dest = TVPAddAlphaBlend_a_ca(*dest, s_tmp, s_tmp ^ 0xff, tmp);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(*dest, s_tmp, s_tmp ^ 0xff, tmp);
 	src++;
 	dest++;
 }
@@ -3651,7 +3700,7 @@ $content = <<EOF;
 		((s_tmp * (color & 0x00ff00) >> $shift) & 0x00ff00);
 	s_tmp <<= (8 - $shift);
 	s_tmp -= (s_tmp >> 8); /* adjust alpha */
-	*dest = TVPAddAlphaBlend_a_ca(*dest, s_tmp, s_tmp ^ 0xff, tmp);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(*dest, s_tmp, s_tmp ^ 0xff, tmp);
 	src++;
 	dest++;
 }
@@ -3741,12 +3790,12 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
-	tjs_uint32 src = TVPMulColor(color & 0xffffff, opa);
+	tjs_uint32 src = TVP_GL_FUNCNAME(TVPMulColor)(color & 0xffffff, opa);
 	tjs_uint32 opa_inv = opa ^ 0xff;
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVPAddAlphaBlend_a_ca(dest[{ofs}], opa, opa_inv, src);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(dest[{ofs}], opa, opa_inv, src);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -4944,17 +4993,17 @@ if($should_unroll == 1)
 		{
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[0] = TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y);
 			srcstart += srcstep;
 
 			blend_x = (srcstart & 0xffff) >> 8;
 			sp = srcstart >> 16;
-			dest[1] = TVPBlendARGB(
-				TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-				TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 					blend_y);
 			srcstart += srcstep;
 
@@ -4970,9 +5019,9 @@ print FC <<EOF;
 	{
 		blend_x = (srcstart & 0xffff) >> 8;
 		sp = srcstart >> 16;
-		dest[0] = TVPBlendARGB(
-			TVPBlendARGB(src1[sp], src1[sp+1], blend_x),
-			TVPBlendARGB(src2[sp], src2[sp+1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
 				blend_y);
 		srcstart += srcstep;
 		dest ++;
@@ -5197,9 +5246,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y);
 			sx += stepx, sy += stepy;
 
@@ -5209,9 +5258,9 @@ if($should_unroll == 1)
 			blend_y += blend_y >> 7;
 			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVPBlendARGB(
-				TVPBlendARGB(p0[0], p0[1], blend_x),
-				TVPBlendARGB(p1[0], p1[1], blend_x),
+			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 					blend_y);
 			sx += stepx, sy += stepy;
 
@@ -5234,9 +5283,9 @@ print FC <<EOF;
 		blend_y += blend_y >> 7;
 		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVPBlendARGB(
-			TVPBlendARGB(p0[0], p0[1], blend_x),
-			TVPBlendARGB(p1[0], p1[1], blend_x),
+		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
 				blend_y);
 		sx += stepx, sy += stepy;
 
@@ -6323,7 +6372,7 @@ print FC <<EOF;
 
 
 /* fast_int_hypot from http://demo.and.or.jp/makedemo/effect/math/hypot/fast_hypot.c */
-tjs_uint fast_int_hypot(tjs_int lx, tjs_int ly)
+TVP_GL_FUNC_STATIC_DECL(tjs_uint, fast_int_hypot, (tjs_int lx, tjs_int ly))
 {
 	tjs_uint len1, len2,t,length;
 
@@ -6370,7 +6419,7 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy65_c, (tjs_uint8 *dest, tjs_int destpitch, t
 	{
 		for(x = -blurwidth; x <= blurwidth; x++)
 		{
-			tjs_int len = fast_int_hypot(x, y);
+			tjs_int len = TVP_GL_FUNCNAME(fast_int_hypot)(x, y);
 			if(len <= blurwidth)
 				lvsum += (blurwidth - len +1);
 		}
@@ -6383,7 +6432,7 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy65_c, (tjs_uint8 *dest, tjs_int destpitch, t
 	{
 		for(x = -blurwidth; x <= blurwidth; x++)
 		{
-			tjs_int len = fast_int_hypot(x, y);
+			tjs_int len = TVP_GL_FUNCNAME(fast_int_hypot)(x, y);
 			if(len <= blurwidth)
 			{
 				tjs_int sy;
@@ -6534,7 +6583,7 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs
 	{
 		for(x = -blurwidth; x <= blurwidth; x++)
 		{
-			tjs_int len = fast_int_hypot(x, y);
+			tjs_int len = TVP_GL_FUNCNAME(fast_int_hypot)(x, y);
 			if(len <= blurwidth)
 				lvsum += (blurwidth - len +1);
 		}
@@ -6547,7 +6596,7 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs
 	{
 		for(x = -blurwidth; x <= blurwidth; x++)
 		{
-			tjs_int len = fast_int_hypot(x, y);
+			tjs_int len = TVP_GL_FUNCNAME(fast_int_hypot)(x, y);
 			if(len <= blurwidth)
 			{
 				tjs_int sy;
@@ -7620,43 +7669,52 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValues_c, (tjs_int8 *pixelbuf, tjs_int
 }
 
 
-static TVP_INLINE_FUNC tjs_uint32 make_gt_mask(tjs_uint32 a, tjs_uint32 b){
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, make_gt_mask, (tjs_uint32 a, tjs_uint32 b))
+{
 	tjs_uint32 tmp2 = ~b;
 	tjs_uint32 tmp = ((a & tmp2) + (((a ^ tmp2) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
 	tmp = ((tmp >> 7) + 0x7f7f7f7f) ^ 0x7f7f7f7f;
 	return tmp;
 }
-static TVP_INLINE_FUNC tjs_uint32 packed_bytes_add(tjs_uint32 a, tjs_uint32 b)
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, packed_bytes_add, (tjs_uint32 a, tjs_uint32 b))
 {
 	tjs_uint32 tmp = (((a & b)<<1) + ((a ^ b) & 0xfefefefe) ) & 0x01010100;
 	return a+b-tmp;
 }
-static TVP_INLINE_FUNC tjs_uint32 med2(tjs_uint32 a, tjs_uint32 b, tjs_uint32 c){
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, med2, (tjs_uint32 a, tjs_uint32 b, tjs_uint32 c))
+{
 	/* do Median Edge Detector   thx, Mr. sugi  at    kirikiri.info */
-	tjs_uint32 aa_gt_bb = make_gt_mask(a, b);
+	tjs_uint32 aa_gt_bb = TVP_GL_FUNCNAME(make_gt_mask)(a, b);
 	tjs_uint32 a_xor_b_and_aa_gt_bb = ((a ^ b) & aa_gt_bb);
 	tjs_uint32 aa = a_xor_b_and_aa_gt_bb ^ a;
 	tjs_uint32 bb = a_xor_b_and_aa_gt_bb ^ b;
-	tjs_uint32 n = make_gt_mask(c, bb);
-	tjs_uint32 nn = make_gt_mask(aa, c);
+	tjs_uint32 n = TVP_GL_FUNCNAME(make_gt_mask)(c, bb);
+	tjs_uint32 nn = TVP_GL_FUNCNAME(make_gt_mask)(aa, c);
 	tjs_uint32 m = ~(n | nn);
 	return (n & aa) | (nn & bb) | ((bb & m) - (c & m) + (aa & m));
 }
-static TVP_INLINE_FUNC tjs_uint32 med(tjs_uint32 a, tjs_uint32 b, tjs_uint32 c, tjs_uint32 v){
-	return packed_bytes_add(med2(a, b, c), v);
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, med, (tjs_uint32 a, tjs_uint32 b, tjs_uint32 c, tjs_uint32 v))
+{
+	return TVP_GL_FUNCNAME(packed_bytes_add)(TVP_GL_FUNCNAME(med2)(a, b, c), v);
 }
 
 #define TLG6_AVG_PACKED(x, y) ((((x) & (y)) + ((((x) ^ (y)) & 0xfefefefe) >> 1)) +\\
 			(((x)^(y))&0x01010101))
 
-static TVP_INLINE_FUNC tjs_uint32 avg(tjs_uint32 a, tjs_uint32 b, tjs_uint32 c, tjs_uint32 v){
-	return packed_bytes_add(TLG6_AVG_PACKED(a, b), v);
+/*not export*/
+TVP_GL_FUNC_INLINE_DECL(tjs_uint32, avg, (tjs_uint32 a, tjs_uint32 b, tjs_uint32 c, tjs_uint32 v))
+{
+	return TVP_GL_FUNCNAME(packed_bytes_add)(TLG6_AVG_PACKED(a, b), v);
 }
 
 #define TVP_TLG6_DO_CHROMA_DECODE_PROTO(B, G, R, A, POST_INCREMENT) do \\
 			{ \\
 				tjs_uint32 u = *prevline; \\
-				p = med(p, u, up, \\
+				p = TVP_GL_FUNCNAME(med)(p, u, up, \\
 					(0xff0000 & ((R)<<16)) + (0xff00 & ((G)<<8)) + (0xff & (B)) + ((A) << 24) ); \\
 				up = u; \\
 				*curline = p; \\
@@ -7667,7 +7725,7 @@ static TVP_INLINE_FUNC tjs_uint32 avg(tjs_uint32 a, tjs_uint32 b, tjs_uint32 c, 
 #define TVP_TLG6_DO_CHROMA_DECODE_PROTO2(B, G, R, A, POST_INCREMENT) do \\
 			{ \\
 				tjs_uint32 u = *prevline; \\
-				p = avg(p, u, up, \\
+				p = TVP_GL_FUNCNAME(avg)(p, u, up, \\
 					(0xff0000 & ((R)<<16)) + (0xff00 & ((G)<<8)) + (0xff & (B)) + ((A) << 24) ); \\
 				up = u; \\
 				*curline = p; \\
@@ -7838,18 +7896,18 @@ foreach $each (@function_list)
 {
 	$temp = $each;
 	$temp =~ /TVP_GL_FUNC_DECL\((.*?)\s*\,\s*(.*?)_c\s*\,/;
-	print FC "\t${2} = ${2}_c;\n";
+	print FC "\t${2} = TVP_GL_FUNCNAME(${2}_c);\n";
 }
 
 print FC <<EOF;
 
-	TVPCreateTable();
+	TVP_GL_FUNCNAME(TVPCreateTable)();
 }
 
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPUninitTVPGL, ())
 {
-	TVPDestroyTable();
+	TVP_GL_FUNCNAME(TVPDestroyTable)();
 }
 /*end of the file*/
 

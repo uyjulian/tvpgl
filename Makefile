@@ -59,7 +59,7 @@ all: $(BINARY)
 archive: $(ARCHIVE)
 
 clean:
-	rm -f $(OBJECTS) $(BINARY) $(ARCHIVE) visual/glgen/tvpgl.c visual/glgen/tvpgl.h
+	rm -f $(OBJECTS) $(BINARY) $(ARCHIVE) visual/glgen/tvpgl.c visual/glgen/tvpgl.h visual/glgen/tvpgl_info.h
 
 $(ARCHIVE): $(BINARY) LICENSE
 	rm -f $(ARCHIVE)
@@ -72,4 +72,8 @@ $(BINARY): $(OBJECTS)
 visual/glgen/tvpgl.c visual/glgen/tvpgl.h: visual/glgen/gengl.pl visual/glgen/maketab.c visual/glgen/tvpps.c 
 	cd visual/glgen && perl gengl.pl
 
-main.cpp: visual/glgen/tvpgl.h
+visual/glgen/tvpgl_info.h: visual/glgen/maketvpglinfo.pl visual/glgen/tvpgl.h
+	cd visual/glgen && perl maketvpglinfo.pl
+
+
+main.cpp: visual/glgen/tvpgl.h visual/glgen/tvpgl_info.h

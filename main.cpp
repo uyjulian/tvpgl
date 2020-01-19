@@ -13,7 +13,9 @@
 #include "tjsTypes.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
+#if 0
 #include "detect_cpu.h"
+#endif
 
 //---------------------------------------------------------------------------
 // iTVPFunctionExporter, exporting main module's functions
@@ -333,18 +335,22 @@ TVPGL_EXPAND_MACRO(TVPGL_DEFINE);
 
 #define EXPORT(hr) extern "C" __declspec(dllexport) hr __stdcall
 
+#if 0
 extern "C" tjs_uint32 TVPCPUType;
 extern void TVPGL_C_Init();
 extern void TVPGL_SSE2_Init();
+#endif
 
 EXPORT(HRESULT) V2Link(iTVPFunctionExporter *exporter) {
 	TVPFunctionExporter = exporter;
+#if 0
 	tjs_uint32 features = 0;
 	TVPCheckCPU();
 	features = (TVPCPUFeatures & TVP_CPU_FEATURE_MASK);
 	TVPCPUType = TVPCPUFeatures;
 	TVPCPUType &= ~ TVP_CPU_FEATURE_MASK;
 	TVPCPUType |= features;
+#endif
 	TVPInitTVPGL();
 #if 0
 	TVPGL_C_Init();

@@ -675,16 +675,25 @@ EOF
 
 $content = <<EOF;
 {
-	s = *src;
-	src++;
-	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
-	dest++;
+	if ( *src < 0xFF000000 )
+	{
+		s = *src;
+		src++;
+		d = *dest;
+		sopa = s >> 24;
+		d1 = d & 0xff00ff;
+		d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
+		d &= 0xff00;
+		s &= 0xff00;
+		*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+		dest++;
+	}
+	else
+	{
+		*dest = *src;
+		src++;
+		dest++;
+	}
 }
 EOF
 

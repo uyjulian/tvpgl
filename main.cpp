@@ -83,8 +83,15 @@ extern void TVPGL_C_Init();
 extern void TVPGL_SSE2_Init();
 #endif
 
-EXPORT(HRESULT) V2Link(iTVPFunctionExporter *exporter) {
-	TVPFunctionExporter = exporter;
+static bool inited_tvpgl_replacement = false;
+
+static void init_tvpgl_replacement()
+{
+	if (inited_tvpgl_replacement)
+	{
+		return;
+	}
+
 #if 0
 	tjs_uint32 features = 0;
 	TVPCheckCPU();
@@ -100,11 +107,64 @@ EXPORT(HRESULT) V2Link(iTVPFunctionExporter *exporter) {
 	TVPGL_SSE2_Init();
 #endif
 	TVPGL_EXPAND_MACRO(TVPGL_OVERWRITE);
+	inited_tvpgl_replacement = true;
+}
+
+static void uninit_tvpgl_replacement()
+{
+	if (!inited_tvpgl_replacement)
+	{
+		return;
+	}
+
+	TVPGL_EXPAND_MACRO(TVPGL_RESTORE);
+	TVP_GL_FUNCNAME(TVPUninitTVPGL)();
+	inited_tvpgl_replacement = false;
+}
+
+BOOLEAN WINAPI DllMain(HINSTANCE hDllHandle, DWORD nReason, LPVOID Reserved)
+{
+	switch (nReason)
+	{
+		case DLL_PROCESS_ATTACH: {
+			DisableThreadLibraryCalls(hDllHandle);
+			TVPFunctionExporter = nullptr;
+			HMODULE exehandle = GetModuleHandle(nullptr);
+			if (exehandle != nullptr)
+			{
+				auto getexporter = reinterpret_cast<iTVPFunctionExporter * (__stdcall *) ()>(GetProcAddress(exehandle, "TVPGetFunctionExporter"));
+				if (getexporter != nullptr)
+				{
+					TVPFunctionExporter = getexporter();
+				}
+			}
+			if (TVPFunctionExporter != nullptr)
+			{
+				init_tvpgl_replacement();
+			}
+			break;
+		}
+		case DLL_PROCESS_DETACH: {
+			uninit_tvpgl_replacement();
+			break;
+		}
+	}
+
+	return TRUE;
+}
+
+EXPORT(HRESULT) V2Link(iTVPFunctionExporter *exporter) {
+	if (TVPFunctionExporter == nullptr)
+	{
+		TVPFunctionExporter = exporter;
+	}
+	if (TVPFunctionExporter != nullptr)
+	{
+		init_tvpgl_replacement();
+	}
 	return S_OK;
 }
 
 EXPORT(HRESULT) V2Unlink() {
-	TVPGL_EXPAND_MACRO(TVPGL_RESTORE);
-	TVP_GL_FUNCNAME(TVPUninitTVPGL)();
 	return S_OK;
 }

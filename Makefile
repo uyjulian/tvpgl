@@ -15,7 +15,7 @@ GIT_TAG := $(shell git describe --abbrev=0 --tags)
 INCFLAGS += -I. -I.. -Itjs2 -Ivisual -Ivisual/gl -Ivisual/glgen -Ivisual/IA32
 ALLSRCFLAGS += $(INCFLAGS) -DGIT_TAG=\"$(GIT_TAG)\"
 ASMFLAGS += $(ALLSRCFLAGS) -fwin32 -DWIN32
-CFLAGS += -Ofast -march=ivybridge
+OPTFLAGS := -Ofast -march=ivybridge
 CFLAGS += -gstabs 
 CFLAGS += $(ALLSRCFLAGS) -Wall -Wno-unused-value -Wno-format -DNDEBUG -DWIN32 -D_WIN32 -D_WINDOWS 
 CFLAGS += -D_USRDLL -DMINGW_HAS_SECURE_API -DUNICODE -D_UNICODE -DNO_STRICT
@@ -26,11 +26,11 @@ LDLIBS +=
 
 %.o: %.c
 	@printf '\t%s %s\n' CC $<
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) $(OPTFLAGS) -o $@ $<
 
 %.o: %.cpp
 	@printf '\t%s %s\n' CXX $<
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
+	$(CXX) -c $(CXXFLAGS) $(OPTFLAGS) -o $@ $<
 
 %.o: %.nas
 	@printf '\t%s %s\n' ASM $<
@@ -75,5 +75,6 @@ visual/glgen/tvpgl.c visual/glgen/tvpgl.h: visual/glgen/gengl.pl visual/glgen/ma
 visual/glgen/tvpgl_info.h: visual/glgen/maketvpglinfo.pl visual/glgen/tvpgl.h
 	cd visual/glgen && perl maketvpglinfo.pl
 
+main.o: OPTFLAGS := -O2
 
 main.cpp: visual/glgen/tvpgl.h visual/glgen/tvpgl_info.h

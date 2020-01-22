@@ -50,10 +50,12 @@ static iTVPFunctionExporter * TVPFunctionExporter = NULL;
 					if (funcptrindex[i + 1] == 0x15) { \
 						uintptr_t *callloc = reinterpret_cast<uintptr_t*>(funcptrindex + (i + 2)); \
 						uintptr_t *ptrloc = reinterpret_cast<uintptr_t*>(*callloc); \
-						funcname##_oldloc = ptrloc; \
-						funcname##_old = reinterpret_cast<rettype (__cdecl *) arg>(*ptrloc); \
-						*ptrloc = reinterpret_cast<uintptr_t>(funcname##_thunk); \
-						break; \
+						if (ptrloc) { \
+							funcname##_oldloc = ptrloc; \
+							funcname##_old = reinterpret_cast<rettype (__cdecl *) arg>(*ptrloc); \
+							*ptrloc = reinterpret_cast<uintptr_t>(funcname##_thunk); \
+							break; \
+						} \
 					} \
 				} \
 				if (funcptrindex[i] == 0xC2) { \

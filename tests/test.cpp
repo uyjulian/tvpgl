@@ -23,6 +23,7 @@ static tjs_uint8  *testrule = NULL;
 // #define TEST_TVPGL
 #define BENCHMARK_TVPGL
 // #define STRICT_TEST
+#define FORCE_ALPHA_TEST
 #define TVPGetRoughTickCount32 timeGetTime
 
 #define TVPGL_INIT_FUNCS_1 TVP_GL_FUNCNAME(TVPInitTVPGL)
@@ -182,7 +183,11 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 
 static void CheckTestData_RGB(const char *pszFuncName)
 {
+#ifdef FORCE_ALPHA_TEST
+	CheckTestData(pszFuncName, true);
+#else
 	CheckTestData(pszFuncName, false);
+#endif
 }
 
 #if 0

@@ -669,39 +669,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
-	tjs_uint32 s, d, dm, sopa, sb, db;
-	tjs_int i;
+	tjs_uint32 d1, s, d, sopa;
 EOF
 
 
 $content = <<EOF;
 {
-	if ( *src >= 0xFF000000 )
-	{
-		*dest = *src;
-		src++;
-		dest++;
-	}
-	else
-	{
-		s = *src;
-		src++;
-		d = *dest;
-		sopa = s >> 24;
-		dm = 0;
-		for (i = 0; i < 4; i += 1)
-		{
-			sb = (s & (0xFF << ((3 - i) * 8))) >> ((3 - i) * 8);
-			db = (d & (0xFF << ((3 - i) * 8))) >> ((3 - i) * 8);
-			sb -= db;
-			sb *= sopa;
-			sb >>= 8;
-			db += sb;
-			dm |= db << ((3 - i) * 8);
-		}
-		*dest = dm;
-		dest++;
-	}
+	s = *src;
+	src++;
+	d = *dest;
+	sopa = s >> 24;
+	d1 = d & 0xff00ff;
+	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
+	d &= 0xff00;
+	s &= 0xff00;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	dest++;
 }
 EOF
 

@@ -21,8 +21,11 @@ CFLAGS += $(ALLSRCFLAGS) -Wall -Wno-unused-value -Wno-format -DNDEBUG -DWIN32 -D
 CFLAGS += -D_USRDLL -DMINGW_HAS_SECURE_API -DUNICODE -D_UNICODE -DNO_STRICT
 CXXFLAGS += $(CFLAGS) -fpermissive
 WINDRESFLAGS += $(ALLSRCFLAGS) --codepage=65001
-LDFLAGS += -static -static-libstdc++ -static-libgcc -shared -Wl,--kill-at
+LDFLAGS += -static-libstdc++ -static-libgcc -Wl,--kill-at
+LDFLAGS_LIB += -shared
+LDFLAGS_BIN += -municode
 LDLIBS += 
+LDLIBS_BIN += -lwinmm
 
 %.o: %.c
 	@printf '\t%s %s\n' CC $<
@@ -51,7 +54,15 @@ OBJECTS := $(OBJECTS:.cpp=.o)
 OBJECTS := $(OBJECTS:.nas=.o)
 OBJECTS := $(OBJECTS:.rc=.o)
 
+SOURCES_BIN := tests/test.cpp
+SOURCES_BIN += $(SOURCES)
+OBJECTS_BIN := $(SOURCES_BIN:.c=.o)
+OBJECTS_BIN := $(OBJECTS_BIN:.cpp=.o)
+OBJECTS_BIN := $(OBJECTS_BIN:.nas=.o)
+OBJECTS_BIN := $(OBJECTS_BIN:.rc=.o)
+
 BINARY ?= tvpgl.dll
+BINARY_BIN ?= tvpgl.exe
 ARCHIVE ?= tvpgl.$(GIT_TAG).7z
 
 all: $(BINARY)
@@ -67,7 +78,11 @@ $(ARCHIVE): $(BINARY) LICENSE
 
 $(BINARY): $(OBJECTS) 
 	@printf '\t%s %s\n' LNK $@
-	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(CXX) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_LIB) -o $@ $^ $(LDLIBS)
+
+$(BINARY_BIN): $(OBJECTS_BIN) 
+	@printf '\t%s %s\n' LNK $@
+	$(CXX) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_BIN) -o $@ $^ $(LDLIBS_BIN)
 
 visual/glgen/tvpgl.c visual/glgen/tvpgl.h: visual/glgen/gengl.pl visual/glgen/maketab.c visual/glgen/tvpps.c 
 	cd visual/glgen && perl gengl.pl

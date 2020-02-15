@@ -3,6 +3,7 @@
 #include "tvpgl.h"
 #include "tvpgl_info.h"
 #include "tvpgl_ia32_intf.h"
+#include "tvpgl_ia32_intf_pfraction.h"
 #include "detect_cpu.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -665,6 +666,7 @@ int wmain(int argc, wchar_t** argv)
 	TVP_GL_FUNCNAME(TVPInitTVPGL)();
 	TVPGL_C_Init();
 	TVPGL_IA32_Init();
+	TVPGL_IA32_pfraction_Init();
 	TVPGL_SSE2_Init();
 
 	{

@@ -13,6 +13,7 @@
 #include "tvpgl_info.h"
 #if 0
 #include "tvpgl_ia32_intf.h"
+#include "tvpgl_ia32_intf_pfraction.h"
 #include "detect_cpu.h"
 #endif
 
@@ -104,6 +105,7 @@ static void init_tvpgl_replacement()
 #if 0
 	TVPGL_C_Init();
 	TVPGL_IA32_Init();
+	TVPGL_IA32_pfraction_Init();
 	TVPGL_SSE2_Init();
 #endif
 	TVPGL_EXPAND_MACRO(TVPGL_OVERWRITE);

@@ -38,13 +38,8 @@ TVPFillARGB_mmx_pfraction_a:						; fill destination
 	lea	ebx,	[edi + ecx * 4]		; limit
 	mov	eax,	[esp + 32]		; value
 
-.pfill:
-	sub	ebx,	byte 15*4
-	cmp	edi,	ebx
-
 ; fill fraction
 .pfraction:
-	add	ebx,	byte 15*4
 	cmp	edi,	ebx
 	jae	.pexit
 
@@ -83,14 +78,8 @@ TVPFillARGB_sse_pfraction_a:						; fill destination
 	lea	ebx,	[edi + ecx * 4]		; limit
 	mov	eax,	[esp + 32]		; value
 
-; fill 64-bytes ( 16-dwords ) at one loop unit
-.pfill:
-	sub	ebx,	byte 15*4
-	cmp	edi,	ebx
-
 ; fill fraction
 .pfraction:
-	add	ebx,	byte 15*4
 	cmp	edi,	ebx
 	jae	.pexit
 
@@ -128,14 +117,8 @@ TVPFillARGB_NC_sse_pfraction_a:						; fill destination (non-cached version)
 	lea	ebx,	[edi + ecx * 4]		; limit
 	mov	eax,	[esp + 32]		; value
 
-; fill 64-bytes ( 16-dwords ) at one loop unit
-.pfill:
-	sub	ebx,	byte 15*4
-	cmp	edi,	ebx
-
 ; fill fraction
 .pfraction:
-	add	ebx,	byte 15*4
 	cmp	edi,	ebx
 	jae	.pexit
 
@@ -174,14 +157,8 @@ TVPFillColor_mmx_pfraction_a:						; fill destination's color ( opacity will be 
 	mov	eax,	[esp + 32]		; color
 	and	eax,	0ffffffh
 
-; fill 64-bytes ( 16-dwords ) at once
-.pfill:
-	sub	ebx,	byte 15*4
-	cmp	edi,	ebx
-
 ; fill fraction
 .pfraction:
-	add	ebx,	byte 15*4
 	cmp	edi,	ebx
 	jae	.pexit
 
@@ -243,11 +220,8 @@ TVPConstColorAlphaBlend_mmx_pfraction_a:				; constant ratio constant color alph
 	punpcklwd	mm2,	mm2		; unpack
 	punpcklwd	mm2,	mm2		; unpack
 	lea	ebp,	[edi + ecx*4]		; limit
-	sub	ebp,	byte 8		; 2*4
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 8
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -303,11 +277,8 @@ TVPConstColorAlphaBlend_d_mmx_pfraction_a:	; constant ratio constant color alpha
 	punpcklbw	mm7,	mm0		; unpack color
 	mov	esi,	[esp + 40]		; opacity
 	shl	esi,	8		; esi <<= 8
-	sub	ebp,	byte 4		; 1*4
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -398,11 +369,7 @@ TVPConstColorAlphaBlend_a_mmx_pfraction_a:	; constant ratio constant color alpha
 	psrlw	mm6,	8
 	por	mm6,	mm1		; mm6 = 00 Sa 00 Si 00 Si 00 Si
 
-	sub	ebp,	byte 8		; 2*4
-	cmp	edi,	ebp
-
 .pfraction:
-	add	ebp,	byte 8
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 

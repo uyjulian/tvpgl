@@ -47,11 +47,8 @@ TVPLinTransCopy_mmx_pfraction_a:								; linear transforming copy
 	push	ebp
 	paddd	mm7,	mm2		; mm7 += mm2
 	lea	ebp,	[edi+ecx*4]		; limit
-	sub	ebp,	byte 4*3
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -118,11 +115,8 @@ TVPLinTransConstAlphaBlend_mmx_pfraction_a:			; linear transforming copy with co
 	paddd	mm7,	mm2		; mm7 += mm2
 	movq	[esp - 16], mm2		; [esp-16] = tmp
 	lea	ebp,	[edi+ecx*4]		; limit
-	sub	ebp,	byte 4*3
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -203,11 +197,7 @@ TVPInterpLinTransCopy_mmx_pfraction_a:			; bilinear affine copy
 
 	lea	ebp,	[edi+eax*4]		; limit
 
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
-
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 
@@ -322,11 +312,7 @@ TVPInterpLinTransConstAlphaBlend_mmx_pfraction_a:		; bilinear affine copy with o
 
 	lea	ebp,	[edi+eax*4]		; limit
 
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
-
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 
@@ -436,11 +422,7 @@ TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_a:		; bilinear affine additive
 
 	lea	ebp,	[edi+eax*4]		; limit
 
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
-
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 
@@ -567,11 +549,7 @@ TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_a:		; bilinear affine additi
 
 	lea	ebp,	[edi+eax*4]		; limit
 
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
-
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 

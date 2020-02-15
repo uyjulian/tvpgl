@@ -34,11 +34,8 @@ TVPMulBlend_mmx_pfraction_a:			; pixel multiplicative blender
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -100,11 +97,8 @@ TVPMulBlend_HDA_mmx_pfraction_a:			; pixel multiplicative blender (holding desit
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -168,11 +162,8 @@ TVPMulBlend_o_mmx_pfraction_a:			; pixel multiplicative blender with opacity
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -246,11 +237,8 @@ TVPMulBlend_HDA_o_mmx_pfraction_a:			; pixel multiplicative blender with opacity
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 

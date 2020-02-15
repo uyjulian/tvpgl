@@ -147,11 +147,8 @@ TVPAddSubVertSum16_name:			; vertical addition of pixel valus, 16bit precision
 	mov	ebx,	[esp + 36]		; subline
 	shl	ecx,	3
 	lea	esi,	[edi + ecx]		; limit
-	sub	esi,	byte 24		; 3*8
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 24
 	cmp	edi,	esi
 	jae	.pexit			; jump if edi >= esi
 
@@ -203,11 +200,8 @@ TVPAddSubVertSum16_d_name:			; vertical addition of pixel valus with alpha, 16bi
 	mov	ebx,	[esp + 36]		; subline
 	shl	ecx,	3
 	lea	esi,	[edi + ecx]		; limit
-	sub	esi,	byte 24		; 3*8
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 24
 	cmp	edi,	esi
 	jae	.pexit			; jump if edi >= esi
 
@@ -281,11 +275,8 @@ TVPAddSubVertSum32_name:			; vertical addition of pixel valus, 32bit precision
 	mov	ebx,	[esp + 36]		; subline
 	shl	ecx,	4
 	lea	esi,	[edi + ecx]		; limit
-	sub	esi,	byte 16		; 1*16
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit			; jump if edi >= esi
 
@@ -351,11 +342,8 @@ TVPAddSubVertSum32_d_name:			; vertical addition of pixel valus with alpha, 32bi
 	mov	ebx,	[esp + 36]		; subline
 	shl	ecx,	4
 	lea	esi,	[edi + ecx]		; limit
-	sub	esi,	byte 16		; 1*16
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	near .pexit			; jump if edi >= esi
 
@@ -469,11 +457,7 @@ TVPDoBoxBlurAvg16_name:			; do blur using box-blur algorithm, 16bit precision
 	lea	eax,	[edi + ecx*4]	; limit
 	mov	[esp-8],	eax		; [esp-8] = limit
 
-	sub	dword[esp-8],	byte 4	; 1*4
-	cmp	edi,	[esp-8]
-
 .pfraction:
-	add	dword[esp-8],	byte 4
 	cmp	edi,	[esp-8]
 	jae	.pexit			; jump if edi >= limit
 
@@ -564,11 +548,7 @@ TVPDoBoxBlurAvg16_name:			; do blur using box-blur algorithm, 16bit precision
 	lea	eax,	[edi + ecx*4]	; limit
 	mov	esi,	eax		; esi = limit
 
-	sub	esi,	byte 12	; 3*4
-	cmp	edi,	esi
-
 .epfraction:
-	add	esi,	byte 12
 	cmp	edi,	esi
 	jae	.epexit			; jump if edi >= limit
 
@@ -653,11 +633,7 @@ TVPDoBoxBlurAvg16_d_name:			; do blur using box-blur algorithm with alpha, 16bit
 	lea	eax,	[edi + ecx*4]	; limit
 	mov	[esp-8],	eax		; [esp-8] = limit
 
-	sub	dword[esp-8],	byte 4	; 1*4
-	cmp	edi,	[esp-8]
-
 .pfraction:
-	add	dword[esp-8],	byte 4
 	cmp	edi,	[esp-8]
 	jae	.pexit			; jump if edi >= limit
 
@@ -756,11 +732,7 @@ TVPDoBoxBlurAvg16_d_name:			; do blur using box-blur algorithm with alpha, 16bit
 	lea	eax,	[edi + ecx*4]	; limit
 	mov	esi,	eax		; esi = limit
 
-	sub	esi,	byte 12	; 3*4
-	cmp	edi,	esi
-
 .epfraction:
-	add	esi,	byte 12
 	cmp	edi,	esi
 	jae	.epexit			; jump if edi >= limit
 
@@ -859,11 +831,7 @@ TVPDoBoxBlurAvg32_name:			; do blur using box-blur algorithm, 32bit precision
 	mov	ebp,	[esp + 40]		; subptr
 	mov	[esp-8],	eax		; esp-8 = limit
 
-	sub	dword[esp-8],	byte 4		; 1*4
-	cmp	edi,	[esp-8]
-
 .pfraction:
-	add	dword[esp-8],	byte 4
 	cmp	edi,	[esp-8]
 	jae	.pexit			; jump if edi >= limit
 
@@ -963,11 +931,7 @@ TVPDoBoxBlurAvg32_d_name:			; do blur using box-blur algorithm with alpha, 32bit
 	mov	ebp,	[esp + 40]		; subptr
 	mov	[esp-8],	eax		; esp-8 = limit
 
-	sub	dword[esp-8],	byte 4	; 1*4
-	cmp	edi,	[esp-8]
-
 .pfraction:
-	add	dword[esp-8],	byte 4
 	cmp	edi,	[esp-8]
 	jae	near .pexit			; jump if edi >= limit
 
@@ -1089,11 +1053,7 @@ TVPDoBoxBlurAvg16_sse_pfraction_a:			; do blur using box-blur algorithm, 16bit p
 	lea	eax,	[edi + ecx*4]	; limit
 	mov	esi,	eax		; esi = limit
 
-	sub	esi,	byte 12	; 3*4
-	cmp	edi,	esi
-
 .pfraction:
-	add	esi,	byte 12
 	cmp	edi,	esi
 	jae	.pexit			; jump if edi >= limit
 
@@ -1173,11 +1133,7 @@ TVPDoBoxBlurAvg16_d_sse_pfraction_a:			; do blur using box-blur algorithm with a
 	lea	eax,	[edi + ecx*4]	; limit
 	mov	esi,	eax		; esi = limit
 
-	sub	esi,	byte 12	; 3*4
-	cmp	edi,	esi
-
 .pfraction:
-	add	esi,	byte 12
 	cmp	edi,	esi
 	jae	.pexit			; jump if edi >= limit
 

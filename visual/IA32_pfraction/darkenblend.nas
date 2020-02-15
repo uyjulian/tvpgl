@@ -41,11 +41,8 @@ TVPDarkenBlend_mmx_pfraction_a:			; pixel darken blender
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -96,11 +93,8 @@ TVPDarkenBlend_HDA_mmx_pfraction_a:			; pixel darken blender (holding desitinati
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 

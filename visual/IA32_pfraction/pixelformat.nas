@@ -41,11 +41,7 @@ TVPBLConvert24BitTo32Bit_mmx_pfraction_a:					; 24bpp RGB -> 32bpp ARGB
 	mov	ecx,	[esp + 28]		; buf
 	lea	ebx,	[edi + esi *4]		; ebx = limit
 
-	sub	ebx,	byte 28		; 28 = 7*4
-	cmp	edi,	ebx
-
 .pfraction:
-	add	ebx,	byte 28
 	cmp	edi,	ebx
 	jae	.pexit		; jump if edi >= ebx
 
@@ -102,11 +98,7 @@ TVPDither32BitTo16Bit565_mmx_pfraction_a:					; 32bpp (A)RGB -> 16bpp with order
 	and	ecx,	3
 	shl	ecx,	9		; ecx *= 2*256
 
-	sub	esi,	byte 12		; 12 = 3*4
-	cmp	ebp,	esi
-
 .pfraction:
-	add	esi,	byte 12
 	cmp	ebp,	esi
 	jae	.pexit		; jump if ebp >= esi
 
@@ -170,11 +162,7 @@ TVPDither32BitTo16Bit555_mmx_pfraction_a:					; 32bpp (A)RGB -> 16bpp with order
 	and	ecx,	3
 	shl	ecx,	9		; ecx *= 2*256
 
-	sub	esi,	byte 12		; 12 = 3*4
-	cmp	ebp,	esi
-
 .pfraction:
-	add	esi,	byte 12
 	cmp	ebp,	esi
 	jae	.pexit		; jump if ebp >= esi
 

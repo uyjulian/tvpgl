@@ -111,11 +111,8 @@ TVPAlphaBlend_name:
 	mov	ebp,	[esp + 32]		; src
 	pxor	mm0,	mm0		; mm0 = 0
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 16		; 4*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 16
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -178,11 +175,8 @@ TVPAlphaBlend_o_name:
 	punpckldq	mm6,	mm6		; mm6 |= (mm6 << 32)
 	pxor	mm0,	mm0		; mm0 = 0
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 8		; 2*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 8
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -297,11 +291,8 @@ TVPAlphaBlend_d_name:
 	movd	mm7,	eax		; mm7 = 0ffffffh
 	pxor	mm0,	mm0		; mm0 = 0
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 4		; 1*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 4
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -370,13 +361,10 @@ TVPConstAlphaBlend_name:
 	pxor	mm0,	mm0		; mm0 = 0
 	lea	ebp,	[ecx*4]		; limit
 	punpcklwd	mm4,	mm4		; unpack
-	sub	ebp,	byte 8		; 2*4
 	punpcklwd	mm4,	mm4		; unpack
 	movq	mm3,	mm4
-	cmp	ebx,	ebp
 
 .pfraction:
-	add	ebp,	byte 8
 	cmp	ebx,	ebp
 	jge	.pexit		; jump if ebx >= ebp
 
@@ -428,12 +416,9 @@ TVPConstAlphaBlend_SD_name:
 	xor	ebx,	ebx		; counter
 	lea	ebp,	[ecx*4]		; limit
 	punpcklwd	mm4,	mm4		; unpack
-	sub	ebp,	byte 16		; 4*4
 	punpcklwd	mm4,	mm4		; unpack
-	cmp	ebx,	ebp
 
 .pfraction:
-	add	ebp,	byte 16
 	cmp	ebx,	ebp
 	jge	.pexit		; jump if ebx >= ebp
 

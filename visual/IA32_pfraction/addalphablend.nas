@@ -105,12 +105,9 @@ TVPAdditiveAlphaBlend_name:					; additive alpha blend
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 8		; 2*4
-	cmp	edi,	esi
 	pxor	mm0,	mm0		; mm0 = 0
 
 .pfraction:
-	add	esi,	byte 8
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -178,12 +175,9 @@ TVPAdditiveAlphaBlend_o_name:	; additive alpha blend with opacity
 	punpcklwd	mm7,	mm7
 	punpcklwd	mm7,	mm7		; mm7 = op00op00op00op00
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 8		; 2*4
-	cmp	edi,	esi
 	pxor	mm0,	mm0		; mm0 = 0
 
 .pfraction:
-	add	esi,	byte 8
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -243,12 +237,9 @@ TVPAdditiveAlphaBlend_HDA_name:		; additive alpha blend holding destination alph
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 4		; 1*4
-	cmp	edi,	esi
 	pxor	mm0,	mm0		; mm0 = 0
 
 .pfraction:
-	add	esi,	byte 4
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -307,11 +298,8 @@ TVPAdditiveAlphaBlend_a_name:					; additive alpha blend on additive alpha
 	mov	edi,	[esp + 28]		; dest
 	mov	ebp,	[esp + 32]		; src
 	lea	esi,	[edi + ecx*4]		; limit
-	sub	esi,	byte 8		; 2*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 8
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 

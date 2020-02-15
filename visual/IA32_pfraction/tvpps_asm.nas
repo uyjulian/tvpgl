@@ -65,11 +65,7 @@
 	lea        ebp, [esi+ecx*4]      ; src limit
 	punpcklbw  mm3, mm5              ; mm3 = 00FF00FF00FF00FF (for Overlay/HardLight)
 	mov        eax, 080808080h       ; eax = 80808080 (for Overlay/HardLight)
-	sub        ebp, byte 16          ; 8*2 bytes pad (for loop expansion)
-	cmp        esi, ebp
 
-%%remain:
-	add        ebp, byte 16          ; reminder
 %%remloop:
 	%1.1       %2
 	cmp        esi, ebp

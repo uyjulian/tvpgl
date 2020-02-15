@@ -83,12 +83,9 @@ TVPApplyColorMap65_name:
 	mov	esi,	[esp + 40]		; color
 	movd	mm7,	esi		; color
 	lea	edx,	[edi + ecx*4]		; limit
-	sub	edx,	byte 4		; 1*4
 	punpcklbw	mm7,	mm0		; unpack
-	cmp	edi,	edx
 
 .pfraction:
-	add	edx,	byte 4
 	cmp	edi,	edx
 	jae	.pexit		; jump if edi >= edx
 
@@ -146,11 +143,8 @@ TVPApplyColorMap65_d_name:
 	or	dword [esp+40],	0ff000000h		; opaque
 	movd	mm7,	eax
 	punpcklbw	mm7,	mm0		; unpack
-	sub	esi,	byte 4		; 1*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 4
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -221,11 +215,8 @@ TVPApplyColorMap65_a_name:
 	psllq	mm1,	48
 	punpcklbw	mm7,	mm0
 	por	mm7,	mm1		; mm7 = 01 00 00 co 00 co 00 co
-	sub	esi,	byte 8		; 2*4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 8
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 

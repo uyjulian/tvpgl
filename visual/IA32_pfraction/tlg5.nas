@@ -150,12 +150,8 @@ TVPTLG5ComposeColors3To4_mmx_pfraction_a:
 	mov	ebp,	ebx
 	xor	ecx,	ecx
 
-	sub	ebp,	byte 3
-	cmp	ecx,	ebp
-
 	.pfraction:
 
-	add	ebp,	byte 3
 	cmp	ecx,	ebp
 	jge	.pexit
 
@@ -222,12 +218,8 @@ TVPTLG5ComposeColors4To4_mmx_pfraction_a:
 	mov	ebp,	ebx
 	xor	ecx,	ecx
 
-	sub	ebp,	byte 3
-	cmp	ecx,	ebp
-
 	.pfraction4:
 
-	add	ebp,	byte 3
 	cmp	ecx,	ebp
 	jge	.pexit4
 

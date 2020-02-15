@@ -42,11 +42,8 @@ TVPStretchCopy_mmx_pfraction_a:					; stretch copy
 	mov	edx,	[esp + 40]		; srcstep
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
-	sub	ebp,	byte 4*3
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -98,11 +95,8 @@ TVPStretchConstAlphaBlend_mmx_pfraction_a:					; stretch copy with constant-rati
 	punpcklwd	mm7,	mm7
 	lea	ebp,	[edi+ecx*4]		; limit
 	punpcklwd	mm7,	mm7
-	sub	ebp,	byte 4*3
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -162,11 +156,8 @@ TVPStretchAlphaBlend_mmx_pfraction_a:					; stretch copy with pixel alpha blendi
 	mov	edx,	[esp + 40]		; srcstep
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
-	sub	ebp,	byte 4*3
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -230,11 +221,8 @@ TVPStretchAdditiveAlphaBlend_mmx_pfraction_a:					; stretch copy with pixel addi
 	mov	edx,	[esp + 40]		; srcstep
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
-	sub	ebp,	byte 4*3
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	edi,	ebp
 	jae	.pexit		; jump if edi >= ebp
 
@@ -297,11 +285,8 @@ TVPFastLinearInterpV2_mmx_pfraction_a:					; interpolation between two sources (
 	pxor	mm0,	mm0
 	lea	ebp,	[ecx*4]		; limit
 	xor	ecx,	ecx
-	sub	ebp,	byte 4*3
-	cmp	ecx,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*3
 	cmp	ecx,	ebp
 	jge	.pexit		; jump if ecx >= ebp
 
@@ -352,16 +337,8 @@ TVPFastLinearInterpH2F_mmx_pfraction_a:					; horizontal 2x linear interpolation
 	pxor	mm0,	mm0
 	lea	ebp,	[ecx*4]		; limit
 	xor	ecx,	ecx
-	sub	ebp,	byte 4*4
-	cmp	ecx,	ebp
-
-.pfraction:
-	add	ebp,	byte 4*4
-	sub	ebp,	byte 4*2
-	cmp	ecx,	ebp
 
 .pfraction2:
-	add	ebp,	byte 4*2
 	cmp	ecx,	ebp
 	jge	.pexit		; jump if ecx >= ebp
 
@@ -405,16 +382,8 @@ TVPFastLinearInterpH2B_mmx_pfraction_a:					; horizontal 2x linear interpolation
 	pxor	mm0,	mm0
 	lea	ebp,	[ecx*4]		; limit
 	xor	ecx,	ecx
-	sub	ebp,	4*4
-	cmp	ecx,	ebp
-
-.pfraction:
-	add	ebp,	byte 4*4
-	sub	ebp,	byte 4*2
-	cmp	ecx,	ebp
 
 .pfraction2:
-	add	ebp,	byte 4*2
 	cmp	ecx,	ebp
 	jge	.pexit		; jump if ecx >= ebp
 
@@ -499,11 +468,8 @@ TVPInterpStretchCopy_mmx_pfraction_a:			; bilinear stretch copy
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
 	mov	ecx,	eax		; src2
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 
@@ -608,11 +574,8 @@ TVPInterpStretchConstAlphaBlend_mmx_pfraction_a:		; bilinear stretch copy with c
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
 	mov	ecx,	eax		; src2
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 
@@ -716,11 +679,8 @@ TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_a:		; bilinear stretching addit
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
 	mov	ecx,	eax		; src2
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 
@@ -836,11 +796,8 @@ TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_a:		; bilinear stretching add
 	push	ebp
 	lea	ebp,	[edi+ecx*4]		; limit
 	mov	ecx,	eax		; src2
-	sub	ebp,	byte 4*1
-	cmp	edi,	ebp
 
 .pfraction:
-	add	ebp,	byte 4*1
 	cmp	edi,	ebp
 	jae	near .pexit			; jump if edi >= ebp
 

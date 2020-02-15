@@ -64,11 +64,8 @@ globaldef		TVPUnivTransBlend_switch_emmx_pfraction_a
 	push	ebp
 	mov	ebp,	[esp + 40]		; rule
 	lea	esi,	[edi+esi*4]		; limit
-	sub	esi,	byte 4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 4
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 
@@ -138,11 +135,8 @@ TVPUnivTransBlend_emmx_pfraction_a:			; do universal transition blend
 	push	ebp
 	mov	ebp,	[esp + 40]		; rule
 	lea	esi,	[edi+esi*4]		; limit
-	sub	esi,	byte 4
-	cmp	edi,	esi
 
 .pfraction:
-	add	esi,	byte 4
 	cmp	edi,	esi
 	jae	.pexit		; jump if edi >= esi
 

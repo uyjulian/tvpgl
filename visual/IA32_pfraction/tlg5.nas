@@ -8,18 +8,18 @@
 
 %include		"nasm.nah"
 
-globaldef		TVPTLG5DecompressSlide_a
-globaldef		TVPTLG5ComposeColors3To4_mmx_a
-globaldef		TVPTLG5ComposeColors4To4_mmx_a
+globaldef		TVPTLG5DecompressSlide_pfraction_a
+globaldef		TVPTLG5ComposeColors3To4_mmx_pfraction_a
+globaldef		TVPTLG5ComposeColors4To4_mmx_pfraction_a
 
 	segment_code
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by 1] TVPTLG5DecompressSlide
-;;tjs_int, TVPTLG5DecompressSlide_a, (tjs_uint8 *out, const tjs_uint8 *in, tjs_int insize, tjs_uint8 *text, tjs_int initialr)
+;;tjs_int, TVPTLG5DecompressSlide_pfraction_a, (tjs_uint8 *out, const tjs_uint8 *in, tjs_int insize, tjs_uint8 *text, tjs_int initialr)
 
 	function_align
-TVPTLG5DecompressSlide_a:					; modified LZSS decompressor
+TVPTLG5DecompressSlide_pfraction_a:					; modified LZSS decompressor
 	push	edi
 	push	esi
 	push	ebx
@@ -123,10 +123,10 @@ TVPTLG5DecompressSlide_a:					; modified LZSS decompressor
 
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG5ComposeColors3To4
-;;void, TVPTLG5ComposeColors3To4_mmx_a, (tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 * const * buf, tjs_int width)
+;;void, TVPTLG5ComposeColors3To4_mmx_pfraction_a, (tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 * const * buf, tjs_int width)
 
 	function_align
-TVPTLG5ComposeColors3To4_mmx_a:
+TVPTLG5ComposeColors3To4_mmx_pfraction_a:
 	push	edi
 	push	esi
 	push	ebx
@@ -197,10 +197,10 @@ TVPTLG5ComposeColors3To4_mmx_a:
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG5ComposeColors4To4
-;;void, TVPTLG5ComposeColors4To4_mmx_a, (tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 * const * buf, tjs_int width)
+;;void, TVPTLG5ComposeColors4To4_mmx_pfraction_a, (tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 * const * buf, tjs_int width)
 
 	function_align
-TVPTLG5ComposeColors4To4_mmx_a:
+TVPTLG5ComposeColors4To4_mmx_pfraction_a:
 	push	edi
 	push	esi
 	push	ebx

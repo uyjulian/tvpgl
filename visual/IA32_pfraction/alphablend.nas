@@ -9,18 +9,18 @@
 
 %include		"nasm.nah"
 
-globaldef		TVPAlphaBlend_mmx_a
-globaldef		TVPAlphaBlend_emmx_a
-globaldef		TVPAlphaBlend_o_mmx_a
-globaldef		TVPAlphaBlend_o_emmx_a
-globaldef		TVPAlphaBlend_HDA_mmx_a
-globaldef		TVPAlphaBlend_HDA_emmx_a
-globaldef		TVPAlphaBlend_d_mmx_a
-globaldef		TVPAlphaBlend_d_emmx_a
-globaldef		TVPConstAlphaBlend_mmx_a
-globaldef		TVPConstAlphaBlend_emmx_a
-globaldef		TVPConstAlphaBlend_SD_mmx_a
-globaldef		TVPConstAlphaBlend_SD_emmx_a
+globaldef		TVPAlphaBlend_mmx_pfraction_a
+globaldef		TVPAlphaBlend_emmx_pfraction_a
+globaldef		TVPAlphaBlend_o_mmx_pfraction_a
+globaldef		TVPAlphaBlend_o_emmx_pfraction_a
+globaldef		TVPAlphaBlend_HDA_mmx_pfraction_a
+globaldef		TVPAlphaBlend_HDA_emmx_pfraction_a
+globaldef		TVPAlphaBlend_d_mmx_pfraction_a
+globaldef		TVPAlphaBlend_d_emmx_pfraction_a
+globaldef		TVPConstAlphaBlend_mmx_pfraction_a
+globaldef		TVPConstAlphaBlend_emmx_pfraction_a
+globaldef		TVPConstAlphaBlend_SD_mmx_pfraction_a
+globaldef		TVPConstAlphaBlend_SD_emmx_pfraction_a
 externdef		TVPOpacityOnOpacityTable
 externdef		TVPNegativeMulTable
 
@@ -31,28 +31,28 @@ externdef		TVPNegativeMulTable
 ; MMX stuff
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend
-;;void, TVPAlphaBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
-%define TVPAlphaBlend_name TVPAlphaBlend_mmx_a
+;;void, TVPAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+%define TVPAlphaBlend_name TVPAlphaBlend_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend_o
-;;void, TVPAlphaBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
-%define TVPAlphaBlend_o_name TVPAlphaBlend_o_mmx_a
+;;void, TVPAlphaBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+%define TVPAlphaBlend_o_name TVPAlphaBlend_o_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend_HDA
-;;void, TVPAlphaBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
-%define TVPAlphaBlend_HDA_name TVPAlphaBlend_HDA_mmx_a
+;;void, TVPAlphaBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+%define TVPAlphaBlend_HDA_name TVPAlphaBlend_HDA_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend_d
-;;void, TVPAlphaBlend_d_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
-%define TVPAlphaBlend_d_name TVPAlphaBlend_d_mmx_a
+;;void, TVPAlphaBlend_d_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+%define TVPAlphaBlend_d_name TVPAlphaBlend_d_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPConstAlphaBlend
-;;void, TVPConstAlphaBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
-%define TVPConstAlphaBlend_name TVPConstAlphaBlend_mmx_a
+;;void, TVPConstAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+%define TVPConstAlphaBlend_name TVPConstAlphaBlend_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPConstAlphaBlend_SD
-;;void, TVPConstAlphaBlend_SD_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
-%define TVPConstAlphaBlend_SD_name TVPConstAlphaBlend_SD_mmx_a
+;;void, TVPConstAlphaBlend_SD_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
+%define TVPConstAlphaBlend_SD_name TVPConstAlphaBlend_SD_mmx_pfraction_a
 ;--------------------------------------------------------------------
 	%include "alphablend.nas"
 ;--------------------------------------------------------------------
@@ -64,28 +64,28 @@ externdef		TVPNegativeMulTable
 %define USE_EMMX
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend
-;;void, TVPAlphaBlend_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
-%define TVPAlphaBlend_name TVPAlphaBlend_emmx_a
+;;void, TVPAlphaBlend_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+%define TVPAlphaBlend_name TVPAlphaBlend_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend_o
-;;void, TVPAlphaBlend_o_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
-%define TVPAlphaBlend_o_name TVPAlphaBlend_o_emmx_a
+;;void, TVPAlphaBlend_o_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+%define TVPAlphaBlend_o_name TVPAlphaBlend_o_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend_HDA
-;;void, TVPAlphaBlend_HDA_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
-%define TVPAlphaBlend_HDA_name TVPAlphaBlend_HDA_emmx_a
+;;void, TVPAlphaBlend_HDA_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+%define TVPAlphaBlend_HDA_name TVPAlphaBlend_HDA_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAlphaBlend_d
-;;void, TVPAlphaBlend_d_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
-%define TVPAlphaBlend_d_name TVPAlphaBlend_d_emmx_a
+;;void, TVPAlphaBlend_d_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+%define TVPAlphaBlend_d_name TVPAlphaBlend_d_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPConstAlphaBlend
-;;void, TVPConstAlphaBlend_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
-%define TVPConstAlphaBlend_name TVPConstAlphaBlend_emmx_a
+;;void, TVPConstAlphaBlend_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+%define TVPConstAlphaBlend_name TVPConstAlphaBlend_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPConstAlphaBlend_SD
-;;void, TVPConstAlphaBlend_SD_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
-%define TVPConstAlphaBlend_SD_name TVPConstAlphaBlend_SD_emmx_a
+;;void, TVPConstAlphaBlend_SD_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
+%define TVPConstAlphaBlend_SD_name TVPConstAlphaBlend_SD_emmx_pfraction_a
 ;--------------------------------------------------------------------
 	%include "alphablend.nas"
 ;--------------------------------------------------------------------

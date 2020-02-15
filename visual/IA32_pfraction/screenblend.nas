@@ -8,10 +8,10 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPScreenBlend_mmx_a
-globaldef		TVPScreenBlend_HDA_mmx_a
-globaldef		TVPScreenBlend_o_mmx_a
-globaldef		TVPScreenBlend_HDA_o_mmx_a
+globaldef		TVPScreenBlend_mmx_pfraction_a
+globaldef		TVPScreenBlend_HDA_mmx_pfraction_a
+globaldef		TVPScreenBlend_o_mmx_pfraction_a
+globaldef		TVPScreenBlend_HDA_o_mmx_pfraction_a
 
 
 ;--------------------------------------------------------------------
@@ -40,9 +40,9 @@ TVPScreenBlendHDA_mul_100bit		dd	000000000h
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPScreenBlend
-;;void, TVPScreenBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPScreenBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPScreenBlend_mmx_a:			; pixel screen multiplicative blender
+TVPScreenBlend_mmx_pfraction_a:			; pixel screen multiplicative blender
 	push	edi
 	push	esi
 	push	ebx
@@ -97,12 +97,12 @@ TVPScreenBlend_mmx_a:			; pixel screen multiplicative blender
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPScreenBlend_HDA
-;;void, TVPScreenBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPScreenBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 
 	segment_code
 
 	function_align
-TVPScreenBlend_HDA_mmx_a:			; pixel screen multiplicative blender (holding desitination alpha)
+TVPScreenBlend_HDA_mmx_pfraction_a:			; pixel screen multiplicative blender (holding desitination alpha)
 	push	edi
 	push	esi
 	push	ebx
@@ -159,12 +159,12 @@ TVPScreenBlend_HDA_mmx_a:			; pixel screen multiplicative blender (holding desit
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPScreenBlend_o
-;;void, TVPScreenBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPScreenBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 	segment_code
 
 	function_align
-TVPScreenBlend_o_mmx_a:			; pixel screen multiplicative blender with opacity
+TVPScreenBlend_o_mmx_pfraction_a:			; pixel screen multiplicative blender with opacity
 	push	edi
 	push	esi
 	push	ebx
@@ -224,12 +224,12 @@ TVPScreenBlend_o_mmx_a:			; pixel screen multiplicative blender with opacity
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPScreenBlend_HDA_o
-;;void, TVPScreenBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPScreenBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 	segment_code
 
 	function_align
-TVPScreenBlend_HDA_o_mmx_a:			; pixel screen multiplicative blender with opacity (HDA)
+TVPScreenBlend_HDA_o_mmx_pfraction_a:			; pixel screen multiplicative blender with opacity (HDA)
 	push	edi
 	push	esi
 	push	ebx

@@ -10,18 +10,18 @@
 
 
 externdef		TVPRecipTable256_16
-globaldef		TVPAdjustGamma_a_mmx_a
+globaldef		TVPAdjustGamma_a_mmx_pfraction_a
 
 
 ;--------------------------------------------------------------------
 	segment_code
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAdjustGamma_a
-;;void, TVPAdjustGamma_a_mmx_a, (tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
+;;void, TVPAdjustGamma_a_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
 ;--------------------------------------------------------------------
 
 	function_align
-proc_start	TVPAdjustGamma_a_mmx_a
+proc_start	TVPAdjustGamma_a_mmx_pfraction_a
 	proc_arg	4,	dest
 	proc_arg	4,	len
 	proc_arg	4,	param

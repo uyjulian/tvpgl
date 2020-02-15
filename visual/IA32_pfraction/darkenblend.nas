@@ -8,8 +8,8 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPDarkenBlend_mmx_a
-globaldef		TVPDarkenBlend_HDA_mmx_a
+globaldef		TVPDarkenBlend_mmx_pfraction_a
+globaldef		TVPDarkenBlend_HDA_mmx_pfraction_a
 
 
 
@@ -25,9 +25,9 @@ globaldef		TVPDarkenBlend_HDA_mmx_a
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDarkenBlend
-;;void, TVPDarkenBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPDarkenBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPDarkenBlend_mmx_a:			; pixel darken blender
+TVPDarkenBlend_mmx_pfraction_a:			; pixel darken blender
 	push	edi
 	push	esi
 	push	ebx
@@ -76,10 +76,10 @@ TVPDarkenBlend_mmx_a:			; pixel darken blender
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDarkenBlend_HDA
-;;void, TVPDarkenBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPDarkenBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 
 	function_align
-TVPDarkenBlend_HDA_mmx_a:			; pixel darken blender (holding desitination alpha)
+TVPDarkenBlend_HDA_mmx_pfraction_a:			; pixel darken blender (holding desitination alpha)
 	push	edi
 	push	esi
 	push	ebx

@@ -8,19 +8,19 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPSubBlend_mmx_a
-globaldef		TVPSubBlend_HDA_mmx_a
-globaldef		TVPSubBlend_o_mmx_a
-globaldef		TVPSubBlend_HDA_o_mmx_a
+globaldef		TVPSubBlend_mmx_pfraction_a
+globaldef		TVPSubBlend_HDA_mmx_pfraction_a
+globaldef		TVPSubBlend_o_mmx_pfraction_a
+globaldef		TVPSubBlend_HDA_o_mmx_pfraction_a
 
 
 	segment_code
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPSubBlend
-;;void, TVPSubBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPSubBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPSubBlend_mmx_a:			; pixel subtractive blender
+TVPSubBlend_mmx_pfraction_a:			; pixel subtractive blender
 	push	edi
 	push	esi
 	push	ebx
@@ -70,9 +70,9 @@ TVPSubBlend_mmx_a:			; pixel subtractive blender
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPSubBlend_HDA
-;;void, TVPSubBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPSubBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPSubBlend_HDA_mmx_a:			; pixel subtractive blender (holding desitination alpha)
+TVPSubBlend_HDA_mmx_pfraction_a:			; pixel subtractive blender (holding desitination alpha)
 	push	edi
 	push	esi
 	push	ebx
@@ -129,9 +129,9 @@ TVPSubBlend_HDA_mmx_a:			; pixel subtractive blender (holding desitination alpha
 ; the routine below always holds the destination alpha
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPSubBlend_o
-;;void, TVPSubBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPSubBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPSubBlend_HDA_o
-;;void, TVPSubBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPSubBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 	segment_data
 
@@ -146,8 +146,8 @@ TVPSubBlend_full_bit_one		dd 0ffffffffh
 	segment_code
 
 	function_align
-TVPSubBlend_o_mmx_a:			; pixel subtractive blender
-TVPSubBlend_HDA_o_mmx_a:		; pixel subtractive blender
+TVPSubBlend_o_mmx_pfraction_a:			; pixel subtractive blender
+TVPSubBlend_HDA_o_mmx_pfraction_a:		; pixel subtractive blender
 	push	edi
 	push	esi
 	push	ebx

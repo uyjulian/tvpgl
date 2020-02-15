@@ -9,16 +9,16 @@
 
 ;;;; THIS IS A TEST ROUTINE!!!!(not so optimized)
 
-globaldef		TVPMakeAlphaFromKey_cmovcc_a
+globaldef		TVPMakeAlphaFromKey_cmovcc_pfraction_a
 
 	segment_code
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_CMOV] TVPMakeAlphaFromKey
-;;void, TVPMakeAlphaFromKey_cmovcc_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 key)
+;;void, TVPMakeAlphaFromKey_cmovcc_pfraction_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 key)
 
 	function_align
-TVPMakeAlphaFromKey_cmovcc_a:			; make alpha from key
+TVPMakeAlphaFromKey_cmovcc_pfraction_a:			; make alpha from key
 	push	edi
 	push	esi
 	push	ebx

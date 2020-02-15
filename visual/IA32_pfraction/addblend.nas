@@ -8,19 +8,19 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPAddBlend_mmx_a
-globaldef		TVPAddBlend_HDA_mmx_a
-globaldef		TVPAddBlend_o_mmx_a
-globaldef		TVPAddBlend_HDA_o_mmx_a
+globaldef		TVPAddBlend_mmx_pfraction_a
+globaldef		TVPAddBlend_HDA_mmx_pfraction_a
+globaldef		TVPAddBlend_o_mmx_pfraction_a
+globaldef		TVPAddBlend_HDA_o_mmx_pfraction_a
 
 
 	segment_code
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddBlend
-;;void, TVPAddBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPAddBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPAddBlend_mmx_a:			; pixel additive blender
+TVPAddBlend_mmx_pfraction_a:			; pixel additive blender
 	push	edi
 	push	esi
 	push	ebx
@@ -64,9 +64,9 @@ TVPAddBlend_mmx_a:			; pixel additive blender
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddBlend_HDA
-;;void, TVPAddBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPAddBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPAddBlend_HDA_mmx_a:			; pixel additive blender (holding desitination alpha)
+TVPAddBlend_HDA_mmx_pfraction_a:			; pixel additive blender (holding desitination alpha)
 	push	edi
 	push	esi
 	push	ebx
@@ -118,12 +118,12 @@ TVPAddBlend_HDA_mmx_a:			; pixel additive blender (holding desitination alpha)
 ; the routine below always holds the destination alpha
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddBlend_o
-;;void, TVPAddBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPAddBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddBlend_HDA_o
-;;void, TVPAddBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPAddBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 	function_align
-TVPAddBlend_o_mmx_a:			; pixel additive blender
-TVPAddBlend_HDA_o_mmx_a:		; pixel additive blender
+TVPAddBlend_o_mmx_pfraction_a:			; pixel additive blender
+TVPAddBlend_HDA_o_mmx_pfraction_a:		; pixel additive blender
 	push	edi
 	push	esi
 	push	ebx

@@ -8,10 +8,10 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPConvert24BitTo32Bit_mmx_a
-globaldef		TVPBLConvert24BitTo32Bit_mmx_a
-globaldef		TVPDither32BitTo16Bit565_mmx_a
-globaldef		TVPDither32BitTo16Bit555_mmx_a
+globaldef		TVPConvert24BitTo32Bit_mmx_pfraction_a
+globaldef		TVPBLConvert24BitTo32Bit_mmx_pfraction_a
+globaldef		TVPDither32BitTo16Bit565_mmx_pfraction_a
+globaldef		TVPDither32BitTo16Bit555_mmx_pfraction_a
 externdef		TVPDitherTable_5_6
 
 	segment_code
@@ -20,15 +20,15 @@ externdef		TVPDitherTable_5_6
 ; these two are actually the same
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPConvert24BitTo32Bit
-;;void, TVPConvert24BitTo32Bit_mmx_a, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len)
+;;void, TVPConvert24BitTo32Bit_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPBLConvert24BitTo32Bit
-;;void, TVPBLConvert24BitTo32Bit_mmx_a, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len)
+;;void, TVPBLConvert24BitTo32Bit_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len)
 
 
 	function_align
-TVPConvert24BitTo32Bit_mmx_a:					; 24bpp RGB -> 32bpp ARGB
-TVPBLConvert24BitTo32Bit_mmx_a:					; 24bpp RGB -> 32bpp ARGB
+TVPConvert24BitTo32Bit_mmx_pfraction_a:					; 24bpp RGB -> 32bpp ARGB
+TVPBLConvert24BitTo32Bit_mmx_pfraction_a:					; 24bpp RGB -> 32bpp ARGB
 	push	edi
 	push	esi
 	push	ebx
@@ -78,10 +78,10 @@ TVPBLConvert24BitTo32Bit_mmx_a:					; 24bpp RGB -> 32bpp ARGB
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDither32BitTo16Bit565
-;;void, TVPDither32BitTo16Bit565_mmx_a, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs)
+;;void, TVPDither32BitTo16Bit565_mmx_pfraction_a, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs)
 
 	function_align
-TVPDither32BitTo16Bit565_mmx_a:					; 32bpp (A)RGB -> 16bpp with ordered dithering
+TVPDither32BitTo16Bit565_mmx_pfraction_a:					; 32bpp (A)RGB -> 16bpp with ordered dithering
 	push	edi
 	push	esi
 	push	ebx
@@ -146,10 +146,10 @@ TVPDither32BitTo16Bit565_mmx_a:					; 32bpp (A)RGB -> 16bpp with ordered ditheri
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDither32BitTo16Bit555
-;;void, TVPDither32BitTo16Bit555_mmx_a, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs)
+;;void, TVPDither32BitTo16Bit555_mmx_pfraction_a, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs)
 
 	function_align
-TVPDither32BitTo16Bit555_mmx_a:					; 32bpp (A)RGB -> 16bpp with ordered dithering
+TVPDither32BitTo16Bit555_mmx_pfraction_a:					; 32bpp (A)RGB -> 16bpp with ordered dithering
 	push	edi
 	push	esi
 	push	ebx

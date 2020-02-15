@@ -11,12 +11,12 @@
 
 
 externdef		TVPTLG6GolombBitLengthTable
-globaldef		TVPTLG6DecodeGolombValuesForFirst_a
-globaldef		TVPTLG6DecodeGolombValues_a
-globaldef		TVPTLG6DecodeGolombValuesForFirst_mmx_a
-globaldef		TVPTLG6DecodeGolombValues_mmx_a
-globaldef		TVPTLG6DecodeGolombValuesForFirst_emmx_a
-globaldef		TVPTLG6DecodeGolombValues_emmx_a
+globaldef		TVPTLG6DecodeGolombValuesForFirst_pfraction_a
+globaldef		TVPTLG6DecodeGolombValues_pfraction_a
+globaldef		TVPTLG6DecodeGolombValuesForFirst_mmx_pfraction_a
+globaldef		TVPTLG6DecodeGolombValues_mmx_pfraction_a
+globaldef		TVPTLG6DecodeGolombValuesForFirst_emmx_pfraction_a
+globaldef		TVPTLG6DecodeGolombValues_emmx_pfraction_a
 
 %define		TVP_TLG6_GOLOMB_N_COUNT		4
 
@@ -55,44 +55,44 @@ bit_mask_neg_tbl:
 ;--------------------------------------------------------------------
 %define		FOR_FIRST_COLOR_COMPONENT
 ;;[function_replace_by 1] TVPTLG6DecodeGolombValuesForFirst
-;;void, TVPTLG6DecodeGolombValuesForFirst_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
-%define FUNCTION_LABEL TVPTLG6DecodeGolombValuesForFirst_a
+;;void, TVPTLG6DecodeGolombValuesForFirst_pfraction_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+%define FUNCTION_LABEL TVPTLG6DecodeGolombValuesForFirst_pfraction_a
 	%include "tlg6_golomb.nas"
 %define		GEN_CODE
 %undef		FOR_FIRST_COLOR_COMPONENT
 ;;[function_replace_by 1] TVPTLG6DecodeGolombValues
-;;void, TVPTLG6DecodeGolombValues_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
-%define FUNCTION_LABEL TVPTLG6DecodeGolombValues_a
+;;void, TVPTLG6DecodeGolombValues_pfraction_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+%define FUNCTION_LABEL TVPTLG6DecodeGolombValues_pfraction_a
 	%include "tlg6_golomb.nas"
 
 ;--------------------------------------------------------------------
 %define		FOR_FIRST_COLOR_COMPONENT
 %define			USE_MMX
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG6DecodeGolombValuesForFirst
-;;void, TVPTLG6DecodeGolombValuesForFirst_mmx_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
-%define FUNCTION_LABEL TVPTLG6DecodeGolombValuesForFirst_mmx_a
+;;void, TVPTLG6DecodeGolombValuesForFirst_mmx_pfraction_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+%define FUNCTION_LABEL TVPTLG6DecodeGolombValuesForFirst_mmx_pfraction_a
 	%include "tlg6_golomb.nas"
 
 %undef		FOR_FIRST_COLOR_COMPONENT
 %define			USE_MMX
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG6DecodeGolombValues
-;;void, TVPTLG6DecodeGolombValues_mmx_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
-%define FUNCTION_LABEL TVPTLG6DecodeGolombValues_mmx_a
+;;void, TVPTLG6DecodeGolombValues_mmx_pfraction_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+%define FUNCTION_LABEL TVPTLG6DecodeGolombValues_mmx_pfraction_a
 	%include "tlg6_golomb.nas"
 
 ;--------------------------------------------------------------------
 %define		FOR_FIRST_COLOR_COMPONENT
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG6DecodeGolombValuesForFirst
-;;void, TVPTLG6DecodeGolombValuesForFirst_emmx_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+;;void, TVPTLG6DecodeGolombValuesForFirst_emmx_pfraction_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 %define			USE_EMMX
-%define FUNCTION_LABEL TVPTLG6DecodeGolombValuesForFirst_emmx_a
+%define FUNCTION_LABEL TVPTLG6DecodeGolombValuesForFirst_emmx_pfraction_a
 	%include "tlg6_golomb.nas"
 
 %undef		FOR_FIRST_COLOR_COMPONENT
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG6DecodeGolombValues
-;;void, TVPTLG6DecodeGolombValues_emmx_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+;;void, TVPTLG6DecodeGolombValues_emmx_pfraction_a, (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 %define			USE_EMMX
-%define FUNCTION_LABEL TVPTLG6DecodeGolombValues_emmx_a
+%define FUNCTION_LABEL TVPTLG6DecodeGolombValues_emmx_pfraction_a
 	%include "tlg6_golomb.nas"
 
 ;--------------------------------------------------------------------

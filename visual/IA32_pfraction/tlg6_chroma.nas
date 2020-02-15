@@ -13,8 +13,8 @@
 
 
 externdef		TVPTLG6GolombBitLengthTable
-globaldef		TVPTLG6DecodeLine_mmx_a
-globaldef		TVPTLG6DecodeLine_sse_a
+globaldef		TVPTLG6DecodeLine_mmx_pfraction_a
+globaldef		TVPTLG6DecodeLine_sse_pfraction_a
 
 %define		TVP_TLG6_W_BLOCK_SIZE		8
 
@@ -42,15 +42,15 @@ avg_mask_01		dd		0x01010101, 0x01010101
 %define		GEN_CODE
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPTLG6DecodeLine
-;;void, TVPTLG6DecodeLine_mmx_a, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
-%define FUNCTION_LABEL TVPTLG6DecodeLine_mmx_a
+;;void, TVPTLG6DecodeLine_mmx_pfraction_a, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
+%define FUNCTION_LABEL TVPTLG6DecodeLine_mmx_pfraction_a
 	%include "tlg6_chroma.nas"
 
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_SSE && TVPCPUType & TVP_CPU_HAS_MMX && TVPCPUType & TVP_CPU_HAS_EMMX] TVPTLG6DecodeLine
-;;void, TVPTLG6DecodeLine_sse_a, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
+;;void, TVPTLG6DecodeLine_sse_pfraction_a, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
 %define			USE_SSE
-%define FUNCTION_LABEL TVPTLG6DecodeLine_sse_a
+%define FUNCTION_LABEL TVPTLG6DecodeLine_sse_pfraction_a
 	%include "tlg6_chroma.nas"
 
 

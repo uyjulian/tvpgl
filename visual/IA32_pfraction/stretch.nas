@@ -7,27 +7,27 @@
 
 %include		"nasm.nah"
 
-globaldef		TVPStretchCopy_mmx_a
-globaldef		TVPStretchAlphaBlend_mmx_a
-globaldef		TVPStretchAdditiveAlphaBlend_mmx_a
-globaldef		TVPStretchConstAlphaBlend_mmx_a
-globaldef		TVPFastLinearInterpV2_mmx_a
-globaldef		TVPFastLinearInterpH2F_mmx_a
-globaldef		TVPFastLinearInterpH2B_mmx_a
-globaldef		TVPInterpStretchCopy_mmx_a
-globaldef		TVPInterpStretchConstAlphaBlend_mmx_a
-globaldef		TVPInterpStretchAdditiveAlphaBlend_mmx_a
-globaldef		TVPInterpStretchAdditiveAlphaBlend_o_mmx_a
+globaldef		TVPStretchCopy_mmx_pfraction_a
+globaldef		TVPStretchAlphaBlend_mmx_pfraction_a
+globaldef		TVPStretchAdditiveAlphaBlend_mmx_pfraction_a
+globaldef		TVPStretchConstAlphaBlend_mmx_pfraction_a
+globaldef		TVPFastLinearInterpV2_mmx_pfraction_a
+globaldef		TVPFastLinearInterpH2F_mmx_pfraction_a
+globaldef		TVPFastLinearInterpH2B_mmx_pfraction_a
+globaldef		TVPInterpStretchCopy_mmx_pfraction_a
+globaldef		TVPInterpStretchConstAlphaBlend_mmx_pfraction_a
+globaldef		TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_a
+globaldef		TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_a
 
 ;--------------------------------------------------------------------
 	segment_code
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPStretchCopy
-;;void, TVPStretchCopy_mmx_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
+;;void, TVPStretchCopy_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
 
 	function_align
-TVPStretchCopy_mmx_a:					; stretch copy
+TVPStretchCopy_mmx_pfraction_a:					; stretch copy
 	push	edi
 	push	esi
 	push	ebx
@@ -76,10 +76,10 @@ TVPStretchCopy_mmx_a:					; stretch copy
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPStretchConstAlphaBlend
-;;void, TVPStretchConstAlphaBlend_mmx_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
+;;void, TVPStretchConstAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
 
 	function_align
-TVPStretchConstAlphaBlend_mmx_a:					; stretch copy with constant-ratio alpha blending
+TVPStretchConstAlphaBlend_mmx_pfraction_a:					; stretch copy with constant-ratio alpha blending
 	push	edi
 	push	esi
 	push	ebx
@@ -143,10 +143,10 @@ TVPStretchConstAlphaBlend_mmx_a:					; stretch copy with constant-ratio alpha bl
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPStretchAlphaBlend
-;;void, TVPStretchAlphaBlend_mmx_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
+;;void, TVPStretchAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
 
 	function_align
-TVPStretchAlphaBlend_mmx_a:					; stretch copy with pixel alpha blending
+TVPStretchAlphaBlend_mmx_pfraction_a:					; stretch copy with pixel alpha blending
 	push	edi
 	push	esi
 	push	ebx
@@ -211,10 +211,10 @@ TVPStretchAlphaBlend_mmx_a:					; stretch copy with pixel alpha blending
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPStretchAdditiveAlphaBlend
-;;void, TVPStretchAdditiveAlphaBlend_mmx_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
+;;void, TVPStretchAdditiveAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
 
 	function_align
-TVPStretchAdditiveAlphaBlend_mmx_a:					; stretch copy with pixel additive alpha blending
+TVPStretchAdditiveAlphaBlend_mmx_pfraction_a:					; stretch copy with pixel additive alpha blending
 	push	edi
 	push	esi
 	push	ebx
@@ -278,10 +278,10 @@ TVPStretchAdditiveAlphaBlend_mmx_a:					; stretch copy with pixel additive alpha
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPFastLinearInterpV2
-;;void, TVPFastLinearInterpV2_mmx_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src0, const tjs_uint32 *src1)
+;;void, TVPFastLinearInterpV2_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src0, const tjs_uint32 *src1)
 
 	function_align
-TVPFastLinearInterpV2_mmx_a:					; interpolation between two sources (2x)
+TVPFastLinearInterpV2_mmx_pfraction_a:					; interpolation between two sources (2x)
 	push	edi
 	push	esi
 	push	ebx
@@ -334,10 +334,10 @@ TVPFastLinearInterpV2_mmx_a:					; interpolation between two sources (2x)
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPFastLinearInterpH2F
-;;void, TVPFastLinearInterpH2F_mmx_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src)
+;;void, TVPFastLinearInterpH2F_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src)
 
 	function_align
-TVPFastLinearInterpH2F_mmx_a:					; horizontal 2x linear interpolation forward
+TVPFastLinearInterpH2F_mmx_pfraction_a:					; horizontal 2x linear interpolation forward
 	push	edi
 	push	esi
 	push	ebx
@@ -387,10 +387,10 @@ TVPFastLinearInterpH2F_mmx_a:					; horizontal 2x linear interpolation forward
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPFastLinearInterpH2B
-;;void, TVPFastLinearInterpH2B_mmx_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src)
+;;void, TVPFastLinearInterpH2B_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src)
 
 	function_align
-TVPFastLinearInterpH2B_mmx_a:					; horizontal 2x linear interpolation backward
+TVPFastLinearInterpH2B_mmx_pfraction_a:					; horizontal 2x linear interpolation backward
 	push	edi
 	push	esi
 	push	ebx
@@ -467,10 +467,10 @@ TVPFastLinearInterpH2B_mmx_a:					; horizontal 2x linear interpolation backward
 
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPInterpStretchCopy
-;;void, TVPInterpStretchCopy_mmx_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep)
+;;void, TVPInterpStretchCopy_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep)
 
 	function_align
-TVPInterpStretchCopy_mmx_a:			; bilinear stretch copy
+TVPInterpStretchCopy_mmx_pfraction_a:			; bilinear stretch copy
 	push	edi
 	push	esi
 	push	ebx
@@ -568,10 +568,10 @@ TVPInterpStretchCopy_mmx_a:			; bilinear stretch copy
 	segment_code
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPInterpStretchConstAlphaBlend
-;;void, TVPInterpStretchConstAlphaBlend_mmx_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
+;;void, TVPInterpStretchConstAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
 
 	function_align
-TVPInterpStretchConstAlphaBlend_mmx_a:		; bilinear stretch copy with constant-alpha blending
+TVPInterpStretchConstAlphaBlend_mmx_pfraction_a:		; bilinear stretch copy with constant-alpha blending
 	push	edi
 	push	esi
 	push	ebx
@@ -684,10 +684,10 @@ TVPInterpStretchConstAlphaBlend_mmx_a:		; bilinear stretch copy with constant-al
 	segment_code
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPInterpStretchAdditiveAlphaBlend
-;;void, TVPInterpStretchAdditiveAlphaBlend_mmx_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep)
+;;void, TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep)
 
 	function_align
-TVPInterpStretchAdditiveAlphaBlend_mmx_a:		; bilinear stretching additive alpha blend
+TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_a:		; bilinear stretching additive alpha blend
 	push	edi
 	push	esi
 	push	ebx
@@ -796,10 +796,10 @@ TVPInterpStretchAdditiveAlphaBlend_mmx_a:		; bilinear stretching additive alpha 
 	segment_code
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPInterpStretchAdditiveAlphaBlend_o
-;;void, TVPInterpStretchAdditiveAlphaBlend_o_mmx_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
+;;void, TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
 
 	function_align
-TVPInterpStretchAdditiveAlphaBlend_o_mmx_a:		; bilinear stretching additive alpha blend with opacity
+TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_a:		; bilinear stretching additive alpha blend with opacity
 	push	edi
 	push	esi
 	push	ebx

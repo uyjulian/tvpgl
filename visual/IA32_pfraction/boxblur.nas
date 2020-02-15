@@ -10,24 +10,24 @@
 %include		"nasm.nah"
 
 externdef		TVPDivTable
-globaldef		TVPAddSubVertSum16_mmx_a
-globaldef		TVPAddSubVertSum16_emmx_a
-globaldef		TVPAddSubVertSum16_d_mmx_a
-globaldef		TVPAddSubVertSum16_d_emmx_a
-globaldef		TVPAddSubVertSum32_mmx_a
-globaldef		TVPAddSubVertSum32_emmx_a
-globaldef		TVPAddSubVertSum32_d_mmx_a
-globaldef		TVPAddSubVertSum32_d_emmx_a
-globaldef		TVPDoBoxBlurAvg16_mmx_a
-globaldef		TVPDoBoxBlurAvg16_emmx_a
-globaldef		TVPDoBoxBlurAvg16_sse_a
-globaldef		TVPDoBoxBlurAvg16_d_mmx_a
-globaldef		TVPDoBoxBlurAvg16_d_emmx_a
-globaldef		TVPDoBoxBlurAvg16_d_sse_a
-globaldef		TVPDoBoxBlurAvg32_mmx_a
-globaldef		TVPDoBoxBlurAvg32_emmx_a
-globaldef		TVPDoBoxBlurAvg32_d_mmx_a
-globaldef		TVPDoBoxBlurAvg32_d_emmx_a
+globaldef		TVPAddSubVertSum16_mmx_pfraction_a
+globaldef		TVPAddSubVertSum16_emmx_pfraction_a
+globaldef		TVPAddSubVertSum16_d_mmx_pfraction_a
+globaldef		TVPAddSubVertSum16_d_emmx_pfraction_a
+globaldef		TVPAddSubVertSum32_mmx_pfraction_a
+globaldef		TVPAddSubVertSum32_emmx_pfraction_a
+globaldef		TVPAddSubVertSum32_d_mmx_pfraction_a
+globaldef		TVPAddSubVertSum32_d_emmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg16_mmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg16_emmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg16_sse_pfraction_a
+globaldef		TVPDoBoxBlurAvg16_d_mmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg16_d_emmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg16_d_sse_pfraction_a
+globaldef		TVPDoBoxBlurAvg32_mmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg32_emmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg32_d_mmx_pfraction_a
+globaldef		TVPDoBoxBlurAvg32_d_emmx_pfraction_a
 
 
 %define GEN_CODE
@@ -36,36 +36,36 @@ globaldef		TVPDoBoxBlurAvg32_d_emmx_a
 ; MMX stuff
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum16
-;;void, TVPAddSubVertSum16_mmx_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum16_name TVPAddSubVertSum16_mmx_a
+;;void, TVPAddSubVertSum16_mmx_pfraction_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum16_name TVPAddSubVertSum16_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum16_d
-;;void, TVPAddSubVertSum16_d_mmx_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum16_d_name TVPAddSubVertSum16_d_mmx_a
+;;void, TVPAddSubVertSum16_d_mmx_pfraction_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum16_d_name TVPAddSubVertSum16_d_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum32
-;;void, TVPAddSubVertSum32_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum32_name TVPAddSubVertSum32_mmx_a
+;;void, TVPAddSubVertSum32_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum32_name TVPAddSubVertSum32_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum32_d
-;;void, TVPAddSubVertSum32_d_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum32_d_name TVPAddSubVertSum32_d_mmx_a
+;;void, TVPAddSubVertSum32_d_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum32_d_name TVPAddSubVertSum32_d_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg16
-;;void, TVPDoBoxBlurAvg16_mmx_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg16_name TVPDoBoxBlurAvg16_mmx_a
+;;void, TVPDoBoxBlurAvg16_mmx_pfraction_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg16_name TVPDoBoxBlurAvg16_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg16_d
-;;void, TVPDoBoxBlurAvg16_d_mmx_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg16_d_name TVPDoBoxBlurAvg16_d_mmx_a
+;;void, TVPDoBoxBlurAvg16_d_mmx_pfraction_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg16_d_name TVPDoBoxBlurAvg16_d_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg32
-;;void, TVPDoBoxBlurAvg32_mmx_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg32_name TVPDoBoxBlurAvg32_mmx_a
+;;void, TVPDoBoxBlurAvg32_mmx_pfraction_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg32_name TVPDoBoxBlurAvg32_mmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg32_d
-;;void, TVPDoBoxBlurAvg32_d_mmx_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg32_d_name TVPDoBoxBlurAvg32_d_mmx_a
+;;void, TVPDoBoxBlurAvg32_d_mmx_pfraction_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg32_d_name TVPDoBoxBlurAvg32_d_mmx_pfraction_a
 ;--------------------------------------------------------------------
 	%include "boxblur.nas"
 ;--------------------------------------------------------------------
@@ -76,36 +76,36 @@ globaldef		TVPDoBoxBlurAvg32_d_emmx_a
 %define USE_EMMX
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum16
-;;void, TVPAddSubVertSum16_emmx_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum16_name TVPAddSubVertSum16_emmx_a
+;;void, TVPAddSubVertSum16_emmx_pfraction_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum16_name TVPAddSubVertSum16_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum16_d
-;;void, TVPAddSubVertSum16_d_emmx_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum16_d_name TVPAddSubVertSum16_d_emmx_a
+;;void, TVPAddSubVertSum16_d_emmx_pfraction_a, (tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum16_d_name TVPAddSubVertSum16_d_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum32
-;;void, TVPAddSubVertSum32_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum32_name TVPAddSubVertSum32_emmx_a
+;;void, TVPAddSubVertSum32_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum32_name TVPAddSubVertSum32_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPAddSubVertSum32_d
-;;void, TVPAddSubVertSum32_d_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
-%define TVPAddSubVertSum32_d_name TVPAddSubVertSum32_d_emmx_a
+;;void, TVPAddSubVertSum32_d_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+%define TVPAddSubVertSum32_d_name TVPAddSubVertSum32_d_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg16
-;;void, TVPDoBoxBlurAvg16_emmx_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg16_name TVPDoBoxBlurAvg16_emmx_a
+;;void, TVPDoBoxBlurAvg16_emmx_pfraction_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg16_name TVPDoBoxBlurAvg16_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg16_d
-;;void, TVPDoBoxBlurAvg16_d_emmx_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg16_d_name TVPDoBoxBlurAvg16_d_emmx_a
+;;void, TVPDoBoxBlurAvg16_d_emmx_pfraction_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg16_d_name TVPDoBoxBlurAvg16_d_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg32
-;;void, TVPDoBoxBlurAvg32_emmx_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg32_name TVPDoBoxBlurAvg32_emmx_a
+;;void, TVPDoBoxBlurAvg32_emmx_pfraction_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg32_name TVPDoBoxBlurAvg32_emmx_pfraction_a
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg32_d
-;;void, TVPDoBoxBlurAvg32_d_emmx_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
-%define TVPDoBoxBlurAvg32_d_name TVPDoBoxBlurAvg32_d_emmx_a
+;;void, TVPDoBoxBlurAvg32_d_emmx_pfraction_a, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len)
+%define TVPDoBoxBlurAvg32_d_name TVPDoBoxBlurAvg32_d_emmx_pfraction_a
 ;--------------------------------------------------------------------
 	%include "boxblur.nas"
 ;--------------------------------------------------------------------
@@ -1047,11 +1047,11 @@ TVPDoBoxBlurAvg32_d_name:			; do blur using box-blur algorithm with alpha, 32bit
 ; SSE stuff
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_SSE && TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg16
-;;void, TVPDoBoxBlurAvg16_sse_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
+;;void, TVPDoBoxBlurAvg16_sse_pfraction_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
 ;--------------------------------------------------------------------
 
 	function_align
-TVPDoBoxBlurAvg16_sse_a:			; do blur using box-blur algorithm, 16bit precision
+TVPDoBoxBlurAvg16_sse_pfraction_a:			; do blur using box-blur algorithm, 16bit precision
 	push	edi
 	push	esi
 	push	ebx
@@ -1131,11 +1131,11 @@ TVPDoBoxBlurAvg16_sse_a:			; do blur using box-blur algorithm, 16bit precision
 
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_SSE && TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPDoBoxBlurAvg16_d
-;;void, TVPDoBoxBlurAvg16_d_sse_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
+;;void, TVPDoBoxBlurAvg16_d_sse_pfraction_a, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len)
 ;--------------------------------------------------------------------
 
 	function_align
-TVPDoBoxBlurAvg16_d_sse_a:			; do blur using box-blur algorithm with alpha, 16bit precision
+TVPDoBoxBlurAvg16_d_sse_pfraction_a:			; do blur using box-blur algorithm with alpha, 16bit precision
 	push	edi
 	push	esi
 	push	ebx

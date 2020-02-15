@@ -87,21 +87,21 @@
 %endmacro
 
 %macro MACRO_FUNCDEF 1
-	GLOBAL _TVPPs%1_mmx_a
-	GLOBAL _TVPPs%1_o_mmx_a
-	GLOBAL _TVPPs%1_HDA_mmx_a
-	GLOBAL _TVPPs%1_HDA_o_mmx_a
+	GLOBAL _TVPPs%1_mmx_pfraction_a
+	GLOBAL _TVPPs%1_o_mmx_pfraction_a
+	GLOBAL _TVPPs%1_HDA_mmx_pfraction_a
+	GLOBAL _TVPPs%1_HDA_o_mmx_pfraction_a
 
-_TVPPs%1_mmx_a:
+_TVPPs%1_mmx_pfraction_a:
 	MACRO_MAINFUNC %1,0
 
-_TVPPs%1_o_mmx_a:
+_TVPPs%1_o_mmx_pfraction_a:
 	MACRO_MAINFUNC %1,IS_OPA
 
-_TVPPs%1_HDA_mmx_a:
+_TVPPs%1_HDA_mmx_pfraction_a:
 	MACRO_MAINFUNC %1,IS_HDA
 
-_TVPPs%1_HDA_o_mmx_a:
+_TVPPs%1_HDA_o_mmx_pfraction_a:
 	MACRO_MAINFUNC %1,IS_OPA|IS_HDA
 %endmacro
 
@@ -1930,148 +1930,148 @@ MACRO_FUNCDEF ExclusionBlend
 
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAlphaBlend
-;;void, TVPPsAlphaBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsAlphaBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAlphaBlend_o
-;;void, TVPPsAlphaBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsAlphaBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAlphaBlend_HDA
-;;void, TVPPsAlphaBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsAlphaBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAlphaBlend_HDA_o
-;;void, TVPPsAlphaBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsAlphaBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAddBlend
-;;void, TVPPsAddBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsAddBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAddBlend_o
-;;void, TVPPsAddBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsAddBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAddBlend_HDA
-;;void, TVPPsAddBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsAddBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsAddBlend_HDA_o
-;;void, TVPPsAddBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsAddBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSubBlend
-;;void, TVPPsSubBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsSubBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSubBlend_o
-;;void, TVPPsSubBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsSubBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSubBlend_HDA
-;;void, TVPPsSubBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsSubBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSubBlend_HDA_o
-;;void, TVPPsSubBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsSubBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsMulBlend
-;;void, TVPPsMulBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsMulBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsMulBlend_o
-;;void, TVPPsMulBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsMulBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsMulBlend_HDA
-;;void, TVPPsMulBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsMulBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsMulBlend_HDA_o
-;;void, TVPPsMulBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsMulBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsScreenBlend
-;;void, TVPPsScreenBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsScreenBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsScreenBlend_o
-;;void, TVPPsScreenBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsScreenBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsScreenBlend_HDA
-;;void, TVPPsScreenBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsScreenBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsScreenBlend_HDA_o
-;;void, TVPPsScreenBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsScreenBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsOverlayBlend
-;;void, TVPPsOverlayBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsOverlayBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsOverlayBlend_o
-;;void, TVPPsOverlayBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsOverlayBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsOverlayBlend_HDA
-;;void, TVPPsOverlayBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsOverlayBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsOverlayBlend_HDA_o
-;;void, TVPPsOverlayBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsOverlayBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsHardLightBlend
-;;void, TVPPsHardLightBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsHardLightBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsHardLightBlend_o
-;;void, TVPPsHardLightBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsHardLightBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsHardLightBlend_HDA
-;;void, TVPPsHardLightBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsHardLightBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsHardLightBlend_HDA_o
-;;void, TVPPsHardLightBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsHardLightBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSoftLightBlend
-;;void, TVPPsSoftLightBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsSoftLightBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSoftLightBlend_o
-;;void, TVPPsSoftLightBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsSoftLightBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSoftLightBlend_HDA
-;;void, TVPPsSoftLightBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsSoftLightBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsSoftLightBlend_HDA_o
-;;void, TVPPsSoftLightBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsSoftLightBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodgeBlend
-;;void, TVPPsColorDodgeBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsColorDodgeBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodgeBlend_o
-;;void, TVPPsColorDodgeBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsColorDodgeBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodgeBlend_HDA
-;;void, TVPPsColorDodgeBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsColorDodgeBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodgeBlend_HDA_o
-;;void, TVPPsColorDodgeBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsColorDodgeBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodge5Blend
-;;void, TVPPsColorDodge5Blend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsColorDodge5Blend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodge5Blend_o
-;;void, TVPPsColorDodge5Blend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsColorDodge5Blend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodge5Blend_HDA
-;;void, TVPPsColorDodge5Blend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsColorDodge5Blend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorDodge5Blend_HDA_o
-;;void, TVPPsColorDodge5Blend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsColorDodge5Blend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorBurnBlend
-;;void, TVPPsColorBurnBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsColorBurnBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorBurnBlend_o
-;;void, TVPPsColorBurnBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsColorBurnBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorBurnBlend_HDA
-;;void, TVPPsColorBurnBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsColorBurnBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsColorBurnBlend_HDA_o
-;;void, TVPPsColorBurnBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsColorBurnBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsLightenBlend
-;;void, TVPPsLightenBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsLightenBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsLightenBlend_o
-;;void, TVPPsLightenBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsLightenBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsLightenBlend_HDA
-;;void, TVPPsLightenBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsLightenBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsLightenBlend_HDA_o
-;;void, TVPPsLightenBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsLightenBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDarkenBlend
-;;void, TVPPsDarkenBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsDarkenBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDarkenBlend_o
-;;void, TVPPsDarkenBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsDarkenBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDarkenBlend_HDA
-;;void, TVPPsDarkenBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsDarkenBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDarkenBlend_HDA_o
-;;void, TVPPsDarkenBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsDarkenBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiffBlend
-;;void, TVPPsDiffBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsDiffBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiffBlend_o
-;;void, TVPPsDiffBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsDiffBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiffBlend_HDA
-;;void, TVPPsDiffBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsDiffBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiffBlend_HDA_o
-;;void, TVPPsDiffBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsDiffBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiff5Blend
-;;void, TVPPsDiff5Blend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsDiff5Blend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiff5Blend_o
-;;void, TVPPsDiff5Blend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsDiff5Blend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiff5Blend_HDA
-;;void, TVPPsDiff5Blend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsDiff5Blend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsDiff5Blend_HDA_o
-;;void, TVPPsDiff5Blend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsDiff5Blend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsExclusionBlend
-;;void, TVPPsExclusionBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsExclusionBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsExclusionBlend_o
-;;void, TVPPsExclusionBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsExclusionBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsExclusionBlend_HDA
-;;void, TVPPsExclusionBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPPsExclusionBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPPsExclusionBlend_HDA_o
-;;void, TVPPsExclusionBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPPsExclusionBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 
 

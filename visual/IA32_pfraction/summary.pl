@@ -5,8 +5,8 @@
 
 ;# make tvpgl_ia32.c and tvpgl_ia32.h from *.nah, *.nas.
 
-open FH, ">tvpgl_ia32_intf_.h";
-open FC, ">tvpgl_ia32_intf_.c";
+open FH, ">tvpgl_ia32_intf_pfraction_.h";
+open FC, ">tvpgl_ia32_intf_pfraction_.c";
 
 $c_emits = '';
 
@@ -96,7 +96,7 @@ print FH <<EOF;
  extern "C" {
 #endif
 
-extern void TVPGL_IA32_Init();
+extern void TVPGL_IA32_pfraction_Init();
 
 EOF
 
@@ -113,11 +113,11 @@ print FC <<EOF;
 #include "tjsTypes.h"
 
 #include "tvpgl.h"
-#include "tvpgl_ia32_intf.h"
+#include "tvpgl_ia32_intf_pfraction.h"
 
 extern tjs_uint32 TVPCPUType;
 
-void TVPGL_IA32_Init()
+void TVPGL_IA32_pfraction_Init()
 {
 
 

@@ -8,19 +8,19 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPMulBlend_mmx_a
-globaldef		TVPMulBlend_HDA_mmx_a
-globaldef		TVPMulBlend_o_mmx_a
-globaldef		TVPMulBlend_HDA_o_mmx_a
+globaldef		TVPMulBlend_mmx_pfraction_a
+globaldef		TVPMulBlend_HDA_mmx_pfraction_a
+globaldef		TVPMulBlend_o_mmx_pfraction_a
+globaldef		TVPMulBlend_HDA_o_mmx_pfraction_a
 
 
 	segment_code
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPMulBlend
-;;void, TVPMulBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPMulBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 	function_align
-TVPMulBlend_mmx_a:			; pixel multiplicative blender
+TVPMulBlend_mmx_pfraction_a:			; pixel multiplicative blender
 	push	edi
 	push	esi
 	push	ebx
@@ -71,7 +71,7 @@ TVPMulBlend_mmx_a:			; pixel multiplicative blender
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPMulBlend_HDA
-;;void, TVPMulBlend_HDA_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+;;void, TVPMulBlend_HDA_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 
 	segment_data
 
@@ -84,7 +84,7 @@ TVPMulBlendHDA_100bit		dd	000000000h
 	segment_code
 
 	function_align
-TVPMulBlend_HDA_mmx_a:			; pixel multiplicative blender (holding desitination alpha)
+TVPMulBlend_HDA_mmx_pfraction_a:			; pixel multiplicative blender (holding desitination alpha)
 	push	edi
 	push	esi
 	push	ebx
@@ -139,7 +139,7 @@ TVPMulBlend_HDA_mmx_a:			; pixel multiplicative blender (holding desitination al
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPMulBlend_o
-;;void, TVPMulBlend_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPMulBlend_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 	segment_data
 
@@ -150,7 +150,7 @@ TVPMulBlendHDA_fullbit		dd	0ffffffffh
 	segment_code
 
 	function_align
-TVPMulBlend_o_mmx_a:			; pixel multiplicative blender with opacity
+TVPMulBlend_o_mmx_pfraction_a:			; pixel multiplicative blender with opacity
 	push	edi
 	push	esi
 	push	ebx
@@ -209,7 +209,7 @@ TVPMulBlend_o_mmx_a:			; pixel multiplicative blender with opacity
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPMulBlend_HDA_o
-;;void, TVPMulBlend_HDA_o_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+;;void, TVPMulBlend_HDA_o_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 
 	segment_data
 
@@ -224,7 +224,7 @@ TVPMulBlend_full_bit_aligned	dd 0ffffffffh
 	segment_code
 
 	function_align
-TVPMulBlend_HDA_o_mmx_a:			; pixel multiplicative blender with opacity (HDA)
+TVPMulBlend_HDA_o_mmx_pfraction_a:			; pixel multiplicative blender with opacity (HDA)
 	push	edi
 	push	esi
 	push	ebx

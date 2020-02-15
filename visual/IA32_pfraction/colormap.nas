@@ -10,12 +10,12 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPApplyColorMap65_mmx_a
-globaldef		TVPApplyColorMap65_emmx_a
-globaldef		TVPApplyColorMap65_d_mmx_a
-globaldef		TVPApplyColorMap65_d_emmx_a
-globaldef		TVPApplyColorMap65_a_mmx_a
-globaldef		TVPApplyColorMap65_a_emmx_a
+globaldef		TVPApplyColorMap65_mmx_pfraction_a
+globaldef		TVPApplyColorMap65_emmx_pfraction_a
+globaldef		TVPApplyColorMap65_d_mmx_pfraction_a
+globaldef		TVPApplyColorMap65_d_emmx_pfraction_a
+globaldef		TVPApplyColorMap65_a_mmx_pfraction_a
+globaldef		TVPApplyColorMap65_a_emmx_pfraction_a
 externdef		TVPNegativeMulTable65
 externdef		TVPOpacityOnOpacityTable65
 
@@ -26,16 +26,16 @@ externdef		TVPOpacityOnOpacityTable65
 ; MMX stuff
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPApplyColorMap65
-;;void, TVPApplyColorMap65_mmx_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
-%define TVPApplyColorMap65_name TVPApplyColorMap65_mmx_a
+;;void, TVPApplyColorMap65_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+%define TVPApplyColorMap65_name TVPApplyColorMap65_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPApplyColorMap65_d
-;;void, TVPApplyColorMap65_d_mmx_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
-%define TVPApplyColorMap65_d_name TVPApplyColorMap65_d_mmx_a
+;;void, TVPApplyColorMap65_d_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+%define TVPApplyColorMap65_d_name TVPApplyColorMap65_d_mmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPApplyColorMap65_a
-;;void, TVPApplyColorMap65_a_mmx_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
-%define TVPApplyColorMap65_a_name TVPApplyColorMap65_a_mmx_a
+;;void, TVPApplyColorMap65_a_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+%define TVPApplyColorMap65_a_name TVPApplyColorMap65_a_mmx_pfraction_a
 ;--------------------------------------------------------------------
 	%include "colormap.nas"
 ;--------------------------------------------------------------------
@@ -46,16 +46,16 @@ externdef		TVPOpacityOnOpacityTable65
 %define USE_EMMX
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPApplyColorMap65
-;;void, TVPApplyColorMap65_emmx_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
-%define TVPApplyColorMap65_name TVPApplyColorMap65_emmx_a
+;;void, TVPApplyColorMap65_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+%define TVPApplyColorMap65_name TVPApplyColorMap65_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPApplyColorMap65_d
-;;void, TVPApplyColorMap65_d_emmx_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
-%define TVPApplyColorMap65_d_name TVPApplyColorMap65_d_emmx_a
+;;void, TVPApplyColorMap65_d_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+%define TVPApplyColorMap65_d_name TVPApplyColorMap65_d_emmx_pfraction_a
 ;--------------------------------------------------------------------
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPApplyColorMap65_a
-;;void, TVPApplyColorMap65_a_emmx_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
-%define TVPApplyColorMap65_a_name TVPApplyColorMap65_a_emmx_a
+;;void, TVPApplyColorMap65_a_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+%define TVPApplyColorMap65_a_name TVPApplyColorMap65_a_emmx_pfraction_a
 ;--------------------------------------------------------------------
 	%include "colormap.nas"
 ;--------------------------------------------------------------------

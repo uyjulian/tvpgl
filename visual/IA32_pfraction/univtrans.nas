@@ -16,9 +16,9 @@
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPInitUnivTransBlendTable
-;;void, TVPInitUnivTransBlendTable_mmx_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague)
+;;void, TVPInitUnivTransBlendTable_mmx_pfraction_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague)
 
-;;[emit_c_c]TVP_GL_IA32_FUNC_DECL(void, TVPInitUnivTransBlendTable_mmx_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague))
+;;[emit_c_c]TVP_GL_IA32_FUNC_DECL(void, TVPInitUnivTransBlendTable_mmx_pfraction_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague))
 ;;[emit_c_c]{
 ;;[emit_c_c]	tjs_uint16 *t = (tjs_uint16*)table;
 ;;[emit_c_c]	tjs_int i;
@@ -40,10 +40,10 @@
 
 
 
-globaldef		TVPUnivTransBlend_mmx_a
-globaldef		TVPUnivTransBlend_emmx_a
-globaldef		TVPUnivTransBlend_switch_mmx_a
-globaldef		TVPUnivTransBlend_switch_emmx_a
+globaldef		TVPUnivTransBlend_mmx_pfraction_a
+globaldef		TVPUnivTransBlend_emmx_pfraction_a
+globaldef		TVPUnivTransBlend_switch_mmx_pfraction_a
+globaldef		TVPUnivTransBlend_switch_emmx_pfraction_a
 
 	segment_code
 ;--------------------------------------------------------------------
@@ -108,15 +108,15 @@ globaldef		TVPUnivTransBlend_switch_emmx_a
 %endmacro
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPUnivTransBlend
-;;void, TVPUnivTransBlend_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len)
+;;void, TVPUnivTransBlend_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len)
 	function_align
-TVPUnivTransBlend_mmx_a:			; do universal transition blend
+TVPUnivTransBlend_mmx_pfraction_a:			; do universal transition blend
 	TVPUnivTransBlend_proto	.dummy1:, .dummy2:, .dummy3:
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPUnivTransBlend
-;;void, TVPUnivTransBlend_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len)
+;;void, TVPUnivTransBlend_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len)
 	function_align
-TVPUnivTransBlend_emmx_a:			; do universal transition blend
+TVPUnivTransBlend_emmx_pfraction_a:			; do universal transition blend
 	TVPUnivTransBlend_proto	prefetcht0	[ebx + 2], prefetcht0	[ebx + 16], prefetcht0	[ecx + 16]
 
 ;--------------------------------------------------------------------
@@ -182,14 +182,14 @@ TVPUnivTransBlend_emmx_a:			; do universal transition blend
 %endmacro
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPUnivTransBlend_switch
-;;void, TVPUnivTransBlend_switch_mmx_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv)
+;;void, TVPUnivTransBlend_switch_mmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv)
 	function_align
-TVPUnivTransBlend_switch_mmx_a:			; do universal transition blend with switching
+TVPUnivTransBlend_switch_mmx_pfraction_a:			; do universal transition blend with switching
 	TVPUnivTransBlend_switch_proto	.dummy1:, .dummy2:, .dummy3:
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_EMMX && TVPCPUType & TVP_CPU_HAS_MMX] TVPUnivTransBlend_switch
-;;void, TVPUnivTransBlend_switch_emmx_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv)
+;;void, TVPUnivTransBlend_switch_emmx_pfraction_a, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv)
 	function_align
-TVPUnivTransBlend_switch_emmx_a:			; do universal transition blend with switching
+TVPUnivTransBlend_switch_emmx_pfraction_a:			; do universal transition blend with switching
 	TVPUnivTransBlend_switch_proto	prefetcht0	[ebp + 4], prefetcht0	[ecx + 16], prefetcht0	[ebx + 16]
 

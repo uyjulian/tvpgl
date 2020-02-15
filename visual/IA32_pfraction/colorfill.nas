@@ -8,13 +8,13 @@
 %include		"nasm.nah"
 
 
-globaldef		TVPFillARGB_mmx_a
-globaldef		TVPFillARGB_sse_a
-globaldef		TVPFillARGB_NC_sse_a
-globaldef		TVPFillColor_mmx_a
-globaldef		TVPConstColorAlphaBlend_mmx_a
-globaldef		TVPConstColorAlphaBlend_d_mmx_a
-globaldef		TVPConstColorAlphaBlend_a_mmx_a
+globaldef		TVPFillARGB_mmx_pfraction_a
+globaldef		TVPFillARGB_sse_pfraction_a
+globaldef		TVPFillARGB_NC_sse_pfraction_a
+globaldef		TVPFillColor_mmx_pfraction_a
+globaldef		TVPConstColorAlphaBlend_mmx_pfraction_a
+globaldef		TVPConstColorAlphaBlend_d_mmx_pfraction_a
+globaldef		TVPConstColorAlphaBlend_a_mmx_pfraction_a
 externdef		TVPOpacityOnOpacityTable
 externdef		TVPNegativeMulTable
 
@@ -22,10 +22,10 @@ externdef		TVPNegativeMulTable
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPFillARGB
-;;void, TVPFillARGB_mmx_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
+;;void, TVPFillARGB_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
 
 	function_align
-TVPFillARGB_mmx_a:						; fill destination
+TVPFillARGB_mmx_pfraction_a:						; fill destination
 	push	edi
 	push	esi
 	push	ebx
@@ -67,10 +67,10 @@ TVPFillARGB_mmx_a:						; fill destination
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_SSE] TVPFillARGB
-;;void, TVPFillARGB_sse_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
+;;void, TVPFillARGB_sse_pfraction_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
 
 	function_align
-TVPFillARGB_sse_a:						; fill destination
+TVPFillARGB_sse_pfraction_a:						; fill destination
 	push	edi
 	push	esi
 	push	ebx
@@ -112,10 +112,10 @@ TVPFillARGB_sse_a:						; fill destination
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_SSE] TVPFillARGB_NC
-;;void, TVPFillARGB_NC_sse_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
+;;void, TVPFillARGB_NC_sse_pfraction_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
 
 	function_align
-TVPFillARGB_NC_sse_a:						; fill destination (non-cached version)
+TVPFillARGB_NC_sse_pfraction_a:						; fill destination (non-cached version)
 	push	edi
 	push	esi
 	push	ebx
@@ -157,10 +157,10 @@ TVPFillARGB_NC_sse_a:						; fill destination (non-cached version)
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPFillColor
-;;void, TVPFillColor_mmx_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color)
+;;void, TVPFillColor_mmx_pfraction_a, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color)
 
 	function_align
-TVPFillColor_mmx_a:						; fill destination's color ( opacity will be still intact )
+TVPFillColor_mmx_pfraction_a:						; fill destination's color ( opacity will be still intact )
 	push	edi
 	push	esi
 	push	ebx
@@ -206,12 +206,12 @@ TVPFillColor_mmx_a:						; fill destination's color ( opacity will be still inta
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPConstColorAlphaBlend
-;;void, TVPConstColorAlphaBlend_mmx_a,  (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
+;;void, TVPConstColorAlphaBlend_mmx_pfraction_a,  (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
 
 ; /* this function always holds desitination alpha channel */
 
 	function_align
-TVPConstColorAlphaBlend_mmx_a:				; constant ratio constant color alpha blender
+TVPConstColorAlphaBlend_mmx_pfraction_a:				; constant ratio constant color alpha blender
 	push	edi
 	push	esi
 	push	ebx
@@ -281,10 +281,10 @@ TVPConstColorAlphaBlend_mmx_a:				; constant ratio constant color alpha blender
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPConstColorAlphaBlend_d
-;;void, TVPConstColorAlphaBlend_d_mmx_a,  (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
+;;void, TVPConstColorAlphaBlend_d_mmx_pfraction_a,  (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
 
 	function_align
-TVPConstColorAlphaBlend_d_mmx_a:	; constant ratio constant color alpha blender with destination alpha
+TVPConstColorAlphaBlend_d_mmx_pfraction_a:	; constant ratio constant color alpha blender with destination alpha
 	push	edi
 	push	esi
 	push	ebx
@@ -352,14 +352,14 @@ TVPConstColorAlphaBlend_d_mmx_a:	; constant ratio constant color alpha blender w
 ;--------------------------------------------------------------------
 
 ;;[function_replace_by TVPCPUType & TVP_CPU_HAS_MMX] TVPConstColorAlphaBlend_a
-;;void, TVPConstColorAlphaBlend_a_mmx_a,  (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
+;;void, TVPConstColorAlphaBlend_a_mmx_pfraction_a,  (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
 
 ;		Di = Di - SaDi + Si
 ;		Da = Da - SaDa + Sa
 
 
 	function_align
-TVPConstColorAlphaBlend_a_mmx_a:	; constant ratio constant color alpha blender with destination additive alpha
+TVPConstColorAlphaBlend_a_mmx_pfraction_a:	; constant ratio constant color alpha blender with destination additive alpha
 	push	edi
 	push	esi
 	push	ebx

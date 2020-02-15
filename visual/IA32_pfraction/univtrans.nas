@@ -66,46 +66,6 @@ globaldef		TVPUnivTransBlend_switch_emmx_a
 	lea	esi,	[edi+esi*4]		; limit
 	sub	esi,	byte 4
 	cmp	edi,	esi
-	jae	near	.pfraction		; jump if edi >= esi
-
-	loop_align
-.ploop:
-	movzx	edx,	byte [ebp]		; 1 retrieve rule value
-	%1
-	movq	mm1,	[ebx]		; src2
-	%2
-	movq	mm2,	[ecx]		; src1
-	%3
-	movq	mm5,	mm1		; src2
-	movq	mm6,	mm2		; src1
-	punpcklbw	mm1,	mm0		; 1 unpack
-	movd	mm3,	dword [eax + edx*2]		; 1 blend table
-	punpckhbw	mm5,	mm0		; 2 unpack
-	movzx	edx,	byte [ebp + 1]		; 2 retrieve rule value
-	punpcklbw	mm2,	mm0		; 1 unpack
-	movd	mm4,	dword [eax + edx*2]		; 2 blend table
-	punpckhbw	mm6,	mm0		; 2 unpack
-	punpcklwd	mm3,	mm3		; 1 unpack
-	psubw	mm2,	mm1		; 1 mm2 -= mm1
-	punpcklwd	mm3,	mm3		; 1 unpack
-	add	ebp,	byte 2
-	punpcklwd	mm4,	mm4		; 2 unpack
-	psubw	mm6,	mm5		; 2 mm6 -= mm5
-	punpcklwd	mm4,	mm4		; 2 unpack
-	pmulhw	mm2,	mm3		; 1 mm2 *= mm3
-	add	ecx,	byte 8
-	add	edi,	byte 8
-	pmulhw	mm6,	mm4		; 2 mm6 *= mm4
-	add	ebx,	byte 8
-	psllw	mm2,	1		; 1 mm2 <<= 1
-	psllw	mm6,	1		; 2 mm6 <<= 1
-	paddw	mm1,	mm2		; 1 mm1 += mm2
-	paddw	mm5,	mm6		; 2 mm5 += mm6
-	packuswb	mm1,	mm5		; 1 pack
-	cmp	edi,	esi
-	movq	[edi - 8], mm1		; 1 store
-
-	jb	near .ploop		; jump if edi < esi
 
 .pfraction:
 	add	esi,	byte 4
@@ -180,82 +140,6 @@ TVPUnivTransBlend_emmx_a:			; do universal transition blend
 	lea	esi,	[edi+esi*4]		; limit
 	sub	esi,	byte 4
 	cmp	edi,	esi
-	jae	near	.pfraction		; jump if edi >= esi
-	jmp	.ploop
-
-.psrc1lv1:
-	movzx	edx,	byte [ebp]
-	cmp	edx,	[esp + 52]		; src1lv
-	jl	.pnormal
-	movq	mm1,	[ecx]		; src1
-	add	edi,	byte 8
-	add	ebx,	byte 8
-	add	ebp,	byte 2
-	add	ecx,	byte 8
-	movq	[edi-8], mm1
-	cmp	edi,	esi
-	jb	near .ploop		; jump if edi < esi
-	jmp	.pfraction
-
-.psrc2lv1:
-	movzx	edx,	byte [ebp]
-	cmp	edx,	[esp + 56]		; src2lv
-	jge	.pnormal
-	movq	mm1,	[ebx]		; src2
-	add	edi,	byte 8
-	add	ecx,	byte 8
-	add	ebp,	byte 2
-	add	ebx,	byte 8
-	movq	[edi-8], mm1
-	cmp	edi,	esi
-	jb	near .ploop		; jump if edi < esi
-	jmp	.pfraction
-
-	loop_align
-.ploop:
-	movzx	edx,	byte [ebp  + 1]		; 2 retrieve rule value
-	%1
-	cmp	edx,	[esp + 52]		; src1lv
-	jge	.psrc1lv1
-	cmp	edx,	[esp + 56]		; src2lv
-	jl	.psrc2lv1
-	movzx	edx,	byte [ebp]		; 1 retrieve rule value
-
-.pnormal:
-	movd	mm1,	dword [ebx]		; 1 src2
-	movd	mm3,	dword [eax + edx*2]		; 1 blend table
-	punpcklbw	mm1,	mm0		; 1 unpack
-	movd	mm2,	dword [ecx]		; 1 src1
-	punpcklwd	mm3,	mm3		; 1 unpack
-	movzx	edx,	byte [ebp + 1]		; 2 retrieve rule value
-	punpcklbw	mm2,	mm0		; 1 unpack
-	movd	mm4,	dword [eax + edx*2]		; 2 blend table
-	movd	mm6,	dword [ecx + 4]		; 2 src1
-	%2
-	punpcklwd	mm4,	mm4		; 2 unpack
-	movd	mm5,	dword [ebx + 4]		; 2 src2
-	%3
-	punpcklbw	mm6,	mm0		; 2 unpack
-	punpcklbw	mm5,	mm0		; 2 unpack
-	psubw	mm2,	mm1		; 1 mm2 -= mm1
-	punpcklwd	mm3,	mm3		; 1 unpack
-	psubw	mm6,	mm5		; 2 mm6 -= mm5
-	punpcklwd	mm4,	mm4		; 2 unpack
-	pmulhw	mm2,	mm3		; 1 mm2 *= mm3
-	add	ebp,	byte 2
-	add	ecx,	byte 8
-	pmulhw	mm6,	mm4		; 2 mm6 *= mm4
-	add	ebx,	byte 8
-	psllw	mm2,	1		; 1 mm2 <<= 1
-	add	edi,	byte 8
-	psllw	mm6,	1		; 2 mm6 <<= 1
-	paddw	mm1,	mm2		; 1 mm1 += mm2
-	paddw	mm5,	mm6		; 2 mm5 += mm6
-	packuswb	mm1,	mm5		; pack
-	cmp	edi,	esi
-	movq	[edi - 8], mm1		; store
-
-	jb	near .ploop		; jump if edi < esi
 
 .pfraction:
 	add	esi,	byte 4

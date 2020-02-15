@@ -67,20 +67,6 @@
 	mov        eax, 080808080h       ; eax = 80808080 (for Overlay/HardLight)
 	sub        ebp, byte 16          ; 8*2 bytes pad (for loop expansion)
 	cmp        esi, ebp
-	jae        near %%remain         ; jump if src>=limit-16
-
-	test       esi, 4
-	jz         near %%loop
-	%1.1       %2
-	cmp        esi, ebp
-	jae        near %%remain         ; jump if src>=limit-16
-
-	loop_align
-%%loop:
-	%1.2       %2                    ; loop expansion QWORD x 2
-	%1.2       %2
-	cmp        esi, ebp
-	jl         near %%loop           ; loop if src<limit-16
 
 %%remain:
 	add        ebp, byte 16          ; reminder

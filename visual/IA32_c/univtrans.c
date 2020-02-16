@@ -66,8 +66,56 @@ void __cdecl TVPUnivTransBlend_switch_mmx_c(tjs_uint32 *dest, const tjs_uint32 *
 		v12 = &dest[len];
 		if (dest < v12)
 		{
+			tjs_int ze = 1;
 			do
 			{
+				if (ze)
+				{
+					if ((v11[1] >= src1lv) && (v11[0] < src1lv))
+					{
+						ze = 0;
+					}
+					else if (v11[1] >= src1lv)
+					{
+						*v8 = *v9;
+						++v11;
+						++v9;
+						++v8;
+						++v10;
+						*v8 = *v9;
+						++v11;
+						++v9;
+						++v8;
+						++v10;
+						continue;
+					}
+					else if (v11[1] >= src2lv)
+					{
+						ze = 0;
+					}
+					else if (v11[0] >= src2lv)
+					{
+						ze = 0;
+					}
+					else
+					{
+						*v8 = *v10;
+						++v11;
+						++v9;
+						++v8;
+						++v10;
+						*v8 = *v10;
+						++v11;
+						++v9;
+						++v8;
+						++v10;
+						continue;
+					}
+				}
+				else
+				{
+					ze = 1;
+				}
 				v14 = _mm_set1_pi16(*(const tjs_uint32 *)((char *)table + 2 * *v11));
 				v15 = _m_punpcklbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64());
 				*v8 = _mm_cvtsi64_si32(

@@ -137,6 +137,12 @@ void __cdecl TVPAlphaBlend_d_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_
 		{
 			do
 			{
+				if (*v4 <= 0xFFFFFF)
+				{
+					++v3;
+					++v4;
+					continue;
+				}
 				v7  = (*v3 >> 24) + ((*v4 >> 16) & 0xFF00);
 				v8  = _m_punpcklbw(_m_pand(_mm_cvtsi32_si64(*v3), v5), _mm_setzero_si64());
 				v10 = _mm_set1_pi16(TVPOpacityOnOpacityTable[v7]);

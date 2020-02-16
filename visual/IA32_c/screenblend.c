@@ -75,7 +75,7 @@ void __cdecl TVPScreenBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, t
 							_m_psrlwi(
 								_m_pmullw(
 									_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v5), v4), _mm_setzero_si64()),
-									_m_por(_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v6), v4), _mm_setzero_si64()), v3)),
+									_m_por(_m_punpcklbw(_m_pand(_m_pxor(_mm_cvtsi32_si64(*v6), v4), v4), _mm_setzero_si64()), v3)),
 								8u),
 							_mm_setzero_si64()),
 						v4));
@@ -116,7 +116,11 @@ void __cdecl TVPScreenBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs
 									_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v8), v7), _mm_setzero_si64()),
 									_m_psrlwi(_m_pxor(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v9), _mm_setzero_si64()), v6), v7), 8u)),
 								8u),
-							_mm_setzero_si64()),
+							_m_psrlwi(
+								_m_pmullw(
+									_m_punpckhbw(_m_pxor(_mm_cvtsi32_si64(*v8), v7), _mm_setzero_si64()),
+									_m_psrlwi(_m_pxor(_m_pmullw(_m_punpckhbw(_mm_cvtsi32_si64(*v9), _mm_setzero_si64()), v6), v7), 8u)),
+								8u)),
 						v7));
 				++v8;
 				++v9;
@@ -147,6 +151,91 @@ void __cdecl TVPScreenBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src,
 		v11 = &dest[len];
 		if (dest < v11)
 		{
+			if (!((tjs_uint)dest & 4))
+			{
+				*v9 = _mm_cvtsi64_si32(
+					_m_por(
+						_m_pand(
+							_m_pxor(
+								_m_packuswb(
+									_m_psrlwi(
+										_m_pmullw(
+											_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v9), v8), _mm_setzero_si64()),
+											_m_por(
+												_m_pand(
+													_m_psrlwi(
+														_m_pxor(
+															_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64()), v6),
+															(__m64)TVPScreenMulBlend_full_bit_aligned),
+														8u),
+													v7),
+												v8)),
+										8u),
+									_mm_setzero_si64()),
+								v8),
+							v8),
+						_m_pand(_mm_cvtsi32_si64(*v9), v7)));
+				++v9;
+				++v10;
+			}
+			// XXX: This will cause test failures when run immediately after the NASM version
+			do
+			{
+				*v9 = _mm_cvtsi64_si32(_m_por(
+					_m_pand(
+						_m_pxor(
+							_m_packuswb(
+								_m_psrlwi(
+									_m_pmullw(
+										_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v9), v8), _mm_setzero_si64()),
+										_m_psrlwi(
+											_m_pxor(
+												_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64()), v6),
+												(__m64)TVPScreenMulBlend_full_bit_aligned),
+											8u)),
+									8u),
+								_m_psrlwi(
+									_m_pmullw(
+										_m_punpckhbw(_m_pxor(_mm_cvtsi32_si64(*v9), v8), _mm_setzero_si64()),
+										_m_psrlwi(
+											_m_pxor(
+												_m_pmullw(_m_punpckhbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64()), v6),
+												(__m64)TVPScreenMulBlend_full_bit_aligned),
+											0u)),
+									0u)),
+							v8),
+						v8),
+					_m_pand(_mm_cvtsi32_si64(*v9), v7)));
+				++v9;
+				++v10;
+				*v9 = _mm_cvtsi64_si32(_m_por(
+					_m_pand(
+						_m_pxor(
+							_m_packuswb(
+								_m_psrlwi(
+									_m_pmullw(
+										_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v9), v8), _mm_setzero_si64()),
+										_m_psrlwi(
+											_m_pxor(
+												_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64()), v6),
+												(__m64)TVPScreenMulBlend_full_bit_aligned),
+											8u)),
+									8u),
+								_m_psrlwi(
+									_m_pmullw(
+										_m_punpckhbw(_m_pxor(_mm_cvtsi32_si64(*v9), v8), _mm_setzero_si64()),
+										_m_psrlwi(
+											_m_pxor(
+												_m_pmullw(_m_punpckhbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64()), v6),
+												(__m64)TVPScreenMulBlend_full_bit_aligned),
+											0u)),
+									0u)),
+							v8),
+						v8),
+					_m_pand(_mm_cvtsi32_si64(*v9), v7)));
+				++v9;
+				++v10;
+			} while (v9 < &dest[len - 4]);
 			do
 			{
 				*v9 = _mm_cvtsi64_si32(

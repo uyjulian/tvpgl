@@ -25,6 +25,7 @@ static tjs_uint8  *testrule = NULL;
 // #define TEST_TVPGL
 #define BENCHMARK_TVPGL
 // #define STRICT_TEST
+// #define TEST_DIFFER_BASE
 #define FORCE_ALPHA_TEST
 #define TVPGetRoughTickCount32 timeGetTime
 
@@ -192,6 +193,19 @@ static void CheckTestData_RGB(const char *pszFuncName)
 #endif
 }
 
+static bool IsDifferentFunction(void **fptr)
+{
+#ifdef TEST_DIFFER_BASE
+	TVP_GL_FUNCNAME(TVPInitTVPGL)();
+#else
+	TVPGL_INIT_FUNCS_1();
+#endif
+	void *fptr1 = *fptr;
+	TVPGL_INIT_FUNCS_2();
+	void *fptr2 = *fptr;
+	return (fptr1 != fptr2);
+}
+
 #if 0
 static void testTLG6_chroma()
 {
@@ -245,75 +259,95 @@ static void testTLG6_chroma()
 #ifdef TEST_TVPGL
 
 #define TEST_TVPGL_BLEND_FUNC_2(origf) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, testdata1, 256 * 256);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, testdata1, 256 * 256);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_BLEND_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, testdata1, 256 * 256, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\\
 	origf(testdest2, testdata1, 256 * 256, __VA_ARGS__);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_STRECH_FUNC_2(origf) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 16 * 256, testdata1, 0, 1 << 16);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, 16 * 256, testdata1, 0, 1 << 16);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_STRECH_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 16 * 256, testdata1, 0, 1 << 16, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, 16 * 256, testdata1, 0, 1 << 16, __VA_ARGS__);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_LINTRANS_FUNC_2(origf) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_LINTRANS_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64, __VA_ARGS__);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_UNIVTRANS_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
-	CheckTestData_RGB(#origf);
+	CheckTestData_RGB(#origf);\
+	}
 #define TEST_TVPGL_CUSTOM_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, __VA_ARGS__);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #define TEST_TVPGL_CUSTOM_FUNC_RGB(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
 	origf(testdest2, __VA_ARGS__);\
-	CheckTestData_RGB(#origf);
+	CheckTestData_RGB(#origf);\
+	}
 #define TEST_TVPGL_CUSTOM_FUNC_TYPE(origf, DT, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf((DT)testdest1, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
 	origf((DT)testdest2, __VA_ARGS__);\
-	CheckTestData(#origf);
+	CheckTestData(#origf);\
+	}
 #elif defined(BENCHMARK_TVPGL)
 
 static tjs_uint32 lastTick1, lastTick2;
@@ -444,6 +478,7 @@ static void logTLG6_chroma() {
 #endif
 
 #define TEST_TVPGL_BLEND_FUNC_2(origf) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, testdata1, 256 * 256);\
@@ -460,9 +495,11 @@ static void logTLG6_chroma() {
 	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, 256 * 256); \
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 
 #define TEST_TVPGL_BLEND_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, testdata1, 256 * 256, __VA_ARGS__);\
@@ -479,9 +516,11 @@ static void logTLG6_chroma() {
 	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, 256 * 256, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 
 #define TEST_TVPGL_STRECH_FUNC_2(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 127 * 256, testdata1, 0, 1 << 16);\
@@ -498,8 +537,10 @@ static void logTLG6_chroma() {
 	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 1 << 16);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_STRECH_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 127 * 256, testdata1, 0, 1 << 16, __VA_ARGS__);\
@@ -516,8 +557,10 @@ static void logTLG6_chroma() {
 	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 1 << 16, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_STRECH_FUNC_0(origf) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 127 * 256, testdata1, 0, 1 << 16);\
@@ -534,8 +577,10 @@ static void logTLG6_chroma() {
 	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 1 << 16);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_LINTRANS_FUNC_2(origf) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 127 * 256, testdata1, 0, 0, 1 << 16, 0, 256); \
@@ -552,8 +597,10 @@ static void logTLG6_chroma() {
 	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 0, 1 << 16, 0, 256);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_LINTRANS_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, 127 * 256, testdata1, 0, 0, 1<<16, 0, 256, __VA_ARGS__);\
@@ -570,8 +617,10 @@ static void logTLG6_chroma() {
 	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 0, 1<<16, 0, 256, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_UNIVTRANS_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
@@ -588,8 +637,10 @@ static void logTLG6_chroma() {
 	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_CUSTOM_FUNC(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, __VA_ARGS__);\
@@ -606,8 +657,10 @@ static void logTLG6_chroma() {
 	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_CUSTOM_FUNC_RGB(origf, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf(testdest1, __VA_ARGS__);\
@@ -624,8 +677,10 @@ static void logTLG6_chroma() {
 	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #define TEST_TVPGL_CUSTOM_FUNC_TYPE(origf, DT, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	origf((DT)testdest1, __VA_ARGS__);\
@@ -642,6 +697,7 @@ static void logTLG6_chroma() {
 	for (int i = 0; i < TEST_COUNT; ++i) origf((DT)testdest2, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
 	}
 #else
 #define TEST_TVPGL_BLEND_FUNC_2(origf, ...) origf = f;

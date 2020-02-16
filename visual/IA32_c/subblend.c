@@ -8,11 +8,11 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
 static tjs_uint64 TVPSubBlend_full_bit_one = 0xffffffffffffffffull;
 
-void __cdecl TVPSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPSubBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64         v3; // mm7
 	__m64         v4; // mm7
@@ -40,7 +40,7 @@ void __cdecl TVPSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src
 	_m_empty();
 }
 
-void __cdecl TVPSubBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPSubBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64         v3; // mm7
 	__m64         v4; // mm7
@@ -72,7 +72,7 @@ void __cdecl TVPSubBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPSubBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPSubBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5; // mm7
 	__m64         v6; // mm7

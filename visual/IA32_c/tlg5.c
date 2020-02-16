@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uint8 *in, tjs_int insize, tjs_uint8 *text, tjs_int initialr)
+tjs_int __cdecl TVPTLG5DecompressSlide_c(tjs_uint8 *out, const tjs_uint8 *in, tjs_int insize, tjs_uint8 *text, tjs_int initialr)
 {
 	tjs_int          result; // eax
 	const tjs_uint8 *v6;     // ebx
@@ -86,7 +86,7 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 	return result;
 }
 
-void __cdecl TVPTLG5ComposeColors3To4_mmx_pfraction_c(tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 *const *buf, tjs_int width)
+void __cdecl TVPTLG5ComposeColors3To4_mmx_c(tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 *const *buf, tjs_int width)
 {
 	unsigned int v4;  // edx
 	__m64        v5;  // mm5
@@ -116,7 +116,7 @@ void __cdecl TVPTLG5ComposeColors3To4_mmx_pfraction_c(tjs_uint8 *outp, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPTLG5ComposeColors4To4_mmx_pfraction_c(tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 *const *buf, tjs_int width)
+void __cdecl TVPTLG5ComposeColors4To4_mmx_c(tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 *const *buf, tjs_int width)
 {
 	unsigned int v4;  // edx
 	__m64        v5;  // mm5

@@ -9,9 +9,9 @@
 
 #include <mmintrin.h>
 #include <stdbool.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPMakeAlphaFromKey_cmovcc_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 key)
+void __cdecl TVPMakeAlphaFromKey_cmovcc_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 key)
 {
 	tjs_uint32 * v3; // edi
 	bool         v4; // sf

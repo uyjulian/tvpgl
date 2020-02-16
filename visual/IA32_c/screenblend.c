@@ -8,14 +8,14 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
 static tjs_uint64 TVPScreenMulBlend_full_bit_aligned = 0xffffffffffffffffull;
 static tjs_uint64 TVPScreenBlendHDA_alphamask        = 0xff000000ff000000ull;
 static tjs_uint64 TVPScreenBlendHDA_mulmask          = 0x00ffffff00ffffffull;
 static tjs_uint64 TVPScreenBlendHDA_mul_100bit       = 0x0100000000000000ull;
 
-void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPScreenBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64         v3; // mm6
 	tjs_uint32 *  v4; // edi
@@ -50,7 +50,7 @@ void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *
 	_m_empty();
 }
 
-void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPScreenBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64         v3; // mm6
 	__m64         v4; // mm7
@@ -87,7 +87,7 @@ void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPScreenBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5;  // mm5
 	__m64         v6;  // mm5
@@ -126,7 +126,7 @@ void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 	_m_empty();
 }
 
-void __cdecl TVPScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPScreenBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5;  // mm5
 	__m64         v6;  // mm5

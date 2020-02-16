@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPAlphaBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *    v3; // edi
 	const tjs_uint32 *v4; // ebp
@@ -50,7 +50,7 @@ void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPAlphaBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4; // edi
 	unsigned int *v5; // ebp
@@ -83,7 +83,7 @@ void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPAlphaBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	int          v3; // ecx
 	unsigned int v4; // eax
@@ -117,7 +117,7 @@ void __cdecl TVPAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPAlphaBlend_d_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	tjs_uint32 *      v3;  // edi
 	const tjs_uint32 *v4;  // ebp
@@ -160,7 +160,7 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPConstAlphaBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	tjs_int v5; // ebx
 	__m64   v6; // mm4
@@ -184,7 +184,7 @@ void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPConstAlphaBlend_SD_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
+void __cdecl TVPConstAlphaBlend_SD_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
 {
 	tjs_int v6;  // ebx
 	__m64   v7;  // mm4

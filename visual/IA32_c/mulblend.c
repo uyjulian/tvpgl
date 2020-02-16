@@ -8,14 +8,14 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
 static tjs_uint64 TVPMulBlendHDA_mulmask       = 0x0000ffffffffffffull;
 static tjs_uint64 TVPMulBlendHDA_100bit        = 0x0100000000000000ull;
 static tjs_uint64 TVPMulBlendHDA_fullbit       = 0xffffffffffffffffull;
 static tjs_uint64 TVPMulBlend_full_bit_aligned = 0xffffffffffffffffull;
 
-void __cdecl TVPMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPMulBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	tjs_uint32 *  v3; // edi
 	unsigned int *v4; // ebp
@@ -44,7 +44,7 @@ void __cdecl TVPMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src
 	_m_empty();
 }
 
-void __cdecl TVPMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPMulBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64         v3; // mm6
 	__m64         v4; // mm7
@@ -79,7 +79,7 @@ void __cdecl TVPMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPMulBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5;  // mm5
 	__m64         v6;  // mm5
@@ -116,7 +116,7 @@ void __cdecl TVPMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPMulBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5;  // mm5
 	__m64         v6;  // mm5

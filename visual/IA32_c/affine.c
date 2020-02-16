@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch)
+void __cdecl TVPLinTransCopy_mmx_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch)
 {
 	tjs_uint32 *v8;  // edi
 	__m64       v9;  // mm0
@@ -38,7 +38,7 @@ void __cdecl TVPLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, cons
 	_m_empty();
 }
 
-void __cdecl TVPLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
+void __cdecl TVPLinTransConstAlphaBlend_mmx_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
 {
 	unsigned int *v9;  // edi
 	__m64         v11; // mm3
@@ -85,7 +85,7 @@ void __cdecl TVPLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_in
 	_m_empty();
 }
 
-void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch)
+void __cdecl TVPInterpLinTransCopy_mmx_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch)
 {
 	tjs_uint32 *  v8;  // edi
 	unsigned int  v9;  // ecx
@@ -145,7 +145,7 @@ void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 	_m_empty();
 }
 
-void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
+void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
 {
 	__m64         v10; // mm6
 	__m64         v11; // mm6
@@ -221,7 +221,7 @@ void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, 
 	_m_empty();
 }
 
-void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch)
+void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch)
 {
 	unsigned int *v8;  // edi
 	unsigned int  v9;  // ecx
@@ -286,7 +286,7 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 	_m_empty();
 }
 
-void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
+void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
 {
 	__m64         v10; // mm6
 	__m64         v11; // mm6

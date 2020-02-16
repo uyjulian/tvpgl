@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPLightenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPLightenBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	tjs_uint32 *       v3; // edi
 	unsigned int *v4; // ebp
@@ -34,7 +34,7 @@ void __cdecl TVPLightenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPLightenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPLightenBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64       v3; // mm7
 	__m64       v4; // mm7

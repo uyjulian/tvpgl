@@ -9,7 +9,7 @@
 
 #include <mmintrin.h>
 #include <stdbool.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
 static tjs_uint32 bit_mask_tbl[33] =
 	{
@@ -83,7 +83,7 @@ static tjs_uint32 bit_mask_neg_tbl[33] =
 		~((1u << 31) - 1),
 		~((1u << 32) - 1)};
 
-void __cdecl TVPTLG6DecodeGolombValuesForFirst_pfraction_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+void __cdecl TVPTLG6DecodeGolombValuesForFirst_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 {
 	tjs_uint8 *  v3;  // esi
 	int          v4;  // ecx
@@ -219,7 +219,7 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_pfraction_c(tjs_int8 *pixelbuf, t
 	} while (v33 != v31);
 }
 
-void __cdecl TVPTLG6DecodeGolombValues_pfraction_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+void __cdecl TVPTLG6DecodeGolombValues_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 {
 	tjs_uint8 *  v3;  // esi
 	int          v4;  // ecx
@@ -346,7 +346,7 @@ void __cdecl TVPTLG6DecodeGolombValues_pfraction_c(tjs_int8 *pixelbuf, tjs_int p
 	} while (v31 != v29);
 }
 
-void __cdecl TVPTLG6DecodeGolombValuesForFirst_mmx_pfraction_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+void __cdecl TVPTLG6DecodeGolombValuesForFirst_mmx_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 {
 	__m64        v3;  // mm0
 	tjs_uint8 *  v4;  // esi
@@ -487,7 +487,7 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_mmx_pfraction_c(tjs_int8 *pixelbu
 	_m_empty();
 }
 
-void __cdecl TVPTLG6DecodeGolombValues_mmx_pfraction_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+void __cdecl TVPTLG6DecodeGolombValues_mmx_c(tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 {
 	__m64        v3;  // mm0
 	tjs_uint8 *  v4;  // esi

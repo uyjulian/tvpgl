@@ -9,9 +9,9 @@
 
 #include <immintrin.h>
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPPsAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsAlphaBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -43,7 +43,7 @@ void __cdecl TVPPsAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPPsAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsAlphaBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -79,7 +79,7 @@ void __cdecl TVPPsAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsAlphaBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -113,7 +113,7 @@ void __cdecl TVPPsAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsAlphaBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsAlphaBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -149,7 +149,7 @@ void __cdecl TVPPsAlphaBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsAddBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsAddBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -187,7 +187,7 @@ void __cdecl TVPPsAddBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPPsAddBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsAddBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -225,7 +225,7 @@ void __cdecl TVPPsAddBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPPsAddBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsAddBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -263,7 +263,7 @@ void __cdecl TVPPsAddBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsAddBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsAddBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -301,7 +301,7 @@ void __cdecl TVPPsAddBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsSubBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -339,7 +339,7 @@ void __cdecl TVPPsSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPPsSubBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsSubBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -377,7 +377,7 @@ void __cdecl TVPPsSubBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPPsSubBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsSubBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -415,7 +415,7 @@ void __cdecl TVPPsSubBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsSubBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsSubBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -453,7 +453,7 @@ void __cdecl TVPPsSubBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsMulBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -491,7 +491,7 @@ void __cdecl TVPPsMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPPsMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsMulBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -531,7 +531,7 @@ void __cdecl TVPPsMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPPsMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsMulBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -567,7 +567,7 @@ void __cdecl TVPPsMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsMulBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -605,7 +605,7 @@ void __cdecl TVPPsMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsScreenBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -641,7 +641,7 @@ void __cdecl TVPPsScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 	_m_empty();
 }
 
-void __cdecl TVPPsScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsScreenBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -677,7 +677,7 @@ void __cdecl TVPPsScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPPsScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsScreenBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -715,7 +715,7 @@ void __cdecl TVPPsScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPPsScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsScreenBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -753,7 +753,7 @@ void __cdecl TVPPsScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 	_m_empty();
 }
 
-void __cdecl TVPPsOverlayBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsOverlayBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -805,7 +805,7 @@ void __cdecl TVPPsOverlayBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsOverlayBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsOverlayBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -857,7 +857,7 @@ void __cdecl TVPPsOverlayBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsOverlayBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsOverlayBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -907,7 +907,7 @@ void __cdecl TVPPsOverlayBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsOverlayBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsOverlayBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -957,7 +957,7 @@ void __cdecl TVPPsOverlayBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsHardLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsHardLightBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1007,7 +1007,7 @@ void __cdecl TVPPsHardLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsHardLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsHardLightBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1057,7 +1057,7 @@ void __cdecl TVPPsHardLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsHardLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsHardLightBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1105,7 +1105,7 @@ void __cdecl TVPPsHardLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsHardLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsHardLightBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1153,7 +1153,7 @@ void __cdecl TVPPsHardLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 	_m_empty();
 }
 
-void __cdecl TVPPsSoftLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsSoftLightBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1206,7 +1206,7 @@ void __cdecl TVPPsSoftLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsSoftLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsSoftLightBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1261,7 +1261,7 @@ void __cdecl TVPPsSoftLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsSoftLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsSoftLightBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1312,7 +1312,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsSoftLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsSoftLightBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1365,7 +1365,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodgeBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsColorDodgeBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1418,7 +1418,7 @@ void __cdecl TVPPsColorDodgeBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodgeBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsColorDodgeBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1473,7 +1473,7 @@ void __cdecl TVPPsColorDodgeBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodgeBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsColorDodgeBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1524,7 +1524,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tj
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodgeBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsColorDodgeBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1577,7 +1577,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const 
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodge5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsColorDodge5Blend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1619,7 +1619,7 @@ void __cdecl TVPPsColorDodge5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodge5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsColorDodge5Blend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1663,7 +1663,7 @@ void __cdecl TVPPsColorDodge5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodge5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsColorDodge5Blend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1707,7 +1707,7 @@ void __cdecl TVPPsColorDodge5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 	_m_empty();
 }
 
-void __cdecl TVPPsColorDodge5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsColorDodge5Blend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1753,7 +1753,7 @@ void __cdecl TVPPsColorDodge5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const
 	_m_empty();
 }
 
-void __cdecl TVPPsColorBurnBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsColorBurnBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1806,7 +1806,7 @@ void __cdecl TVPPsColorBurnBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsColorBurnBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsColorBurnBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1861,7 +1861,7 @@ void __cdecl TVPPsColorBurnBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsColorBurnBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsColorBurnBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -1912,7 +1912,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsColorBurnBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsColorBurnBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -1965,7 +1965,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 	_m_empty();
 }
 
-void __cdecl TVPPsLightenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsLightenBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -2001,7 +2001,7 @@ void __cdecl TVPPsLightenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsLightenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsLightenBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2041,7 +2041,7 @@ void __cdecl TVPPsLightenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsLightenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsLightenBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -2079,7 +2079,7 @@ void __cdecl TVPPsLightenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsLightenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsLightenBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2119,7 +2119,7 @@ void __cdecl TVPPsLightenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsDarkenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsDarkenBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -2155,7 +2155,7 @@ void __cdecl TVPPsDarkenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 	_m_empty();
 }
 
-void __cdecl TVPPsDarkenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsDarkenBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2191,7 +2191,7 @@ void __cdecl TVPPsDarkenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPPsDarkenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsDarkenBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -2229,7 +2229,7 @@ void __cdecl TVPPsDarkenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPPsDarkenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsDarkenBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2267,7 +2267,7 @@ void __cdecl TVPPsDarkenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 	_m_empty();
 }
 
-void __cdecl TVPPsDiffBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsDiffBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -2305,7 +2305,7 @@ void __cdecl TVPPsDiffBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *
 	_m_empty();
 }
 
-void __cdecl TVPPsDiffBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsDiffBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2343,7 +2343,7 @@ void __cdecl TVPPsDiffBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 	_m_empty();
 }
 
-void __cdecl TVPPsDiffBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsDiffBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -2381,7 +2381,7 @@ void __cdecl TVPPsDiffBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPPsDiffBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsDiffBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2419,7 +2419,7 @@ void __cdecl TVPPsDiffBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPPsDiff5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsDiff5Blend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -2450,7 +2450,7 @@ void __cdecl TVPPsDiff5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPPsDiff5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsDiff5Blend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2483,7 +2483,7 @@ void __cdecl TVPPsDiff5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPPsDiff5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsDiff5Blend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -2512,7 +2512,7 @@ void __cdecl TVPPsDiff5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsDiff5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsDiff5Blend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2543,7 +2543,7 @@ void __cdecl TVPPsDiff5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsExclusionBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsExclusionBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3;  // edi
 	unsigned int *v4;  // esi
@@ -2579,7 +2579,7 @@ void __cdecl TVPPsExclusionBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPPsExclusionBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsExclusionBlend_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi
@@ -2615,7 +2615,7 @@ void __cdecl TVPPsExclusionBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPPsExclusionBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+void __cdecl TVPPsExclusionBlend_HDA_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // esi
@@ -2653,7 +2653,7 @@ void __cdecl TVPPsExclusionBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPPsExclusionBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+void __cdecl TVPPsExclusionBlend_HDA_o_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	unsigned int *v4;  // edi
 	unsigned int *v5;  // esi

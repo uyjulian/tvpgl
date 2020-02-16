@@ -9,7 +9,7 @@
 
 #include <mmintrin.h>
 #include <xmmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
 static tjs_uint64 g_mask      = 0x0000ff000000ff00ull;
 static tjs_uint64 b_mask      = 0x000000ff000000ffull;
@@ -21,7 +21,7 @@ static tjs_uint64 b_d_mask    = 0x000000fe000000feull;
 static tjs_uint64 avg_mask_fe = 0xfefefefefefefefeull;
 static tjs_uint64 avg_mask_01 = 0x0101010101010101ull;
 
-void __cdecl TVPTLG6DecodeLine_mmx_pfraction_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
+void __cdecl TVPTLG6DecodeLine_mmx_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
 {
 	int          v10;             // edx
 	tjs_uint32 * v11;             // edi
@@ -2196,7 +2196,7 @@ void __cdecl TVPTLG6DecodeLine_mmx_pfraction_c(tjs_uint32 *prevline, tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPTLG6DecodeLine_sse_pfraction_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
+void __cdecl TVPTLG6DecodeLine_sse_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
 {
 	int          v10;             // edx
 	tjs_uint32 * v11;             // edi

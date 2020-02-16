@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
+void __cdecl TVPAdjustGamma_a_mmx_c(tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
 {
 	tjs_uint32 * v3;  // edi
 	tjs_uint32 * v4;  // esi

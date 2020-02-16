@@ -9,13 +9,13 @@
 
 #include <mmintrin.h>
 #include <xmmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
 static tjs_uint64 c_0000ffffffffffff = 0x0000ffffffffffffull;
 static tjs_uint64 c_ffff000000000000 = 0xffff000000000000ull;
 static tjs_uint64 c_0100000000000000 = 0x0100000000000000ull;
 
-void __cdecl TVPAddSubVertSum16_mmx_pfraction_c(tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+void __cdecl TVPAddSubVertSum16_mmx_c(tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
 {
 	__m64 *       v4; // edi
 	unsigned int *v5; // eax
@@ -42,7 +42,7 @@ void __cdecl TVPAddSubVertSum16_mmx_pfraction_c(tjs_uint16 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPAddSubVertSum16_d_mmx_pfraction_c(tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+void __cdecl TVPAddSubVertSum16_d_mmx_c(tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
 {
 	__m64 *       v4;  // edi
 	unsigned int *v5;  // eax
@@ -93,7 +93,7 @@ void __cdecl TVPAddSubVertSum16_d_mmx_pfraction_c(tjs_uint16 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPAddSubVertSum32_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+void __cdecl TVPAddSubVertSum32_mmx_c(tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
 {
 	__m64 *       v4; // edi
 	unsigned int *v5; // eax
@@ -127,7 +127,7 @@ void __cdecl TVPAddSubVertSum32_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPAddSubVertSum32_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
+void __cdecl TVPAddSubVertSum32_d_mmx_c(tjs_uint32 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
 {
 	__m64 *       v4;  // edi
 	unsigned int *v5;  // eax
@@ -173,7 +173,7 @@ void __cdecl TVPAddSubVertSum32_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
+void __cdecl TVPDoBoxBlurAvg16_mmx_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
@@ -260,7 +260,7 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	}
 }
 
-void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
+void __cdecl TVPDoBoxBlurAvg16_d_mmx_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
@@ -349,7 +349,7 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	}
 }
 
-void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 *add, const tjs_uint32 *sub, tjs_int n, tjs_int len)
+void __cdecl TVPDoBoxBlurAvg32_mmx_c(tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 *add, const tjs_uint32 *sub, tjs_int n, tjs_int len)
 {
 	__m64       v6;  // mm7
 	__m64       v7;  // mm7
@@ -394,7 +394,7 @@ void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum
 	_m_empty();
 }
 
-void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 *add, const tjs_uint32 *sub, tjs_int n, tjs_int len)
+void __cdecl TVPDoBoxBlurAvg32_d_mmx_c(tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 *add, const tjs_uint32 *sub, tjs_int n, tjs_int len)
 {
 	__m64       v6;  // mm7
 	__m64       v7;  // mm7
@@ -442,7 +442,7 @@ void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *s
 }
 
 //----- (00000E54) --------------------------------------------------------
-void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
+void __cdecl TVPDoBoxBlurAvg16_sse_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
@@ -483,7 +483,7 @@ void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	_m_empty();
 }
 
-void __cdecl TVPDoBoxBlurAvg16_d_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
+void __cdecl TVPDoBoxBlurAvg16_d_sse_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7

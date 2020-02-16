@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPUnivTransBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len)
+void __cdecl TVPUnivTransBlend_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len)
 {
 	tjs_uint32 *     v6;  // edi
 	unsigned int *   v7;  // ecx
@@ -47,7 +47,7 @@ void __cdecl TVPUnivTransBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPUnivTransBlend_switch_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv)
+void __cdecl TVPUnivTransBlend_switch_mmx_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv)
 {
 	tjs_uint32 *     v8;  // edi
 	unsigned int *   v9;  // ecx

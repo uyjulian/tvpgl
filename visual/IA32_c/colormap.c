@@ -8,9 +8,9 @@
 /////////////////////////////////////////////
 
 #include <mmintrin.h>
-#include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_c.h"
 
-void __cdecl TVPApplyColorMap65_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+void __cdecl TVPApplyColorMap65_mmx_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
 {
 	unsigned int *   v4;  // edi
 	const tjs_uint8 *v5;  // ebp
@@ -40,7 +40,7 @@ void __cdecl TVPApplyColorMap65_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPApplyColorMap65_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+void __cdecl TVPApplyColorMap65_d_mmx_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
 {
 	tjs_uint32 *     v4;  // edi
 	const tjs_uint8 *v5;  // ebp
@@ -77,7 +77,7 @@ void __cdecl TVPApplyColorMap65_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPApplyColorMap65_a_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+void __cdecl TVPApplyColorMap65_a_mmx_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
 {
 	unsigned int *   v4;  // edi
 	const tjs_uint8 *v5;  // ebp

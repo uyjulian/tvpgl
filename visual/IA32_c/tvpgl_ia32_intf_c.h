@@ -265,7 +265,7 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPPsExclusionBlend_HDA_mmx_c,  (tjs_uint32 
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPPsExclusionBlend_HDA_o_mmx_c,  (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa));
 /*[*/
 /*]*/
-TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPInitUnivTransBlendTable_mmx_c_c,  (tjs_uint32 *table, tjs_int phase, tjs_int vague));
+TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPInitUnivTransBlendTable_mmx_c_c_c,  (tjs_uint32 *table, tjs_int phase, tjs_int vague));
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_mmx_c,  (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len));
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_switch_mmx_c,  (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv));
 

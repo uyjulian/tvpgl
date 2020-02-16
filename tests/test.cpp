@@ -4,6 +4,7 @@
 #include "tvpgl_info.h"
 #include "tvpgl_ia32_intf.h"
 #include "tvpgl_ia32_intf_pfraction.h"
+#include "tvpgl_ia32_intf_pfraction_c.h"
 #include "detect_cpu.h"
 #include <stdlib.h>
 #include <stdio.h>

@@ -12,7 +12,7 @@ CXX = i686-w64-mingw32-g++
 ASM := nasm
 WINDRES := i686-w64-mingw32-windres
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
-INCFLAGS += -I. -I.. -Itjs2 -Ivisual -Ivisual/gl -Ivisual/glgen -Ivisual/IA32 -Ivisual/IA32_pfraction
+INCFLAGS += -I. -I.. -Itjs2 -Ivisual -Ivisual/gl -Ivisual/glgen
 ALLSRCFLAGS += $(INCFLAGS) -DGIT_TAG=\"$(GIT_TAG)\"
 ASMFLAGS += $(ALLSRCFLAGS) -fwin32 -DWIN32
 OPTFLAGS := -Ofast -march=ivybridge
@@ -46,9 +46,10 @@ LDLIBS_BIN += -lwinmm
 SOURCES := main.cpp tvpgl.rc visual/glgen/tvpgl.c
 ifeq (disabled,)
 SOURCES += visual/IA32/detect_cpu.cpp
-SOURCES += visual/IA32/tvpgl_ia32_intf.c visual/IA32/addalphablend.nas visual/IA32/addblend.nas visual/IA32/adjust_color.nas visual/IA32/affine.nas visual/IA32/alphablend.nas visual/IA32/boxblur.nas visual/IA32/colorfill.nas visual/IA32/colormap.nas visual/IA32/darkenblend.nas visual/IA32/lightenblend.nas visual/IA32/make_alpha_from_key.nas visual/IA32/mulblend.nas visual/IA32/pixelformat.nas visual/IA32/screenblend.nas visual/IA32/stretch.nas visual/IA32/subblend.nas visual/IA32/tlg5.nas visual/IA32/tlg6_chroma.nas visual/IA32/tlg6_golomb.nas visual/IA32/tvpps_asm.nas visual/IA32/univtrans.nas
-SOURCES += visual/IA32_pfraction/tvpgl_ia32_intf_pfraction.c visual/IA32_pfraction/addalphablend.nas visual/IA32_pfraction/addblend.nas visual/IA32_pfraction/adjust_color.nas visual/IA32_pfraction/affine.nas visual/IA32_pfraction/alphablend.nas visual/IA32_pfraction/boxblur.nas visual/IA32_pfraction/colorfill.nas visual/IA32_pfraction/colormap.nas visual/IA32_pfraction/darkenblend.nas visual/IA32_pfraction/lightenblend.nas visual/IA32_pfraction/make_alpha_from_key.nas visual/IA32_pfraction/mulblend.nas visual/IA32_pfraction/pixelformat.nas visual/IA32_pfraction/screenblend.nas visual/IA32_pfraction/stretch.nas visual/IA32_pfraction/subblend.nas visual/IA32_pfraction/tlg5.nas visual/IA32_pfraction/tlg6_chroma.nas visual/IA32_pfraction/tlg6_golomb.nas visual/IA32_pfraction/tvpps_asm.nas visual/IA32_pfraction/univtrans.nas
-SOURCES += visual/gl/adjust_color_sse2.cpp visual/gl/blend_function.cpp visual/gl/blend_function_avx2.cpp visual/gl/blend_function_sse2.cpp visual/gl/boxblur_sse2.cpp visual/gl/colorfill_sse2.cpp visual/gl/colormap_sse2.cpp visual/gl/pixelformat_sse2.cpp visual/gl/tlg_sse2.cpp visual/gl/univtrans_sse2.cpp visual/gl/x86simdutil.cpp visual/gl/x86simdutilAVX2.cpp
+SOURCES_IA32 += visual/IA32/tvpgl_ia32_intf.c visual/IA32/addalphablend.nas visual/IA32/addblend.nas visual/IA32/adjust_color.nas visual/IA32/affine.nas visual/IA32/alphablend.nas visual/IA32/boxblur.nas visual/IA32/colorfill.nas visual/IA32/colormap.nas visual/IA32/darkenblend.nas visual/IA32/lightenblend.nas visual/IA32/make_alpha_from_key.nas visual/IA32/mulblend.nas visual/IA32/pixelformat.nas visual/IA32/screenblend.nas visual/IA32/stretch.nas visual/IA32/subblend.nas visual/IA32/tlg5.nas visual/IA32/tlg6_chroma.nas visual/IA32/tlg6_golomb.nas visual/IA32/tvpps_asm.nas visual/IA32/univtrans.nas
+SOURCES_IA32_PFRACTION += visual/IA32_pfraction/tvpgl_ia32_intf_pfraction.c visual/IA32_pfraction/addalphablend.nas visual/IA32_pfraction/addblend.nas visual/IA32_pfraction/adjust_color.nas visual/IA32_pfraction/affine.nas visual/IA32_pfraction/alphablend.nas visual/IA32_pfraction/boxblur.nas visual/IA32_pfraction/colorfill.nas visual/IA32_pfraction/colormap.nas visual/IA32_pfraction/darkenblend.nas visual/IA32_pfraction/lightenblend.nas visual/IA32_pfraction/make_alpha_from_key.nas visual/IA32_pfraction/mulblend.nas visual/IA32_pfraction/pixelformat.nas visual/IA32_pfraction/screenblend.nas visual/IA32_pfraction/stretch.nas visual/IA32_pfraction/subblend.nas visual/IA32_pfraction/tlg5.nas visual/IA32_pfraction/tlg6_chroma.nas visual/IA32_pfraction/tlg6_golomb.nas visual/IA32_pfraction/tvpps_asm.nas visual/IA32_pfraction/univtrans.nas
+SOURCES_TEMPLATE += visual/gl/adjust_color_sse2.cpp visual/gl/blend_function.cpp visual/gl/blend_function_avx2.cpp visual/gl/blend_function_sse2.cpp visual/gl/boxblur_sse2.cpp visual/gl/colorfill_sse2.cpp visual/gl/colormap_sse2.cpp visual/gl/pixelformat_sse2.cpp visual/gl/tlg_sse2.cpp visual/gl/univtrans_sse2.cpp visual/gl/x86simdutil.cpp visual/gl/x86simdutilAVX2.cpp
+SOURCES += $(SOURCES_IA32) $(SOURCES_IA32_PFRACTION) $(SOURCES_TEMPLATE)
 endif
 OBJECTS := $(SOURCES:.c=.o)
 OBJECTS := $(OBJECTS:.cpp=.o)
@@ -93,9 +94,15 @@ visual/glgen/tvpgl_info.h: visual/glgen/maketvpglinfo.pl visual/glgen/tvpgl.h
 
 main.o: OPTFLAGS := -O2
 
-visual/IA32/addalphablend.nas visual/IA32/addblend.nas visual/IA32/adjust_color.nas visual/IA32/affine.nas visual/IA32/alphablend.nas visual/IA32/boxblur.nas visual/IA32/colorfill.nas visual/IA32/colormap.nas visual/IA32/darkenblend.nas visual/IA32/lightenblend.nas visual/IA32/make_alpha_from_key.nas visual/IA32/mulblend.nas visual/IA32/pixelformat.nas visual/IA32/screenblend.nas visual/IA32/stretch.nas visual/IA32/subblend.nas visual/IA32/tlg5.nas visual/IA32/tlg6_chroma.nas visual/IA32/tlg6_golomb.nas visual/IA32/tvpps_asm.nas visual/IA32/univtrans.nas: INCFLAGS += -Ivisual/IA32
+$(SOURCES_IA32:.nas=.o): INCFLAGS += -Ivisual/IA32
 
-visual/IA32_pfraction/addalphablend.nas visual/IA32_pfraction/addblend.nas visual/IA32_pfraction/adjust_color.nas visual/IA32_pfraction/affine.nas visual/IA32_pfraction/alphablend.nas visual/IA32_pfraction/boxblur.nas visual/IA32_pfraction/colorfill.nas visual/IA32_pfraction/colormap.nas visual/IA32_pfraction/darkenblend.nas visual/IA32_pfraction/lightenblend.nas visual/IA32_pfraction/make_alpha_from_key.nas visual/IA32_pfraction/mulblend.nas visual/IA32_pfraction/pixelformat.nas visual/IA32_pfraction/screenblend.nas visual/IA32_pfraction/stretch.nas visual/IA32_pfraction/subblend.nas visual/IA32_pfraction/tlg5.nas visual/IA32_pfraction/tlg6_chroma.nas visual/IA32_pfraction/tlg6_golomb.nas visual/IA32_pfraction/tvpps_asm.nas visual/IA32_pfraction/univtrans.nas: INCFLAGS += -Ivisual/IA32_pfraction
+$(SOURCES_IA32_PFRACTION:.nas=.o): INCFLAGS += -Ivisual/IA32_pfraction
+
+tests/test.o main.o $(SOURCES_TEMPLATE:.cpp=.o): INCFLAGS += -Ivisual/IA32 -Ivisual/IA32_pfraction
+
+$(SOURCES_IA32:.c=.o): INCFLAGS += -Ivisual/IA32
+
+$(SOURCES_IA32_PFRACTION:.c=.o): INCFLAGS += -Ivisual/IA32_pfraction
 
 tests/test.cpp: visual/glgen/tvpgl.h visual/glgen/tvpgl_info.h
 

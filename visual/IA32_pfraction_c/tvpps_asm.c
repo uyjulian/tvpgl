@@ -38,7 +38,7 @@ void __cdecl TVPPsAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 				_m_packuswb(
 					_m_paddw(v8, _m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v6, _mm_setzero_si64()), v8), _m_punpckldq(v9, v9)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -74,7 +74,7 @@ void __cdecl TVPPsAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 						v9,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v8, _mm_setzero_si64()), v9), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -108,7 +108,7 @@ void __cdecl TVPPsAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 							_m_pmullw(_m_psubw(_m_punpcklbw(v6, _mm_setzero_si64()), v8), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7)), v7)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -144,7 +144,7 @@ void __cdecl TVPPsAlphaBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 							_m_pmullw(_m_psubw(_m_punpcklbw(v8, _mm_setzero_si64()), v9), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -182,7 +182,7 @@ void __cdecl TVPPsAddBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 						v10,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -220,7 +220,7 @@ void __cdecl TVPPsAddBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 						v10,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v12, v12)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -258,7 +258,7 @@ void __cdecl TVPPsAddBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 							_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v8)), v8)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -296,7 +296,7 @@ void __cdecl TVPPsAddBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 							_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v11)), v11)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -334,7 +334,7 @@ void __cdecl TVPPsSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 						v10,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -372,7 +372,7 @@ void __cdecl TVPPsSubBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 						v10,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v12, v12)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -410,7 +410,7 @@ void __cdecl TVPPsSubBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 							_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v8)), v8)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -448,7 +448,7 @@ void __cdecl TVPPsSubBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 							_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v11)), v11)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -486,7 +486,7 @@ void __cdecl TVPPsMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 								_m_punpckldq(v9, v9)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -526,7 +526,7 @@ void __cdecl TVPPsMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 								_m_punpckldq(v11, v11)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -562,7 +562,7 @@ void __cdecl TVPPsMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7)), v7)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -600,7 +600,7 @@ void __cdecl TVPPsMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -636,7 +636,7 @@ void __cdecl TVPPsScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 						v9,
 						_m_psrawi(_m_pmullw(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v9), 8u)), _m_punpckldq(v10, v10)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -672,7 +672,7 @@ void __cdecl TVPPsScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 						v9,
 						_m_psrawi(_m_pmullw(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v9), 8u)), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -710,7 +710,7 @@ void __cdecl TVPPsScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7)), v7)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -748,7 +748,7 @@ void __cdecl TVPPsScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -800,7 +800,7 @@ void __cdecl TVPPsOverlayBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -852,7 +852,7 @@ void __cdecl TVPPsOverlayBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 								_m_punpckldq(v15, v15)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -902,7 +902,7 @@ void __cdecl TVPPsOverlayBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v8)), v8)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -952,7 +952,7 @@ void __cdecl TVPPsOverlayBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v14)), v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1002,7 +1002,7 @@ void __cdecl TVPPsHardLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1052,7 +1052,7 @@ void __cdecl TVPPsHardLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 								_m_punpckldq(v15, v15)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1100,7 +1100,7 @@ void __cdecl TVPPsHardLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v8)), v8)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1148,7 +1148,7 @@ void __cdecl TVPPsHardLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v14)), v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1201,7 +1201,7 @@ void __cdecl TVPPsSoftLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 								_m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1256,7 +1256,7 @@ void __cdecl TVPPsSoftLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1307,7 +1307,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1360,7 +1360,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v13)), v13)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1413,7 +1413,7 @@ void __cdecl TVPPsColorDodgeBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 								_m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1468,7 +1468,7 @@ void __cdecl TVPPsColorDodgeBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1519,7 +1519,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tj
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1572,7 +1572,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const 
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v13)), v13)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1614,7 +1614,7 @@ void __cdecl TVPPsColorDodge5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 			LOBYTE(v11) = BYTE2(v8);
 			LOBYTE(v10) = TVPPsTableColorDodge[0][v11];
 			*(v3 - 1)   = _rotr(v10, 16);
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1658,7 +1658,7 @@ void __cdecl TVPPsColorDodge5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 			LOBYTE(v13) = BYTE2(v9);
 			LOBYTE(v12) = TVPPsTableColorDodge[0][v13];
 			*(v4 - 1)   = _rotr(v12, 16);
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1702,7 +1702,7 @@ void __cdecl TVPPsColorDodge5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 			LOBYTE(v11) = v8;
 			LOBYTE(v10) = TVPPsTableColorDodge[0][v11];
 			*(v3 - 1)   = _rotr(v10, 16);
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1748,7 +1748,7 @@ void __cdecl TVPPsColorDodge5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const
 			LOBYTE(v13) = v9;
 			LOBYTE(v12) = TVPPsTableColorDodge[0][v13];
 			*(v4 - 1)   = _rotr(v12, 16);
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1801,7 +1801,7 @@ void __cdecl TVPPsColorBurnBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 								_m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1856,7 +1856,7 @@ void __cdecl TVPPsColorBurnBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1907,7 +1907,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1960,7 +1960,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v13)), v13)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -1996,7 +1996,7 @@ void __cdecl TVPPsLightenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 						v8,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_paddb(v9, _m_psubusb(v8, v9)), v8), _m_punpckldq(v10, v10)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2036,7 +2036,7 @@ void __cdecl TVPPsLightenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 							_m_pmullw(_m_psubw(_m_paddb(v11, _m_psubusb(v9, v11)), v9), _m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2074,7 +2074,7 @@ void __cdecl TVPPsLightenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7)), v7)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2114,7 +2114,7 @@ void __cdecl TVPPsLightenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2150,7 +2150,7 @@ void __cdecl TVPPsDarkenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 						v9,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_psubb(v8, _m_psubusb(v8, v9)), v9), _m_punpckldq(v10, v10)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2186,7 +2186,7 @@ void __cdecl TVPPsDarkenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 						v9,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_psubb(v8, _m_psubusb(v8, v9)), v9), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2224,7 +2224,7 @@ void __cdecl TVPPsDarkenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7)), v7)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2262,7 +2262,7 @@ void __cdecl TVPPsDarkenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2300,7 +2300,7 @@ void __cdecl TVPPsDiffBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *
 						v10,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2338,7 +2338,7 @@ void __cdecl TVPPsDiffBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 						v11,
 						_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v11), _m_punpckldq(v12, v12)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2376,7 +2376,7 @@ void __cdecl TVPPsDiffBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 							_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v8)), v8)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2414,7 +2414,7 @@ void __cdecl TVPPsDiffBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 							_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v11), _m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2445,7 +2445,7 @@ void __cdecl TVPPsDiff5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 			++v4;
 			++v3;
 			*(v3 - 1) = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubusw(v9, v10), _m_psubusw(v10, v9)), _mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2478,7 +2478,7 @@ void __cdecl TVPPsDiff5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 			++v5;
 			++v4;
 			*(v4 - 1) = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubusw(v11, v12), _m_psubusw(v12, v11)), _mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2507,7 +2507,7 @@ void __cdecl TVPPsDiff5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 			++v4;
 			++v3;
 			*(v3 - 1) = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubusw(v8, v9), _m_psubusw(v9, v8)), _mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2538,7 +2538,7 @@ void __cdecl TVPPsDiff5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 			++v5;
 			++v4;
 			*(v4 - 1) = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubusw(v10, v11), _m_psubusw(v11, v10)), _mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2574,7 +2574,7 @@ void __cdecl TVPPsExclusionBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 						v8,
 						_m_psrawi(_m_pmullw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 7u)), _m_punpckldq(v10, v10)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2610,7 +2610,7 @@ void __cdecl TVPPsExclusionBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 						v8,
 						_m_psrawi(_m_pmullw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 7u)), _m_punpckldq(v11, v11)), 7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2648,7 +2648,7 @@ void __cdecl TVPPsExclusionBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7)), v7)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v4 < (signed int)&src[len]);
+		} while (v4 < &src[len]);
 	}
 	_m_empty();
 }
@@ -2686,7 +2686,7 @@ void __cdecl TVPPsExclusionBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 								_m_punpckldq(_mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10)), v10)),
 							7u)),
 					_mm_setzero_si64()));
-		} while ((signed int)v5 < (signed int)&src[len]);
+		} while (v5 < &src[len]);
 	}
 	_m_empty();
 }

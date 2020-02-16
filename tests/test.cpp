@@ -153,7 +153,7 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 			if( rdiff < range && gdiff < range && bdiff < range ) {	// warning error level because there is only one difference
 			} else {
 				fprintf(stderr, "test fail on function %s\n", pszFuncName);
-				fprintf(stderr, "invalid color src : 0x%08x, 1 : 0x%08x\n", testdata2[j], testdest1[j] );
+				fprintf(stderr, "invalid color src : 0x%08x, 1 : 0x%08x, 2 : 0x%08x\n", testdata2[j], testdest1[j], testdest2[j] );
 				fprintf(stderr, "1 0x%08x\n", testdest1[j] );
 				fprintf(stderr, "2 0x%08x\n", testdest2[j] );
 				int start = (j>>2)<<2;
@@ -166,6 +166,10 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 				for( int k = start; k < limit; k++ ) {
 					fprintf(stderr, "0x%08x,", testdest1[k] );
 				}
+				fprintf(stderr, "\n2 : " );
+				for( int k = start; k < limit; k++ ) {
+					fprintf(stderr, "0x%08x,", testdest2[k] );
+				}
 				fprintf(stderr, "\noffset : %d\n", j - start );
 				break;
 			}
@@ -175,7 +179,7 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 			if( adiff < range) {	// warning error level
 			} else {
 				fprintf(stderr, "test fail on function %s\n", pszFuncName);
-				fprintf(stderr, "invalid alpha src : 0x%08x, 1 : 0x%08x\n", testdata2[j], testdest1[j] );
+				fprintf(stderr, "invalid alpha src : 0x%08x, 1 : 0x%08x, 2 : 0x%08x\n", testdata2[j], testdest1[j], testdest2[j] );
 				fprintf(stderr, "1 0x%08x\n", testdest1[j] );
 				fprintf(stderr, "2 0x%08x\n", testdest2[j] );
 				break;

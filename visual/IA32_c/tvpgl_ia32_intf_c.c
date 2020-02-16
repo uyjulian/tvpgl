@@ -314,7 +314,7 @@ if(TVPCPUType & TVP_CPU_HAS_MMX)
 if(TVPCPUType & TVP_CPU_HAS_MMX)
 	 TVPPsExclusionBlend_HDA_o =  TVPPsExclusionBlend_HDA_o_mmx_c;
 if(TVPCPUType & TVP_CPU_HAS_MMX)
-	 TVPInitUnivTransBlendTable =  TVPInitUnivTransBlendTable_mmx_c_c;
+	 TVPInitUnivTransBlendTable =  TVPInitUnivTransBlendTable_mmx_c_c_c;
 if(TVPCPUType & TVP_CPU_HAS_MMX)
 	 TVPUnivTransBlend =  TVPUnivTransBlend_mmx_c;
 if(TVPCPUType & TVP_CPU_HAS_MMX)
@@ -323,7 +323,7 @@ if(TVPCPUType & TVP_CPU_HAS_MMX)
 }
 
 
-TVP_GL_IA32_FUNC_DECL(void, TVPInitUnivTransBlendTable_mmx_c_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague))
+TVP_GL_IA32_FUNC_DECL(void, TVPInitUnivTransBlendTable_mmx_c_c_c, (tjs_uint32 *table, tjs_int phase, tjs_int vague))
 {
 	tjs_uint16 *t = (tjs_uint16*)table;
 	tjs_int i;

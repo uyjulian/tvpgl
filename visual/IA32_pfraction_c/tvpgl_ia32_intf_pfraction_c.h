@@ -35,30 +35,6 @@
 #define BYTE1(x)  BYTEn(x, 1)
 #define BYTE2(x)  BYTEn(x, 2)
 
-inline tjs_uint32 __ROR4__(tjs_uint32 value, int count)
-{
-	const unsigned int nbits = sizeof(tjs_uint32) * 8;
-	count                    = -count;
-
-	if (count > 0)
-	{
-		count %= nbits;
-		tjs_uint32 high = value >> (nbits - count);
-		if ((tjs_uint32)(-1) < 0)
-			high &= ~(((tjs_uint32)(-1) << count));
-		value <<= count;
-		value |= high;
-	}
-	else
-	{
-		count          = -count % nbits;
-		tjs_uint32 low = value << (nbits - count);
-		value >>= count;
-		value |= low;
-	}
-	return value;
-}
-
 #ifdef __cplusplus
  extern "C" {
 #endif

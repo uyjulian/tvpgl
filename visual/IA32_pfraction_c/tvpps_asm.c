@@ -7,6 +7,7 @@
 //                                         //
 /////////////////////////////////////////////
 
+#include <immintrin.h>
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
@@ -1181,7 +1182,7 @@ void __cdecl TVPPsSoftLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 			HIBYTE(v9) = BYTE1(v7);
 			LOBYTE(v9) = BYTE1(v8);
 			BYTE1(v7)  = TVPPsTableSoftLight[0][v9];
-			v7         = __ROR4__(v7, 16);
+			v7         = _rotr(v7, 16);
 			HIBYTE(v9) = v7;
 			LOBYTE(v9) = BYTE2(v8);
 			LOBYTE(v7) = TVPPsTableSoftLight[0][v9];
@@ -1196,7 +1197,7 @@ void __cdecl TVPPsSoftLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 						v11,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v7, 16)), _mm_setzero_si64()), v11),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v7, 16)), _mm_setzero_si64()), v11),
 								_m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1236,7 +1237,7 @@ void __cdecl TVPPsSoftLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 			HIBYTE(v11) = BYTE1(v9);
 			LOBYTE(v11) = BYTE1(v10);
 			BYTE1(v9)   = TVPPsTableSoftLight[0][v11];
-			v9          = __ROR4__(v9, 16);
+			v9          = _rotr(v9, 16);
 			HIBYTE(v11) = v9;
 			LOBYTE(v11) = BYTE2(v10);
 			LOBYTE(v9)  = TVPPsTableSoftLight[0][v11];
@@ -1251,7 +1252,7 @@ void __cdecl TVPPsSoftLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 						v12,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v9, 16)), _mm_setzero_si64()), v12),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v9, 16)), _mm_setzero_si64()), v12),
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1288,7 +1289,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 			HIBYTE(v9) = BYTE1(v7);
 			LOBYTE(v9) = BYTE1(v8);
 			BYTE1(v7)  = TVPPsTableSoftLight[0][v9];
-			v7         = __ROR4__(v7, 16);
+			v7         = _rotr(v7, 16);
 			HIBYTE(v9) = v7;
 			LOBYTE(v9) = BYTE2(v8);
 			LOBYTE(v7) = TVPPsTableSoftLight[0][v9];
@@ -1302,7 +1303,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 						v11,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v7, 16)), _mm_setzero_si64()), v11),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v7, 16)), _mm_setzero_si64()), v11),
 								_m_punpckldq(_m_punpcklwd(v10, v10), v10)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1341,7 +1342,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 			HIBYTE(v11) = BYTE1(v9);
 			LOBYTE(v11) = BYTE1(v10);
 			BYTE1(v9)   = TVPPsTableSoftLight[0][v11];
-			v9          = __ROR4__(v9, 16);
+			v9          = _rotr(v9, 16);
 			HIBYTE(v11) = v9;
 			LOBYTE(v11) = BYTE2(v10);
 			LOBYTE(v9)  = TVPPsTableSoftLight[0][v11];
@@ -1355,7 +1356,7 @@ void __cdecl TVPPsSoftLightBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 						v12,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v9, 16)), _mm_setzero_si64()), v12),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v9, 16)), _mm_setzero_si64()), v12),
 								_m_punpckldq(_m_punpcklwd(v13, v13), v13)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1393,7 +1394,7 @@ void __cdecl TVPPsColorDodgeBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 			HIBYTE(v9) = BYTE1(v7);
 			LOBYTE(v9) = BYTE1(v8);
 			BYTE1(v7)  = TVPPsTableColorDodge[0][v9];
-			v7         = __ROR4__(v7, 16);
+			v7         = _rotr(v7, 16);
 			HIBYTE(v9) = v7;
 			LOBYTE(v9) = BYTE2(v8);
 			LOBYTE(v7) = TVPPsTableColorDodge[0][v9];
@@ -1408,7 +1409,7 @@ void __cdecl TVPPsColorDodgeBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 						v11,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v7, 16)), _mm_setzero_si64()), v11),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v7, 16)), _mm_setzero_si64()), v11),
 								_m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1448,7 +1449,7 @@ void __cdecl TVPPsColorDodgeBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 			HIBYTE(v11) = BYTE1(v9);
 			LOBYTE(v11) = BYTE1(v10);
 			BYTE1(v9)   = TVPPsTableColorDodge[0][v11];
-			v9          = __ROR4__(v9, 16);
+			v9          = _rotr(v9, 16);
 			HIBYTE(v11) = v9;
 			LOBYTE(v11) = BYTE2(v10);
 			LOBYTE(v9)  = TVPPsTableColorDodge[0][v11];
@@ -1463,7 +1464,7 @@ void __cdecl TVPPsColorDodgeBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 						v12,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v9, 16)), _mm_setzero_si64()), v12),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v9, 16)), _mm_setzero_si64()), v12),
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1500,7 +1501,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tj
 			HIBYTE(v9) = BYTE1(v7);
 			LOBYTE(v9) = BYTE1(v8);
 			BYTE1(v7)  = TVPPsTableColorDodge[0][v9];
-			v7         = __ROR4__(v7, 16);
+			v7         = _rotr(v7, 16);
 			HIBYTE(v9) = v7;
 			LOBYTE(v9) = BYTE2(v8);
 			LOBYTE(v7) = TVPPsTableColorDodge[0][v9];
@@ -1514,7 +1515,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tj
 						v11,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v7, 16)), _mm_setzero_si64()), v11),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v7, 16)), _mm_setzero_si64()), v11),
 								_m_punpckldq(_m_punpcklwd(v10, v10), v10)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1553,7 +1554,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const 
 			HIBYTE(v11) = BYTE1(v9);
 			LOBYTE(v11) = BYTE1(v10);
 			BYTE1(v9)   = TVPPsTableColorDodge[0][v11];
-			v9          = __ROR4__(v9, 16);
+			v9          = _rotr(v9, 16);
 			HIBYTE(v11) = v9;
 			LOBYTE(v11) = BYTE2(v10);
 			LOBYTE(v9)  = TVPPsTableColorDodge[0][v11];
@@ -1567,7 +1568,7 @@ void __cdecl TVPPsColorDodgeBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const 
 						v12,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v9, 16)), _mm_setzero_si64()), v12),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v9, 16)), _mm_setzero_si64()), v12),
 								_m_punpckldq(_m_punpcklwd(v13, v13), v13)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1608,11 +1609,11 @@ void __cdecl TVPPsColorDodge5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 			++v3;
 			LOBYTE(v11) = BYTE1(v8);
 			BYTE1(v10)  = TVPPsTableColorDodge[0][v11];
-			v10         = __ROR4__(v10, 16);
+			v10         = _rotr(v10, 16);
 			HIBYTE(v11) = v10;
 			LOBYTE(v11) = BYTE2(v8);
 			LOBYTE(v10) = TVPPsTableColorDodge[0][v11];
-			*(v3 - 1)   = __ROR4__(v10, 16);
+			*(v3 - 1)   = _rotr(v10, 16);
 		} while ((signed int)v4 < (signed int)&src[len]);
 	}
 	_m_empty();
@@ -1652,11 +1653,11 @@ void __cdecl TVPPsColorDodge5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 			++v4;
 			LOBYTE(v13) = BYTE1(v9);
 			BYTE1(v12)  = TVPPsTableColorDodge[0][v13];
-			v12         = __ROR4__(v12, 16);
+			v12         = _rotr(v12, 16);
 			HIBYTE(v13) = v12;
 			LOBYTE(v13) = BYTE2(v9);
 			LOBYTE(v12) = TVPPsTableColorDodge[0][v13];
-			*(v4 - 1)   = __ROR4__(v12, 16);
+			*(v4 - 1)   = _rotr(v12, 16);
 		} while ((signed int)v5 < (signed int)&src[len]);
 	}
 	_m_empty();
@@ -1695,12 +1696,12 @@ void __cdecl TVPPsColorDodge5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 			LOBYTE(v11) = BYTE1(v8);
 			v8 >>= 16;
 			BYTE1(v10)  = TVPPsTableColorDodge[0][v11];
-			v10         = __ROR4__(v10, 16);
+			v10         = _rotr(v10, 16);
 			HIBYTE(v11) = v10;
 			BYTE1(v10)  = BYTE1(v8);
 			LOBYTE(v11) = v8;
 			LOBYTE(v10) = TVPPsTableColorDodge[0][v11];
-			*(v3 - 1)   = __ROR4__(v10, 16);
+			*(v3 - 1)   = _rotr(v10, 16);
 		} while ((signed int)v4 < (signed int)&src[len]);
 	}
 	_m_empty();
@@ -1741,12 +1742,12 @@ void __cdecl TVPPsColorDodge5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const
 			LOBYTE(v13) = BYTE1(v9);
 			v9 >>= 16;
 			BYTE1(v12)  = TVPPsTableColorDodge[0][v13];
-			v12         = __ROR4__(v12, 16);
+			v12         = _rotr(v12, 16);
 			HIBYTE(v13) = v12;
 			BYTE1(v12)  = BYTE1(v9);
 			LOBYTE(v13) = v9;
 			LOBYTE(v12) = TVPPsTableColorDodge[0][v13];
-			*(v4 - 1)   = __ROR4__(v12, 16);
+			*(v4 - 1)   = _rotr(v12, 16);
 		} while ((signed int)v5 < (signed int)&src[len]);
 	}
 	_m_empty();
@@ -1781,7 +1782,7 @@ void __cdecl TVPPsColorBurnBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 			HIBYTE(v9) = BYTE1(v7);
 			LOBYTE(v9) = BYTE1(v8);
 			BYTE1(v7)  = TVPPsTableColorBurn[0][v9];
-			v7         = __ROR4__(v7, 16);
+			v7         = _rotr(v7, 16);
 			HIBYTE(v9) = v7;
 			LOBYTE(v9) = BYTE2(v8);
 			LOBYTE(v7) = TVPPsTableColorBurn[0][v9];
@@ -1796,7 +1797,7 @@ void __cdecl TVPPsColorBurnBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 						v11,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v7, 16)), _mm_setzero_si64()), v11),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v7, 16)), _mm_setzero_si64()), v11),
 								_m_punpckldq(v12, v12)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1836,7 +1837,7 @@ void __cdecl TVPPsColorBurnBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 			HIBYTE(v11) = BYTE1(v9);
 			LOBYTE(v11) = BYTE1(v10);
 			BYTE1(v9)   = TVPPsTableColorBurn[0][v11];
-			v9          = __ROR4__(v9, 16);
+			v9          = _rotr(v9, 16);
 			HIBYTE(v11) = v9;
 			LOBYTE(v11) = BYTE2(v10);
 			LOBYTE(v9)  = TVPPsTableColorBurn[0][v11];
@@ -1851,7 +1852,7 @@ void __cdecl TVPPsColorBurnBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 						v12,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v9, 16)), _mm_setzero_si64()), v12),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v9, 16)), _mm_setzero_si64()), v12),
 								_m_punpckldq(v14, v14)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1888,7 +1889,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 			HIBYTE(v9) = BYTE1(v7);
 			LOBYTE(v9) = BYTE1(v8);
 			BYTE1(v7)  = TVPPsTableColorBurn[0][v9];
-			v7         = __ROR4__(v7, 16);
+			v7         = _rotr(v7, 16);
 			HIBYTE(v9) = v7;
 			LOBYTE(v9) = BYTE2(v8);
 			LOBYTE(v7) = TVPPsTableColorBurn[0][v9];
@@ -1902,7 +1903,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 						v11,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v7, 16)), _mm_setzero_si64()), v11),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v7, 16)), _mm_setzero_si64()), v11),
 								_m_punpckldq(_m_punpcklwd(v10, v10), v10)),
 							7u)),
 					_mm_setzero_si64()));
@@ -1941,7 +1942,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 			HIBYTE(v11) = BYTE1(v9);
 			LOBYTE(v11) = BYTE1(v10);
 			BYTE1(v9)   = TVPPsTableColorBurn[0][v11];
-			v9          = __ROR4__(v9, 16);
+			v9          = _rotr(v9, 16);
 			HIBYTE(v11) = v9;
 			LOBYTE(v11) = BYTE2(v10);
 			LOBYTE(v9)  = TVPPsTableColorBurn[0][v11];
@@ -1955,7 +1956,7 @@ void __cdecl TVPPsColorBurnBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const t
 						v12,
 						_m_psrawi(
 							_m_pmullw(
-								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(__ROR4__(v9, 16)), _mm_setzero_si64()), v12),
+								_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(_rotr(v9, 16)), _mm_setzero_si64()), v12),
 								_m_punpckldq(_m_punpcklwd(v13, v13), v13)),
 							7u)),
 					_mm_setzero_si64()));

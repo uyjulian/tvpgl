@@ -99,10 +99,8 @@ void __cdecl TVPConstColorAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int l
 	__m64         v6;  // mm6
 	__m64         v7;  // mm7
 	__m64         v8;  // mm7
-	__m64         v9;  // mm2
 	__m64         v10; // mm2
 	__m64         v11; // mm1
-	__m64         v12; // mm2
 	__m64         v13; // mm2
 	__m64         v14; // mm2
 	tjs_uint32 *  v15; // ebp
@@ -115,11 +113,9 @@ void __cdecl TVPConstColorAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int l
 		v6  = _m_punpckldq(v5, v5);
 		v7  = _mm_cvtsi32_si64(0xFFFFFFu);
 		v8  = _m_punpckldq(v7, v7);
-		v9  = _mm_cvtsi32_si64(opa);
-		v10 = _m_punpcklwd(v9, v9);
+		v10 = _mm_set1_pi16(opa);
 		v11 = _m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(color), _mm_setzero_si64()), v10);
-		v12 = _mm_cvtsi32_si64((tjs_uint8) ~(tjs_uint8)opa);
-		v13 = _m_punpcklwd(v12, v12);
+		v13 = _mm_set1_pi16((tjs_uint8) ~(tjs_uint8)opa);
 		v14 = v13;
 		v15 = &dest[len];
 		if (dest < v15)
@@ -149,7 +145,6 @@ void __cdecl TVPConstColorAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 	tjs_int     v8;  // esi
 	__m64       v9;  // mm1
 	tjs_uint32  v10; // edx
-	__m64       v11; // mm4
 	__m64       v12; // mm4
 
 	v4 = len;
@@ -167,8 +162,7 @@ void __cdecl TVPConstColorAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 				v10        = *v5 >> 24;
 				LOBYTE(v4) = TVPNegativeMulTable[v8 + v10];
 				v4 <<= 24;
-				v11 = _mm_cvtsi32_si64(TVPOpacityOnOpacityTable[v8 + v10]);
-				v12 = _m_punpcklwd(v11, v11);
+				v12 = _mm_set1_pi16(TVPOpacityOnOpacityTable[v8 + v10]);
 				*v5 = v4 | _mm_cvtsi64_si32(_m_packuswb(_m_psrlwi(_m_paddw(_m_pmullw(_m_psubw(v7, v9), v12), _m_psllwi(v9, 8u)), 8u), _mm_setzero_si64()));
 				++v5;
 			} while (v5 < v6);
@@ -182,7 +176,6 @@ void __cdecl TVPConstColorAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 	unsigned int *v4;  // edi
 	tjs_uint32 *  v5;  // ebp
 	unsigned int  v6;  // esi
-	__m64         v7;  // mm7
 	__m64         v8;  // mm7
 	__m64         v9;  // mm7
 	__m64         v10; // mm6
@@ -193,8 +186,7 @@ void __cdecl TVPConstColorAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 		v4  = dest;
 		v5  = &dest[len];
 		v6  = ((unsigned int)opa >> 7) + opa;
-		v7  = _mm_cvtsi32_si64(v6);
-		v8  = _m_punpcklwd(v7, v7);
+		v8  = _mm_set1_pi16(v6);
 		v9  = v8;
 		v10 = _m_por(
 			_m_psrlwi(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(color & 0xFFFFFF), _mm_setzero_si64()), v9), 8u),

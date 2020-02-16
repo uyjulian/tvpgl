@@ -67,8 +67,8 @@ void __cdecl TVPAddSubVertSum16_d_mmx_pfraction_c(tjs_uint16 *dest, const tjs_ui
 				v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v6), _mm_setzero_si64());
 				v9  = _m_psrlqi(_m_paddw(_m_psrlwi(v7, 7u), v7), 0x30u);
 				v10 = _m_psrlqi(_m_paddw(_m_psrlwi(v8, 7u), v8), 0x30u);
-				v11 = _m_punpcklwd(v9, v9);
-				v12 = _m_punpcklwd(v10, v10);
+				v11 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v9));
+				v12 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10));
 				*v4 = _m_psubd(
 					_m_paddd(
 						*v4,
@@ -155,8 +155,8 @@ void __cdecl TVPAddSubVertSum32_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 				v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v6), _mm_setzero_si64());
 				v9  = _m_psrlqi(_m_paddw(_m_psrlwi(v7, 7u), v7), 0x30u);
 				v10 = _m_psrlqi(_m_paddw(_m_psrlwi(v8, 7u), v8), 0x30u);
-				v11 = _m_punpcklwd(v9, v9);
-				v12 = _m_punpcklwd(v10, v10);
+				v11 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v9));
+				v12 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10));
 				v13 = _m_psrlwi(_m_pmullw(v7, _m_por(_m_pand(v11, (__m64)c_0000ffffffffffff), (__m64)c_0100000000000000)), 8u);
 				v14 = _m_psrlwi(_m_pmullw(v8, _m_por(_m_pand(v12, (__m64)c_0000ffffffffffff), (__m64)c_0100000000000000)), 8u);
 				v15 = _m_psubd(_m_paddd(v4[1], _m_punpckhwd(v13, _mm_setzero_si64())), _m_punpckhwd(v14, _mm_setzero_si64()));
@@ -175,7 +175,6 @@ void __cdecl TVPAddSubVertSum32_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 
 void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
-	__m64       v6;  // mm7
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
 	int         v9;  // esi
@@ -187,10 +186,8 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	__m64       v15; // mm2
 	__m64       v16; // mm1
 	__m64       v17; // mm2
-	__m64       v18; // mm7
 	__m64       v19; // mm7
 	__m64       v20; // mm7
-	__m64       v21; // mm6
 	__m64       v22; // mm6
 	__m64       v23; // mm6
 	tjs_uint32 *v24; // edi
@@ -205,11 +202,9 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	{
 		if (len > 0)
 		{
-			v18 = _mm_cvtsi32_si64((unsigned int)n >> 1);
-			v19 = _m_punpcklwd(v18, v18);
+			v19 = _mm_set1_pi16((unsigned int)n >> 1);
 			v20 = v19;
-			v21 = _mm_cvtsi32_si64(0x10000 / n);
-			v22 = _m_punpcklwd(v21, v21);
+			v22 = _mm_set1_pi16(0x10000 / n);
 			v23 = v22;
 			v24 = dest;
 			v25 = *(__m64 *)sum;
@@ -236,8 +231,7 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	{
 		if (len > 0)
 		{
-			v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
-			v7  = _m_punpcklwd(v6, v6);
+			v7  = _mm_set1_pi16((unsigned int)n >> 1);
 			v8  = v7;
 			v10 = dest;
 			v11 = *(__m64 *)sum;
@@ -268,7 +262,6 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 
 void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
-	__m64       v6;  // mm7
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
 	int         v9;  // esi
@@ -280,10 +273,8 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	__m64       v15; // mm1
 	__m64       v16; // mm2
 	int         v17; // edx
-	__m64       v18; // mm7
 	__m64       v19; // mm7
 	__m64       v20; // mm7
-	__m64       v21; // mm6
 	__m64       v22; // mm6
 	__m64       v23; // mm6
 	tjs_uint32 *v24; // edi
@@ -299,11 +290,9 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	{
 		if (len > 0)
 		{
-			v18 = _mm_cvtsi32_si64((unsigned int)n >> 1);
-			v19 = _m_punpcklwd(v18, v18);
+			v19 = _mm_set1_pi16((unsigned int)n >> 1);
 			v20 = v19;
-			v21 = _mm_cvtsi32_si64(0x10000 / n);
-			v22 = _m_punpcklwd(v21, v21);
+			v22 = _mm_set1_pi16(0x10000 / n);
 			v23 = v22;
 			v24 = dest;
 			v25 = *(__m64 *)sum;
@@ -331,8 +320,7 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	{
 		if (len > 0)
 		{
-			v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
-			v7  = _m_punpcklwd(v6, v6);
+			v7  = _mm_set1_pi16((unsigned int)n >> 1);
 			v8  = v7;
 			v9  = 0x10000 / n << 16;
 			v10 = dest;
@@ -456,10 +444,8 @@ void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *s
 //----- (00000E54) --------------------------------------------------------
 void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
-	__m64       v6;  // mm7
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
-	__m64       v9;  // mm6
 	__m64       v10; // mm6
 	__m64       v11; // mm6
 	tjs_uint32 *v12; // edi
@@ -471,11 +457,9 @@ void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 
 	if (len > 0)
 	{
-		v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
-		v7  = _m_punpcklwd(v6, v6);
+		v7  = _mm_set1_pi16((unsigned int)n >> 1);
 		v8  = v7;
-		v9  = _mm_cvtsi32_si64(0x10000 / n);
-		v10 = _m_punpcklwd(v9, v9);
+		v10 = _mm_set1_pi16(0x10000 / n);
 		v11 = v10;
 		v12 = dest;
 		v13 = *(__m64 *)sum;
@@ -501,10 +485,8 @@ void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 
 void __cdecl TVPDoBoxBlurAvg16_d_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 *add, const tjs_uint16 *sub, tjs_int n, tjs_int len)
 {
-	__m64       v6;  // mm7
 	__m64       v7;  // mm7
 	__m64       v8;  // mm7
-	__m64       v9;  // mm6
 	__m64       v10; // mm6
 	__m64       v11; // mm6
 	tjs_uint32 *v12; // edi
@@ -517,11 +499,9 @@ void __cdecl TVPDoBoxBlurAvg16_d_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 
 	if (len > 0)
 	{
-		v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
-		v7  = _m_punpcklwd(v6, v6);
+		v7  = _mm_set1_pi16((unsigned int)n >> 1);
 		v8  = v7;
-		v9  = _mm_cvtsi32_si64(0x10000 / n);
-		v10 = _m_punpcklwd(v9, v9);
+		v10 = _mm_set1_pi16(0x10000 / n);
 		v11 = v10;
 		v12 = dest;
 		v13 = *(__m64 *)sum;

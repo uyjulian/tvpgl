@@ -64,7 +64,6 @@ void __cdecl TVPAddBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 
 void __cdecl TVPAddBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
-	__m64         v4; // mm7
 	__m64         v5; // mm7
 	__m64         v6; // mm7
 	tjs_uint32 *  v7; // edi
@@ -73,8 +72,7 @@ void __cdecl TVPAddBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 
 	if (len > 0)
 	{
-		v4 = _mm_cvtsi32_si64(opa);
-		v5 = _m_punpcklwd(v4, v4);
+		v5 = _mm_set1_pi16(opa);
 		v6 = _m_psrlqi(v5, 0x10u);
 		v7 = dest;
 		v8 = (unsigned int *)src;

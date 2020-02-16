@@ -16,7 +16,6 @@ void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	const tjs_uint32 *v4; // ebp
 	tjs_uint32 *      v5; // esi
 	unsigned int      v6; // eax
-	__m64             v7; // mm4
 	__m64             v8; // mm4
 	__m64             v9; // mm1
 
@@ -32,8 +31,7 @@ void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 				v6 = *v4;
 				if (*v4 < 0xFF000000)
 				{
-					v7  = _mm_cvtsi32_si64(v6 >> 24);
-					v8  = _m_punpcklwd(v7, v7);
+					v8  = _mm_set1_pi16(v6 >> 24);
 					v9  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
 					*v3 = _mm_cvtsi64_si32(
 						_m_packuswb(
@@ -57,7 +55,6 @@ void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	unsigned int *v4; // edi
 	unsigned int *v5; // ebp
 	tjs_uint32 *  v6; // esi
-	__m64         v7; // mm4
 	__m64         v8; // mm4
 	__m64         v9; // mm1
 
@@ -70,8 +67,7 @@ void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 		{
 			do
 			{
-				v7  = _mm_cvtsi32_si64((unsigned int)opa * (tjs_uint64)*v5 >> 32);
-				v8  = _m_punpcklwd(v7, v7);
+				v8  = _mm_set1_pi16((unsigned int)opa * (tjs_uint64)*v5 >> 32);
 				v9  = _m_punpcklbw(_mm_cvtsi32_si64(*v4), _mm_setzero_si64());
 				*v4 = _mm_cvtsi64_si32(
 					_m_packuswb(
@@ -91,7 +87,6 @@ void __cdecl TVPAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 {
 	int          v3; // ecx
 	unsigned int v4; // eax
-	__m64        v5; // mm4
 	__m64        v6; // mm2
 	__m64        v7; // mm4
 	unsigned int v8; // eax
@@ -103,9 +98,8 @@ void __cdecl TVPAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 		do
 		{
 			v4       = src[v3];
-			v5       = _mm_cvtsi32_si64(v4 >> 24);
 			v6       = _mm_cvtsi32_si64(v4);
-			v7       = _m_punpcklwd(v5, v5);
+			v7       = _mm_set1_pi16(v4 >> 24);
 			v8       = dest[v3];
 			v9       = _m_punpcklbw(_mm_cvtsi32_si64(v8), _mm_setzero_si64());
 			dest[v3] = v8 & 0xFF000000 | _mm_cvtsi64_si32(
@@ -131,7 +125,6 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	tjs_uint32 *      v6;  // esi
 	int               v7;  // eax
 	__m64             v8;  // mm1
-	__m64             v9;  // mm4
 	__m64             v10; // mm4
 
 	if (len > 0)
@@ -146,8 +139,7 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 			{
 				v7  = (*v3 >> 24) + ((*v4 >> 16) & 0xFF00);
 				v8  = _m_punpcklbw(_m_pand(_mm_cvtsi32_si64(*v3), v5), _mm_setzero_si64());
-				v9  = _mm_cvtsi32_si64(TVPOpacityOnOpacityTable[v7]);
-				v10 = _m_punpcklwd(v9, v9);
+				v10 = _mm_set1_pi16(TVPOpacityOnOpacityTable[v7]);
 				*v3 = (TVPNegativeMulTable[v7] << 24) | _mm_cvtsi64_si32(
 															_m_packuswb(
 																_m_psrlwi(
@@ -170,7 +162,6 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 
 void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
-	__m64   v4; // mm4
 	tjs_int v5; // ebx
 	__m64   v6; // mm4
 	__m64   i;  // mm4
@@ -179,9 +170,8 @@ void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 
 	if (len > 0)
 	{
-		v4 = _mm_cvtsi32_si64(opa);
 		v5 = 0;
-		v6 = _m_punpcklwd(v4, v4);
+		v6 = _mm_set1_pi16(opa);
 		for (i = v6;
 			 v5 < len;
 			 dest[v5 - 1] = _mm_cvtsi64_si32(_m_packuswb(_m_psrlwi(_m_paddw(_m_psllwi(v8, 8u), _m_pmullw(v9, i)), 8u), _mm_setzero_si64())))
@@ -196,7 +186,6 @@ void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 
 void __cdecl TVPConstAlphaBlend_SD_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
 {
-	__m64   v5;  // mm4
 	tjs_int v6;  // ebx
 	__m64   v7;  // mm4
 	__m64   i;   // mm4
@@ -205,9 +194,8 @@ void __cdecl TVPConstAlphaBlend_SD_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 
 	if (len > 0)
 	{
-		v5 = _mm_cvtsi32_si64(opa);
 		v6 = 0;
-		v7 = _m_punpcklwd(v5, v5);
+		v7 = _mm_set1_pi16(opa);
 		for (i = v7; v6 < len; dest[v6 - 1] = _mm_cvtsi64_si32(_m_packuswb(v10, _mm_setzero_si64())))
 		{
 			v9  = _m_punpcklbw(_mm_cvtsi32_si64(src1[v6]), _mm_setzero_si64());

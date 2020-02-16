@@ -41,7 +41,6 @@ void __cdecl TVPLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, cons
 void __cdecl TVPLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
 {
 	unsigned int *v9;  // edi
-	__m64         v10; // mm3
 	__m64         v11; // mm3
 	__m64         v12; // mm3
 	__m64         v13; // mm0
@@ -53,8 +52,7 @@ void __cdecl TVPLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_in
 	if (len > 0)
 	{
 		v9  = dest;
-		v10 = _mm_cvtsi32_si64(opa);
-		v11 = _m_punpcklwd(v10, v10);
+		v11 = _mm_set1_pi16(opa);
 		v12 = v11;
 		v13 = _m_por(_mm_cvtsi32_si64(sx), _m_psllqi(_mm_cvtsi32_si64(sy), 0x20u));
 		v17 = _m_por(_mm_cvtsi32_si64(stepx), _m_psllqi(_mm_cvtsi32_si64(stepy), 0x20u));
@@ -94,10 +92,8 @@ void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 	unsigned int  v10; // edx
 	tjs_uint32 *  v11; // ebp
 	unsigned int *v12; // eax
-	__m64         v13; // mm5
 	__m64         v14; // mm5
 	__m64         v15; // mm5
-	__m64         v16; // mm7
 	__m64         v17; // mm7
 	__m64         v18; // mm1
 	__m64         v19; // mm3
@@ -114,11 +110,9 @@ void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 			do
 			{
 				v12 = (unsigned int *)((char *)&src[v9 >> 16] + srcpitch * (v10 >> 16));
-				v13 = _mm_cvtsi32_si64((unsigned int)(tjs_uint16)v9 >> 8);
-				v14 = _m_punpcklwd(v13, v13);
+				v14 = _mm_set1_pi16((unsigned int)(tjs_uint16)v9 >> 8);
 				v15 = v14;
-				v16 = _mm_cvtsi32_si64(((unsigned int)(tjs_uint16)v10 >> 8) + ((unsigned int)(tjs_uint16)v10 >> 15));
-				v17 = _m_punpcklwd(v16, v16);
+				v17 = _mm_set1_pi16(((unsigned int)(tjs_uint16)v10 >> 8) + ((unsigned int)(tjs_uint16)v10 >> 15));
 				v18 = _m_punpcklbw(_mm_cvtsi32_si64(*v12), _mm_setzero_si64());
 				v19 = _m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v12 + srcpitch)), _mm_setzero_si64());
 				v20 = _m_paddb(v18, _m_psrlwi(_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(v12[1]), _mm_setzero_si64()), v18), v15), 8u));
@@ -153,7 +147,6 @@ void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 
 void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
 {
-	__m64         v9;  // mm6
 	__m64         v10; // mm6
 	__m64         v11; // mm6
 	unsigned int *v12; // edi
@@ -161,10 +154,8 @@ void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, 
 	unsigned int  v14; // edx
 	tjs_uint32 *  v15; // ebp
 	unsigned int *v16; // eax
-	__m64         v17; // mm5
 	__m64         v18; // mm5
 	__m64         v19; // mm5
-	__m64         v20; // mm7
 	__m64         v21; // mm7
 	__m64         v22; // mm1
 	__m64         v23; // mm3
@@ -173,8 +164,7 @@ void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, 
 
 	if (len > 0)
 	{
-		v9  = _mm_cvtsi32_si64(((unsigned int)opa >> 7) + opa);
-		v10 = _m_punpcklwd(v9, v9);
+		v10 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
 		v11 = v10;
 		v12 = dest;
 		v13 = sx;
@@ -185,11 +175,9 @@ void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, 
 			do
 			{
 				v16  = (unsigned int *)((char *)&src[v13 >> 16] + srcpitch * (v14 >> 16));
-				v17  = _mm_cvtsi32_si64((unsigned int)(tjs_uint16)v13 >> 8);
-				v18  = _m_punpcklwd(v17, v17);
+				v18  = _mm_set1_pi16((unsigned int)(tjs_uint16)v13 >> 8);
 				v19  = v18;
-				v20  = _mm_cvtsi32_si64(((unsigned int)(tjs_uint16)v14 >> 8) + ((unsigned int)(tjs_uint16)v14 >> 15));
-				v21  = _m_punpcklwd(v20, v20);
+				v21  = _mm_set1_pi16(((unsigned int)(tjs_uint16)v14 >> 8) + ((unsigned int)(tjs_uint16)v14 >> 15));
 				v22  = _m_punpcklbw(_mm_cvtsi32_si64(*v16), _mm_setzero_si64());
 				v23  = _m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v16 + srcpitch)), _mm_setzero_si64());
 				v24  = _m_paddb(v22, _m_psrlwi(_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(v16[1]), _mm_setzero_si64()), v22), v19), 8u));
@@ -240,10 +228,8 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 	unsigned int  v10; // edx
 	tjs_uint32 *  v11; // ebp
 	unsigned int *v12; // eax
-	__m64         v13; // mm5
 	__m64         v14; // mm5
 	__m64         v15; // mm5
-	__m64         v16; // mm7
 	__m64         v17; // mm7
 	__m64         v18; // mm1
 	__m64         v19; // mm3
@@ -264,11 +250,9 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 			do
 			{
 				v12 = (unsigned int *)((char *)&src[v9 >> 16] + srcpitch * (v10 >> 16));
-				v13 = _mm_cvtsi32_si64((unsigned int)(tjs_uint16)v9 >> 8);
-				v14 = _m_punpcklwd(v13, v13);
+				v14 = _mm_set1_pi16((unsigned int)(tjs_uint16)v9 >> 8);
 				v15 = v14;
-				v16 = _mm_cvtsi32_si64(((unsigned int)(tjs_uint16)v10 >> 8) + ((unsigned int)(tjs_uint16)v10 >> 15));
-				v17 = _m_punpcklwd(v16, v16);
+				v17 = _mm_set1_pi16(((unsigned int)(tjs_uint16)v10 >> 8) + ((unsigned int)(tjs_uint16)v10 >> 15));
 				v18 = _m_punpcklbw(_mm_cvtsi32_si64(*v12), _mm_setzero_si64());
 				v19 = _m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v12 + srcpitch)), _mm_setzero_si64());
 				v20 = _m_paddb(v18, _m_psrlwi(_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(v12[1]), _mm_setzero_si64()), v18), v15), 8u));
@@ -291,7 +275,7 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 						8u));
 				v22 = _m_psrlqi(v21, 0x30u);
 				v23 = _m_punpcklbw(_mm_cvtsi32_si64(*v8), _mm_setzero_si64());
-				v24 = _m_punpcklwd(v22, v22);
+				v24 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v22));
 				*v8 = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(v21, _m_psubw(v23, _m_psrlwi(_m_pmullw(v23, v24), 8u))), _mm_setzero_si64()));
 				v9 += stepx;
 				v10 += stepy;
@@ -304,7 +288,6 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 
 void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa)
 {
-	__m64         v9;  // mm6
 	__m64         v10; // mm6
 	__m64         v11; // mm6
 	unsigned int *v12; // edi
@@ -312,10 +295,8 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *d
 	unsigned int  v14; // edx
 	tjs_uint32 *  v15; // ebp
 	unsigned int *v16; // eax
-	__m64         v17; // mm5
 	__m64         v18; // mm5
 	__m64         v19; // mm5
-	__m64         v20; // mm7
 	__m64         v21; // mm7
 	__m64         v22; // mm1
 	__m64         v23; // mm3
@@ -327,8 +308,7 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *d
 
 	if (len > 0)
 	{
-		v9  = _mm_cvtsi32_si64(((unsigned int)opa >> 7) + opa);
-		v10 = _m_punpcklwd(v9, v9);
+		v10 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
 		v11 = v10;
 		v12 = dest;
 		v13 = sx;
@@ -339,11 +319,9 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *d
 			do
 			{
 				v16 = (unsigned int *)((char *)&src[v13 >> 16] + srcpitch * (v14 >> 16));
-				v17 = _mm_cvtsi32_si64((unsigned int)(tjs_uint16)v13 >> 8);
-				v18 = _m_punpcklwd(v17, v17);
+				v18 = _mm_set1_pi16((unsigned int)(tjs_uint16)v13 >> 8);
 				v19 = v18;
-				v20 = _mm_cvtsi32_si64(((unsigned int)(tjs_uint16)v14 >> 8) + ((unsigned int)(tjs_uint16)v14 >> 15));
-				v21 = _m_punpcklwd(v20, v20);
+				v21 = _mm_set1_pi16(((unsigned int)(tjs_uint16)v14 >> 8) + ((unsigned int)(tjs_uint16)v14 >> 15));
 				v22 = _m_punpcklbw(_mm_cvtsi32_si64(*v16), _mm_setzero_si64());
 				v23 = _m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v16 + srcpitch)), _mm_setzero_si64());
 				v24 = _m_paddb(v22, _m_psrlwi(_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(v16[1]), _mm_setzero_si64()), v22), v19), 8u));
@@ -370,7 +348,7 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *d
 					8u);
 				v26  = _m_psrlqi(v25, 0x30u);
 				v27  = _m_punpcklbw(_mm_cvtsi32_si64(*v12), _mm_setzero_si64());
-				v28  = _m_punpcklwd(v26, v26);
+				v28  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v26));
 				*v12 = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(v25, _m_psubw(v27, _m_psrlwi(_m_pmullw(v27, v28), 8u))), _mm_setzero_si64()));
 				v13 += stepx;
 				v14 += stepy;

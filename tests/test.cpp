@@ -25,7 +25,8 @@ static tjs_uint8  *testrule = NULL;
 #define TEST_COUNT 200
 // #define TEST_TVPGL
 #define BENCHMARK_TVPGL
-// #define STRICT_TEST
+#define SELF_TEST
+#define STRICT_TEST
 // #define TEST_DIFFER_BASE
 #define FORCE_ALPHA_TEST
 #define TVPGetRoughTickCount32 timeGetTime
@@ -200,6 +201,9 @@ static void CheckTestData_RGB(const char *pszFuncName)
 
 static bool IsDifferentFunction(void **fptr)
 {
+#ifdef SELF_TEST
+	return true;
+#else
 #ifdef TEST_DIFFER_BASE
 	TVP_GL_FUNCNAME(TVPInitTVPGL)();
 #else
@@ -209,6 +213,7 @@ static bool IsDifferentFunction(void **fptr)
 	TVPGL_INIT_FUNCS_2();
 	void *fptr2 = *fptr;
 	return (fptr1 != fptr2);
+#endif
 }
 
 #if 0
@@ -732,6 +737,8 @@ int wmain(int argc, wchar_t** argv)
 	TVPGL_IA32_pfraction_Init();
 	TVPGL_SSE2_Init();
 
+	TVP_GL_FUNCNAME(TVPInitTVPGL)();
+
 	{
 #if 0
 		testTLG6_chroma();
@@ -840,6 +847,15 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_do, testrule, 256 * 256, 0x55d20688, 100);
 		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_ao, testrule, 256 * 256, 0x55d20688, 100);
 
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65, testrule, 256 * 256, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_HDA, testrule, 256 * 256, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_d, testrule, 256 * 256, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_a, testrule, 256 * 256, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_o, testrule, 256 * 256, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_HDA_o, testrule, 256 * 256, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_do, testrule, 256 * 256, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_ao, testrule, 256 * 256, 0x55d20688, 100);
+
 		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend, 256 * 256, 0x55d20688, 100);
 		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend_d, 256 * 256, 0x55d20688, 100);
 		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend_a, 256 * 256, 0x55d20688, 100);
@@ -882,11 +898,15 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_BLEND_FUNC_2(TVPScreenBlend_HDA);
 		TEST_TVPGL_BLEND_FUNC(TVPScreenBlend_HDA_o, 100);
 
+		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpH2B, 256 * 256, testdata1 + (256 * 256));
+		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpH2F, 256 * 256, testdata1);
 		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpV2, 256 * 256, testdata1, testdata2);
 
 		TEST_TVPGL_BLEND_FUNC_2(TVPCopyMask);
 		TEST_TVPGL_BLEND_FUNC_2(TVPCopyColor);
 		TEST_TVPGL_CUSTOM_FUNC(TVPBindMaskToMain, testrule, 256 * 256);
+
+		TEST_TVPGL_CUSTOM_FUNC(TVPMakeAlphaFromKey, 256 * 256, *testdata1);
 
 		TEST_TVPGL_CUSTOM_FUNC(TVPFillARGB, 256 * 256, 0x55d20688);
 		TEST_TVPGL_CUSTOM_FUNC(TVPFillARGB_NC, 256 * 256, 0x55d20688);
@@ -903,6 +923,14 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_CUSTOM_FUNC(TVPExpand8BitTo32BitGray, testrule, 256 * 256);
 		TEST_TVPGL_CUSTOM_FUNC(TVPBLConvert15BitTo32Bit, (const tjs_uint16*)testrule, 128 * 256);
 		TEST_TVPGL_CUSTOM_FUNC(TVPConvert24BitTo32Bit, testrule, 256 * 256 / 3);
+		TEST_TVPGL_CUSTOM_FUNC(TVPBLConvert24BitTo32Bit, testrule, 256 * 256 / 3);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPDither32BitTo16Bit555, tjs_uint16*, testdata1, 256 * 256, 0, 0);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPDither32BitTo16Bit565, tjs_uint16*, testdata1, 256 * 256, 0, 0);
+
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPInitGammaAdjustTempData, tTVPGLGammaAdjustTempData*, (const tTVPGLGammaAdjustData*)testdata1);
+
+		TEST_TVPGL_CUSTOM_FUNC(TVPAdjustGamma, 256 * 256, (tTVPGLGammaAdjustTempData*)testdata1);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAdjustGamma_a, 256 * 256, (tTVPGLGammaAdjustTempData*)testdata1);
 
 		TEST_TVPGL_BLEND_FUNC_2(TVPPsAlphaBlend);
 		TEST_TVPGL_BLEND_FUNC(TVPPsAlphaBlend_o, 100);
@@ -985,18 +1013,17 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_BLEND_FUNC(TVPPsExclusionBlend_HDA_o, 100);
 
 		// TODO: test the following
-		// TVPAdjustGamma
-		// TVPAdjustGamma_a
-		// TVPApplyColorMap65
-		// TVPApplyColorMap65_HDA
-		// TVPApplyColorMap65_HDA_o
-		// TVPApplyColorMap65_a
-		// TVPApplyColorMap65_ao
-		// TVPApplyColorMap65_d
-		// TVPApplyColorMap65_do
-		// TVPApplyColorMap65_o
+		// implemented in IA32:
+		// TVPDoBoxBlurAvg16
+		// TVPDoBoxBlurAvg16_d
+		// TVPDoBoxBlurAvg32
+		// TVPDoBoxBlurAvg32_d
+		// testing in testTLG6_chroma / logTLG6_chroma:
+		// TVPTLG5ComposeColors3To4
+		// TVPTLG5ComposeColors4To4
+		// TVPTLG6DecodeLine
+		// the rest:
 		// TVPBLConvert15BitTo8Bit
-		// TVPBLConvert24BitTo32Bit
 		// TVPBLConvert24BitTo8Bit
 		// TVPBLConvert32BitTo32Bit_AddAlpha
 		// TVPBLConvert32BitTo32Bit_MulAddAlpha
@@ -1016,21 +1043,11 @@ int wmain(int argc, wchar_t** argv)
 		// TVPChBlurCopy65
 		// TVPChBlurMulCopy
 		// TVPChBlurMulCopy65
-		// TVPDither32BitTo16Bit555
-		// TVPDither32BitTo16Bit565
 		// TVPDither32BitTo8Bit
-		// TVPDoBoxBlurAvg16
-		// TVPDoBoxBlurAvg16_d
-		// TVPDoBoxBlurAvg32
-		// TVPDoBoxBlurAvg32_d
-		// TVPFastLinearInterpH2B
-		// TVPFastLinearInterpH2F
-		// TVPInitGammaAdjustTempData
 		// TVPInitUnivTransBlendTable
 		// TVPInitUnivTransBlendTable_a
 		// TVPInitUnivTransBlendTable_d
 		// TVPLinTransColorCopy
-		// TVPMakeAlphaFromKey
 		// TVPRedBlueSwap
 		// TVPRedBlueSwapCopy
 		// TVPReverse32
@@ -1038,12 +1055,9 @@ int wmain(int argc, wchar_t** argv)
 		// TVPStretchColorCopy
 		// TVPSwapLine32
 		// TVPSwapLine8
-		// TVPTLG5ComposeColors3To4
-		// TVPTLG5ComposeColors4To4
 		// TVPTLG5DecompressSlide
 		// TVPTLG6DecodeGolombValues
 		// TVPTLG6DecodeGolombValuesForFirst
-		// TVPTLG6DecodeLine
 		// TVPTLG6DecodeLineGeneric
 		// TVPUninitGammaAdjustTempData
 	}

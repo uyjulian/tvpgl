@@ -851,7 +851,7 @@ static inline void stretch_blend_inter_func_sse2(tjs_uint32 *dest, tjs_int len, 
 		count = count > len ? len : count;
 		tjs_uint32* limit = dest + count;
 		while( dest < limit ) {
-			tjs_uint32 s = inter( src1, src2, _mm_cvtsi128_si32(mstart) );
+			tjs_uint32 s = inter( src1, src2, _mm_cvtsi128_si32(_mm_shuffle_epi32(mstart, 0xFF)) );
 			*dest = func( *dest, s  );
 			mstart = _mm_add_epi32( mstart, mstep1 );
 			dest++;
@@ -869,7 +869,7 @@ static inline void stretch_blend_inter_func_sse2(tjs_uint32 *dest, tjs_int len, 
 	}
 	limit += (len-rem);
 	while( dest < limit ) {
-		tjs_uint32 s = inter( src1, src2, _mm_cvtsi128_si32(mstart) );
+		tjs_uint32 s = inter( src1, src2, _mm_cvtsi128_si32(_mm_shuffle_epi32(mstart, 0xFF)) );
 		*dest = func( *dest, s  );
 		mstart = _mm_add_epi32( mstart, mstep1 );
 		dest++;

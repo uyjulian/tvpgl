@@ -119,9 +119,9 @@ struct sse2_alpha_blend_d_functor {
 			TVPOpacityOnOpacityTable[_mm_extract_epi16(maddr,0)]);
 #endif
 #if 0
-		tjs_uint32 sopa = _mm_cvtsi128_si32(ma1);
-		tjs_uint32 d = _mm_cvtsi128_si32(md1);
-		tjs_uint32 s = _mm_cvtsi128_si32(ms1);
+		tjs_uint32 sopa = _mm_cvtsi128_si32(_mm_shuffle_epi32(ma1, 0xFF));
+		tjs_uint32 d = _mm_cvtsi128_si32(_mm_shuffle_epi32(md1, 0xFF));
+		tjs_uint32 s = _mm_cvtsi128_si32(_mm_shuffle_epi32(ms1, 0xFF));
 		tjs_uint32 d1 = d & 0xff00ff;
 		d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
 		d &= 0xff00;

@@ -21,22 +21,16 @@ void __cdecl TVPAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	__m64             v7; // mm2
 	__m64             v8; // mm1
 
-	if (len > 0)
+	v3 = dest;
+	v4 = src;
+	v5 = &dest[len];
+	while (v3 < v5)
 	{
-		v3 = dest;
-		v4 = src;
-		v5 = &dest[len];
-		if (dest < v5)
-		{
-			do
-			{
-				v7  = _mm_set1_pi16(*v4 >> 24);
-				v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
-				*v3 = _mm_cvtsi64_si32(_m_paddusb(_m_packuswb(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v7), 8u)), _mm_setzero_si64()), _mm_cvtsi32_si64(*v4)));
-				++v4;
-				++v3;
-			} while (v3 < v5);
-		}
+		v7  = _mm_set1_pi16(*v4 >> 24);
+		v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
+		*v3 = _mm_cvtsi64_si32(_m_paddusb(_m_packuswb(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v7), 8u)), _mm_setzero_si64()), _mm_cvtsi32_si64(*v4)));
+		++v4;
+		++v3;
 	}
 	_m_empty();
 }
@@ -53,26 +47,20 @@ void __cdecl TVPAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	__m64         v12; // mm1
 	__m64         v13; // mm1
 
-	if (len > 0)
+	v4 = dest;
+	v5 = (unsigned int *)src;
+	v7 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
+	v8 = v7;
+	v9 = &dest[len];
+	while (v4 < v9)
 	{
-		v4 = dest;
-		v5 = (unsigned int *)src;
-		v7 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
-		v8 = v7;
-		v9 = &dest[len];
-		if (dest < v9)
-		{
-			do
-			{
-				v10 = _m_punpcklbw(_mm_cvtsi32_si64(*v4), _mm_setzero_si64());
-				v11 = _m_psrlwi(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v5), _mm_setzero_si64()), v8), 8u);
-				v12 = _m_psrlqi(v11, 0x30u);
-				v13 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v12));
-				*v4 = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubw(v10, _m_psrlwi(_m_pmullw(v10, v13), 8u)), v11), _mm_setzero_si64()));
-				++v5;
-				++v4;
-			} while (v4 < v9);
-		}
+		v10 = _m_punpcklbw(_mm_cvtsi32_si64(*v4), _mm_setzero_si64());
+		v11 = _m_psrlwi(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v5), _mm_setzero_si64()), v8), 8u);
+		v12 = _m_psrlqi(v11, 0x30u);
+		v13 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v12));
+		*v4 = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubw(v10, _m_psrlwi(_m_pmullw(v10, v13), 8u)), v11), _mm_setzero_si64()));
+		++v5;
+		++v4;
 	}
 	_m_empty();
 }
@@ -85,27 +73,21 @@ void __cdecl TVPAdditiveAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 	__m64             v7; // mm2
 	__m64             v8; // mm1
 
-	if (len > 0)
+	v3 = dest;
+	v4 = src;
+	v5 = &dest[len];
+	while (v3 < v5)
 	{
-		v3 = dest;
-		v4 = src;
-		v5 = &dest[len];
-		if (dest < v5)
-		{
-			do
-			{
-				v7  = _mm_set1_pi16(*v4 >> 24);
-				v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
-				*v3 = _mm_cvtsi64_si32(
-					_m_paddusb(
-						_m_packuswb(
-							_m_psubw(v8, _m_pand(_m_psrlwi(_m_pmullw(v8, v7), 8u), (__m64)mask0000ffffffffffff)),
-							_mm_setzero_si64()),
-						_m_pand(_mm_cvtsi32_si64(*v4), (__m64)mask00ffffff00ffffff)));
-				++v4;
-				++v3;
-			} while (v3 < v5);
-		}
+		v7  = _mm_set1_pi16(*v4 >> 24);
+		v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
+		*v3 = _mm_cvtsi64_si32(
+			_m_paddusb(
+				_m_packuswb(
+					_m_psubw(v8, _m_pand(_m_psrlwi(_m_pmullw(v8, v7), 8u), (__m64)mask0000ffffffffffff)),
+					_mm_setzero_si64()),
+				_m_pand(_mm_cvtsi32_si64(*v4), (__m64)mask00ffffff00ffffff)));
+		++v4;
+		++v3;
 	}
 	_m_empty();
 }
@@ -120,24 +102,18 @@ void __cdecl TVPAdditiveAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	__m64         v8; // mm4
 	__m64         v9; // mm1
 
-	if (len > 0)
+	v3 = dest;
+	v4 = (unsigned int *)src;
+	v5 = &dest[len];
+	while (v3 < v5)
 	{
-		v3 = dest;
-		v4 = (unsigned int *)src;
-		v5 = &dest[len];
-		if (dest < v5)
-		{
-			do
-			{
-				v6  = _mm_cvtsi32_si64(*v4);
-				v7  = _m_psrlqi(v6, 0x18u);
-				v8  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7));
-				v9  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
-				*v3 = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 8u)), _m_punpcklbw(v6, _mm_setzero_si64())), _mm_setzero_si64()));
-				++v4;
-				++v3;
-			} while (v3 < v5);
-		}
+		v6  = _mm_cvtsi32_si64(*v4);
+		v7  = _m_psrlqi(v6, 0x18u);
+		v8  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7));
+		v9  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
+		*v3 = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 8u)), _m_punpcklbw(v6, _mm_setzero_si64())), _mm_setzero_si64()));
+		++v4;
+		++v3;
 	}
 	_m_empty();
 }

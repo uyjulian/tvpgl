@@ -19,10 +19,10 @@ void __cdecl TVPUnivTransBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	__m64            v12; // mm4
 	__m64            v13; // mm1
 
-	v6  = dest;
-	v7  = (unsigned int *)src1;
-	v8  = (unsigned int *)src2;
-	v9  = rule;
+	v6 = dest;
+	v7 = (unsigned int *)src1;
+	v8 = (unsigned int *)src2;
+	v9 = rule;
 	while (v6 < &dest[len])
 	{
 		v12 = _mm_set1_pi16(*(const tjs_uint32 *)((char *)table + 2 * *v9));

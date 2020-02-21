@@ -172,6 +172,7 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_pfraction_c(tjs_int8 *pixelbuf, t
 		v3 += v17 >> 3;
 		v4 &= 7u;
 		v19 = pixelbuf;
+		v31 = v19;
 		do
 		{
 			v32 = v13;
@@ -188,7 +189,6 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_pfraction_c(tjs_int8 *pixelbuf, t
 				v23 = v22 - v4;
 				v24 = v22 + 1;
 			}
-			v31 = (tjs_int8 *)v20;
 			v25 = (tjs_uint8)TVPTLG6GolombBitLengthTable[v35][v34];
 			if (TVPTLG6GolombBitLengthTable[v35][v34])
 			{
@@ -212,8 +212,9 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_pfraction_c(tjs_int8 *pixelbuf, t
 				v35 >>= 1;
 				v34 = 3;
 			}
-			v13                      = v32 - 1;
-			*((tjs_uint32 *)v31 - 1) = (tjs_uint8)v29;
+			v13                  = v32 - 1;
+			*((tjs_uint32 *)v31) = (tjs_uint8)v29;
+			v31                  = (tjs_int8 *)v20;
 		} while (v32 != 1);
 		pixelbuf = v31;
 	} while (v33 != v31);

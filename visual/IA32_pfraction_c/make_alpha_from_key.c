@@ -27,11 +27,11 @@ void __cdecl TVPMakeAlphaFromKey_cmovcc_pfraction_c(tjs_uint32 *dest, tjs_int le
 	{
 		v6 = *v3 & 0xFFFFFF;
 		v7 = v6;
-		++v3;
 		v8 = v6 | 0xFF000000;
 		if (v8 == (key & 0xFFFFFF | 0xFF000000))
 			v8 = v7;
-		v4        = --v5 < 0;
-		*(v3 - 1) = v8;
+		v4  = --v5 < 0;
+		*v3 = v8;
+		++v3;
 	}
 }

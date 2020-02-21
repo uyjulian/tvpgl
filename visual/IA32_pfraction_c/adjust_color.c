@@ -43,8 +43,7 @@ void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTV
 		v11 = v10;
 		v12 = _mm_cvtsi32_si64(v5 & 0xFF000000);
 		v13 = _mm_cvtsi64_si32(_m_packuswb(_m_por(_m_psrlwi(_m_pmullw(v9, v6), 8u), _m_psrlwi(_m_pcmpgtw(v6, v11), 8u)), _mm_setzero_si64()));
-		++v3;
-		*(v3 - 1) = _mm_cvtsi64_si32(
+		*v3 = _mm_cvtsi64_si32(
 			_m_por(
 				_m_packuswb(
 					_m_paddw(
@@ -58,6 +57,7 @@ void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTV
 						_m_psubusb(v6, v11)),
 					_mm_setzero_si64()),
 				v12));
+		++v3;
 	}
 _TVPAdjustGamma_a_mmx_pfraction_a_pexit:
 	_m_empty();

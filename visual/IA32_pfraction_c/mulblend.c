@@ -65,17 +65,17 @@ void __cdecl TVPMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 
 void __cdecl TVPMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
-	__m64         v5;  // mm5
-	__m64         v6;  // mm5
-	__m64         v7;  // mm6
-	tjs_uint32 *  v8;  // edi
-	unsigned int *v9;  // ebp
+	__m64         v5; // mm5
+	__m64         v6; // mm5
+	__m64         v7; // mm6
+	tjs_uint32 *  v8; // edi
+	unsigned int *v9; // ebp
 
-	v5  = _mm_set1_pi16(opa);
-	v6  = v5;
-	v7  = (__m64)TVPMulBlendHDA_fullbit;
-	v8  = dest;
-	v9  = (unsigned int *)src;
+	v5 = _mm_set1_pi16(opa);
+	v6 = v5;
+	v7 = (__m64)TVPMulBlendHDA_fullbit;
+	v8 = dest;
+	v9 = (unsigned int *)src;
 	while (v8 < &dest[len])
 	{
 		*v8 = _mm_cvtsi64_si32(

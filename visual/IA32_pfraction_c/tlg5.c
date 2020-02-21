@@ -56,10 +56,10 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 						v17           = result + 1;
 						text[v17 - 1] = v16;
 						v13           = ((tjs_uint16)v13 + 1) & 0xFFF;
-						++v7;
-						result = v17 & 0xFFF;
+						result        = v17 & 0xFFF;
 						--v14;
-						*(v7 - 1) = v16;
+						*v7 = v16;
+						++v7;
 					} while (v14);
 					v6 = v18;
 					v9 = v19;
@@ -72,9 +72,9 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 					v12 = result + 1;
 					++v6;
 					text[v12 - 1] = v11;
+					result        = v12 & 0xFFF;
+					*v7           = v11;
 					++v7;
-					result    = v12 & 0xFFF;
-					*(v7 - 1) = v11;
 					if (v6 >= &in[insize])
 						return result;
 				}

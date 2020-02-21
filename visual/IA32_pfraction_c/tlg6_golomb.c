@@ -103,7 +103,6 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_pfraction_c(tjs_int8 *pixelbuf, t
 	int          v18; // ecx
 	tjs_int8 *   v19; // edx
 	int          v20; // edx
-	bool         v21; // zf
 	int          v22; // eax
 	int          v23; // edi
 	unsigned int v24; // ecx
@@ -238,7 +237,6 @@ void __cdecl TVPTLG6DecodeGolombValues_pfraction_c(tjs_int8 *pixelbuf, tjs_int p
 	int          v16; // ecx
 	tjs_int8 *   v17; // edx
 	int          v18; // edx
-	bool         v19; // zf
 	int          v20; // eax
 	int          v21; // edi
 	unsigned int v22; // ecx
@@ -369,7 +367,6 @@ void __cdecl TVPTLG6DecodeGolombValuesForFirst_mmx_pfraction_c(tjs_int8 *pixelbu
 	int          v20; // ecx
 	int          v21; // edx
 	int          v22; // edx
-	bool         v23; // zf
 	int          v24; // eax
 	int          v25; // edi
 	unsigned int v26; // ecx
@@ -508,7 +505,6 @@ void __cdecl TVPTLG6DecodeGolombValues_mmx_pfraction_c(tjs_int8 *pixelbuf, tjs_i
 	int          v18; // ecx
 	int          v19; // edx
 	int          v20; // edx
-	bool         v21; // zf
 	int          v22; // eax
 	int          v23; // edi
 	unsigned int v24; // ecx

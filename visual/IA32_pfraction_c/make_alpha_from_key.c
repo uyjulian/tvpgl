@@ -13,25 +13,17 @@
 
 void __cdecl TVPMakeAlphaFromKey_cmovcc_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 key)
 {
-	tjs_uint32 * v3; // edi
-	bool         v4; // sf
-	int          v5; // ecx
 	int          v6; // eax
 	int          v7; // ebx
 	unsigned int v8; // eax
 
-	v3 = dest;
-	v5 = len - 1;
-	v4 = len - 1 < 0;
-	while (!v4)
+	for (tjs_int i = 0; i < len; i += 1)
 	{
-		v6 = *v3 & 0xFFFFFF;
+		v6 = dest[i] & 0xFFFFFF;
 		v7 = v6;
 		v8 = v6 | 0xFF000000;
 		if (v8 == (key & 0xFFFFFF | 0xFF000000))
 			v8 = v7;
-		v4  = --v5 < 0;
-		*v3 = v8;
-		++v3;
+		dest[i] = v8;
 	}
 }

@@ -12,53 +12,42 @@
 
 void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
 {
-	tjs_uint32 * v3;  // edi
-	unsigned int v5;  // eax
 	__m64        v6;  // mm2
 	__m64        v9;  // mm1
 	__m64        v10; // mm3
-	__m64        v11; // mm3
 	__m64        v12; // mm6
 	unsigned int v13; // eax
 
-	v3 = dest;
-	while (v3 < &dest[len])
+	for (tjs_int i = 0; i < len; i += 1)
 	{
-		while (1)
+		if (!dest[i])
 		{
-			v5 = *v3;
-			if (*v3 < 0xFF000000)
-				break;
-			*v3 = (temp->R[(v5 >> 16) & 0xFF] << 16) | (temp->G[(v5 >> 8) & 0xFF] << 8) | temp->B[v5 & 0xFF] | 0xFF000000;
-		_TVPAdjustGamma_a_mmx_pfraction_a_ptransp:
-			++v3;
-			if (v3 >= &dest[len])
-				goto _TVPAdjustGamma_a_mmx_pfraction_a_pexit;
+			continue;
 		}
-		if (!v5)
-			goto _TVPAdjustGamma_a_mmx_pfraction_a_ptransp;
-		v6  = _m_punpcklbw(_mm_cvtsi32_si64(v5), _mm_setzero_si64());
-		v9  = _mm_set1_pi16(TVPRecipTable256_16[v5 >> 24]);
-		v10 = _mm_set1_pi16(v5 >> 24);
-		v11 = v10;
-		v12 = _mm_cvtsi32_si64(v5 & 0xFF000000);
-		v13 = _mm_cvtsi64_si32(_m_packuswb(_m_por(_m_psrlwi(_m_pmullw(v9, v6), 8u), _m_psrlwi(_m_pcmpgtw(v6, v11), 8u)), _mm_setzero_si64()));
-		*v3 = _mm_cvtsi64_si32(
+		if (dest[i] >= 0xFF000000)
+		{
+			dest[i] = (temp->R[(dest[i] >> 16) & 0xFF] << 16) | (temp->G[(dest[i] >> 8) & 0xFF] << 8) | temp->B[dest[i] & 0xFF] | 0xFF000000;
+			continue;
+		}
+		v6  = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
+		v9  = _mm_set1_pi16(TVPRecipTable256_16[dest[i] >> 24]);
+		v10 = _mm_set1_pi16(dest[i] >> 24);
+		v12 = _mm_cvtsi32_si64(dest[i] & 0xFF000000);
+		v13 = _mm_cvtsi64_si32(_m_packuswb(_m_por(_m_psrlwi(_m_pmullw(v9, v6), 8u), _m_psrlwi(_m_pcmpgtw(v6, v10), 8u)), _mm_setzero_si64()));
+		dest[i] = _mm_cvtsi64_si32(
 			_m_por(
 				_m_packuswb(
 					_m_paddw(
 						_m_psrlwi(
 							_m_pmullw(
 								_m_punpcklbw(
-									_mm_cvtsi32_si64((temp->R[(v13 >> 16) & 0xFF] << 16) | (temp->G[(v13 >> 8) & 0xFF] << 8) | (unsigned int)temp->B[v13 & 0xFF]),
+									_mm_cvtsi32_si64((temp->R[(v13 >> 16) & 0xFF] << 16) | (temp->G[(v13 >> 8) & 0xFF] << 8) | temp->B[v13 & 0xFF]),
 									_mm_setzero_si64()),
-								_m_paddw(v11, _m_psrlwi(v11, 7u))),
+								_m_paddw(v10, _m_psrlwi(v10, 7u))),
 							8u),
-						_m_psubusb(v6, v11)),
+						_m_psubusb(v6, v10)),
 					_mm_setzero_si64()),
 				v12));
-		++v3;
 	}
-_TVPAdjustGamma_a_mmx_pfraction_a_pexit:
 	_m_empty();
 }

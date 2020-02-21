@@ -18,26 +18,20 @@ static tjs_uint64 TVPScreenBlendHDA_mul_100bit       = 0x0100000000000000ull;
 void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
 	__m64         v3; // mm6
-	tjs_uint32 *  v4; // edi
-	unsigned int *v5; // ebp
 
 	v3 = (__m64)TVPScreenMulBlend_full_bit_aligned;
-	v4 = dest;
-	v5 = (unsigned int *)src;
-	while (v4 < &dest[len])
+	for (tjs_int i = 0; i < len; i += 1)
 	{
-		*v4 = _mm_cvtsi64_si32(
+		dest[i] = _mm_cvtsi64_si32(
 			_m_pxor(
 				_m_packuswb(
 					_m_psrlwi(
 						_m_pmullw(
-							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v4), v3), _mm_setzero_si64()),
-							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v5), v3), _mm_setzero_si64())),
+							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(dest[i]), v3), _mm_setzero_si64()),
+							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(src[i]), v3), _mm_setzero_si64())),
 						8u),
 					_mm_setzero_si64()),
 				v3));
-		++v4;
-		++v5;
 	}
 	_m_empty();
 }
@@ -46,27 +40,21 @@ void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 {
 	__m64         v3; // mm6
 	__m64         v4; // mm7
-	tjs_uint32 *  v5; // edi
-	unsigned int *v6; // ebp
 
 	v3 = (__m64)TVPScreenBlendHDA_mul_100bit;
 	v4 = (__m64)TVPScreenBlendHDA_mulmask;
-	v5 = dest;
-	v6 = (unsigned int *)src;
-	while (v5 < &dest[len])
+	for (tjs_int i = 0; i < len; i += 1)
 	{
-		*v5 = _mm_cvtsi64_si32(
+		dest[i] = _mm_cvtsi64_si32(
 			_m_pxor(
 				_m_packuswb(
 					_m_psrlwi(
 						_m_pmullw(
-							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v5), v4), _mm_setzero_si64()),
-							_m_por(_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v6), v4), _mm_setzero_si64()), v3)),
+							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(dest[i]), v4), _mm_setzero_si64()),
+							_m_por(_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(src[i]), v4), _mm_setzero_si64()), v3)),
 						8u),
 					_mm_setzero_si64()),
 				v4));
-		++v5;
-		++v6;
 	}
 	_m_empty();
 }
@@ -74,30 +62,22 @@ void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5; // mm5
-	__m64         v6; // mm5
 	__m64         v7; // mm6
-	tjs_uint32 *  v8; // edi
-	unsigned int *v9; // ebp
 
 	v5 = _mm_set1_pi16(opa);
-	v6 = v5;
 	v7 = (__m64)TVPScreenMulBlend_full_bit_aligned;
-	v8 = dest;
-	v9 = (unsigned int *)src;
-	while (v8 < &dest[len])
+	for (tjs_int i = 0; i < len; i += 1)
 	{
-		*v8 = _mm_cvtsi64_si32(
+		dest[i] = _mm_cvtsi64_si32(
 			_m_pxor(
 				_m_packuswb(
 					_m_psrlwi(
 						_m_pmullw(
-							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v8), v7), _mm_setzero_si64()),
-							_m_psrlwi(_m_pxor(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v9), _mm_setzero_si64()), v6), v7), 8u)),
+							_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(dest[i]), v7), _mm_setzero_si64()),
+							_m_psrlwi(_m_pxor(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64()), v5), v7), 8u)),
 						8u),
 					_mm_setzero_si64()),
 				v7));
-		++v8;
-		++v9;
 	}
 	_m_empty();
 }
@@ -105,33 +85,27 @@ void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 void __cdecl TVPScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
 {
 	__m64         v5;  // mm5
-	__m64         v6;  // mm5
 	__m64         v7;  // mm6
 	__m64         v8;  // mm7
-	tjs_uint32 *  v9;  // edi
-	unsigned int *v10; // ebp
 
 	v5  = _mm_set1_pi16(opa);
-	v6  = v5;
 	v7  = (__m64)TVPScreenBlendHDA_alphamask;
 	v8  = (__m64)TVPScreenBlendHDA_mulmask;
-	v9  = dest;
-	v10 = (unsigned int *)src;
-	while (v9 < &dest[len])
+	for (tjs_int i = 0; i < len; i += 1)
 	{
-		*v9 = _mm_cvtsi64_si32(
+		dest[i] = _mm_cvtsi64_si32(
 			_m_por(
 				_m_pand(
 					_m_pxor(
 						_m_packuswb(
 							_m_psrlwi(
 								_m_pmullw(
-									_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(*v9), v8), _mm_setzero_si64()),
+									_m_punpcklbw(_m_pxor(_mm_cvtsi32_si64(dest[i]), v8), _mm_setzero_si64()),
 									_m_por(
 										_m_pand(
 											_m_psrlwi(
 												_m_pxor(
-													_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64()), v6),
+													_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64()), v5),
 													(__m64)TVPScreenMulBlend_full_bit_aligned),
 												8u),
 											v7),
@@ -140,9 +114,7 @@ void __cdecl TVPScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 							_mm_setzero_si64()),
 						v8),
 					v8),
-				_m_pand(_mm_cvtsi32_si64(*v9), v7)));
-		++v9;
-		++v10;
+				_m_pand(_mm_cvtsi32_si64(dest[i]), v7)));
 	}
 	_m_empty();
 }

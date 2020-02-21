@@ -22,18 +22,12 @@
 #define TVP_GL_IA32_FUNC_PTR_EXTERN_DECL(rettype, funcname, arg) extern rettype __cdecl (*funcname) arg
 #endif
 
-#define LAST_IND(x, part_type) (sizeof(x) / sizeof(part_type) - 1)
-#define HIGH_IND(x, part_type) LAST_IND(x, part_type)
 #define LOW_IND(x, part_type)  0
 
 #define BYTEn(x, n)  (*((tjs_uint8 *)&(x) + n))
-#define WORDn(x, n)  (*((tjs_uint16 *)&(x) + n))
-#define DWORDn(x, n) (*((tjs_uint32 *)&(x) + n))
 
 #define LOBYTE(x) BYTEn(x, LOW_IND(x, tjs_uint8))
-#define HIBYTE(x) BYTEn(x, HIGH_IND(x, tjs_uint8))
 #define BYTE1(x)  BYTEn(x, 1)
-#define BYTE2(x)  BYTEn(x, 2)
 
 #ifdef __cplusplus
  extern "C" {

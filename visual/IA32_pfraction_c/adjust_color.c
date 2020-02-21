@@ -29,7 +29,7 @@ void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTV
 			v5 = *v3;
 			if (*v3 < 0xFF000000)
 				break;
-			*v3 = (temp->R[(v5 >> 16) & 0xFF] << 16) | (temp->G[BYTE1(v5)] << 8) | temp->B[(tjs_uint8)v5] | 0xFF000000;
+			*v3 = (temp->R[(v5 >> 16) & 0xFF] << 16) | (temp->G[(v5 >> 8) & 0xFF] << 8) | temp->B[v5 & 0xFF] | 0xFF000000;
 		_TVPAdjustGamma_a_mmx_pfraction_a_ptransp:
 			++v3;
 			if (v3 >= &dest[len])
@@ -50,7 +50,7 @@ void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTV
 						_m_psrlwi(
 							_m_pmullw(
 								_m_punpcklbw(
-									_mm_cvtsi32_si64((temp->R[(v13 >> 16) & 0xFF] << 16) | (temp->G[BYTE1(v13)] << 8) | (unsigned int)temp->B[(tjs_uint8)v13]),
+									_mm_cvtsi32_si64((temp->R[(v13 >> 16) & 0xFF] << 16) | (temp->G[(v13 >> 8) & 0xFF] << 8) | (unsigned int)temp->B[v13 & 0xFF]),
 									_mm_setzero_si64()),
 								_m_paddw(v11, _m_psrlwi(v11, 7u))),
 							8u),

@@ -11,15 +11,15 @@
 #include <xmmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-static tjs_uint64 g_mask      = 0x0000ff000000ff00ull;
-static tjs_uint64 b_mask      = 0x000000ff000000ffull;
-static tjs_uint64 r_mask      = 0x00ff000000ff0000ull;
-static tjs_uint64 a_mask      = 0xff000000ff000000ull;
-static tjs_uint64 g_d_mask    = 0x0000fe000000fe00ull;
-static tjs_uint64 r_d_mask    = 0x00fe000000fe0000ull;
-static tjs_uint64 b_d_mask    = 0x000000fe000000feull;
-static tjs_uint64 avg_mask_fe = 0xfefefefefefefefeull;
-static tjs_uint64 avg_mask_01 = 0x0101010101010101ull;
+static const __m64 g_mask      = (__m64)0x0000ff000000ff00ull;
+static const __m64 b_mask      = (__m64)0x000000ff000000ffull;
+static const __m64 r_mask      = (__m64)0x00ff000000ff0000ull;
+static const __m64 a_mask      = (__m64)0xff000000ff000000ull;
+static const __m64 g_d_mask    = (__m64)0x0000fe000000fe00ull;
+static const __m64 r_d_mask    = (__m64)0x00fe000000fe0000ull;
+static const __m64 b_d_mask    = (__m64)0x000000fe000000feull;
+static const __m64 avg_mask_fe = (__m64)0xfefefefefefefefeull;
+static const __m64 avg_mask_01 = (__m64)0x0101010101010101ull;
 
 void __cdecl TVPTLG6DecodeLine_mmx_pfraction_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
 {

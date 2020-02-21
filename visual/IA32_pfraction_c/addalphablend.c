@@ -10,8 +10,8 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-static tjs_uint64 mask0000ffffffffffff = 0x0000ffffffffffffull;
-static tjs_uint64 mask00ffffff00ffffff = 0x00ffffff00ffffffull;
+static const __m64 mask0000ffffffffffff = (__m64)0x0000ffffffffffffull;
+static const __m64 mask00ffffff00ffffff = (__m64)0x00ffffff00ffffffull;
 
 void __cdecl TVPAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {

@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-static tjs_uint64 TVPSubBlend_full_bit_one = 0xffffffffffffffffull;
+static const __m64 TVPSubBlend_full_bit_one = (__m64)0xffffffffffffffffull;
 
 void __cdecl TVPSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {

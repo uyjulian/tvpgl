@@ -11,9 +11,9 @@
 #include <xmmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-static tjs_uint64 c_0000ffffffffffff = 0x0000ffffffffffffull;
-static tjs_uint64 c_ffff000000000000 = 0xffff000000000000ull;
-static tjs_uint64 c_0100000000000000 = 0x0100000000000000ull;
+static const __m64 c_0000ffffffffffff = (__m64)0x0000ffffffffffffull;
+static const __m64 c_ffff000000000000 = (__m64)0xffff000000000000ull;
+static const __m64 c_0100000000000000 = (__m64)0x0100000000000000ull;
 
 void __cdecl TVPAddSubVertSum16_mmx_pfraction_c(tjs_uint16 *dest, const tjs_uint32 *addline, const tjs_uint32 *subline, tjs_int len)
 {

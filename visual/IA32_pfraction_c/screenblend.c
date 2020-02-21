@@ -10,10 +10,10 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-static tjs_uint64 TVPScreenMulBlend_full_bit_aligned = 0xffffffffffffffffull;
-static tjs_uint64 TVPScreenBlendHDA_alphamask        = 0xff000000ff000000ull;
-static tjs_uint64 TVPScreenBlendHDA_mulmask          = 0x00ffffff00ffffffull;
-static tjs_uint64 TVPScreenBlendHDA_mul_100bit       = 0x0100000000000000ull;
+static const __m64 TVPScreenMulBlend_full_bit_aligned = (__m64)0xffffffffffffffffull;
+static const __m64 TVPScreenBlendHDA_alphamask        = (__m64)0xff000000ff000000ull;
+static const __m64 TVPScreenBlendHDA_mulmask          = (__m64)0x00ffffff00ffffffull;
+static const __m64 TVPScreenBlendHDA_mul_100bit       = (__m64)0x0100000000000000ull;
 
 void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {

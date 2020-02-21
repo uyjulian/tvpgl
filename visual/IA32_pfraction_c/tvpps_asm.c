@@ -26,7 +26,7 @@ void __cdecl TVPPsAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 		v9  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7));
 		dest[i] = _mm_cvtsi64_si32(
 			_m_packuswb(
-				_m_paddw(v8, _m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v5, _mm_setzero_si64()), v8), _m_punpckldq(v9, v9)), 7u)),
+				_m_paddw(v8, _m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v5, _mm_setzero_si64()), v8), v9), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -51,7 +51,7 @@ void __cdecl TVPPsAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 			_m_packuswb(
 				_m_paddw(
 					v9,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v7, _mm_setzero_si64()), v9), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v7, _mm_setzero_si64()), v9), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -126,7 +126,7 @@ void __cdecl TVPPsAddBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 			_m_packuswb(
 				_m_paddw(
 					v10,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -155,7 +155,7 @@ void __cdecl TVPPsAddBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 			_m_packuswb(
 				_m_paddw(
 					v10,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v12, v12)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), v12), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -238,7 +238,7 @@ void __cdecl TVPPsSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 			_m_packuswb(
 				_m_paddw(
 					v10,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -267,7 +267,7 @@ void __cdecl TVPPsSubBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 			_m_packuswb(
 				_m_paddw(
 					v10,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v12, v12)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), v12), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -349,7 +349,7 @@ void __cdecl TVPPsMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_psrlwi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), v8), 8u), v8),
-							_m_punpckldq(v9, v9)),
+							v9),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -378,7 +378,7 @@ void __cdecl TVPPsMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_psrlwi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), v9), 8u), v9),
-							_m_punpckldq(v11, v11)),
+							v11),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -458,7 +458,7 @@ void __cdecl TVPPsScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 			_m_packuswb(
 				_m_paddw(
 					v9,
-					_m_psrawi(_m_pmullw(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v9), 8u)), _m_punpckldq(v10, v10)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v9), 8u)), v10), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -485,7 +485,7 @@ void __cdecl TVPPsScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 			_m_packuswb(
 				_m_paddw(
 					v9,
-					_m_psrawi(_m_pmullw(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v9), 8u)), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(v8, _m_psrlwi(_m_pmullw(v8, v9), 8u)), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -579,7 +579,7 @@ void __cdecl TVPPsOverlayBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 									_m_pand(v12, v13),
 									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(v10, v9), 1u), v12), v5))),
 								v9),
-							_m_punpckldq(v14, v14)),
+							v14),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -620,7 +620,7 @@ void __cdecl TVPPsOverlayBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 									_m_pand(v12, v13),
 									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(v10, v9), 1u), v12), v7))),
 								v9),
-							_m_punpckldq(v15, v15)),
+							v15),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -735,7 +735,7 @@ void __cdecl TVPPsHardLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 							_m_psubw(
 								_m_por(_m_pand(v13, v11), _m_pandn(v11, _m_psubw(_m_psubw(_m_psllwi(v12, 1u), v13), v5))),
 								v9),
-							_m_punpckldq(v14, v14)),
+							v14),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -776,7 +776,7 @@ void __cdecl TVPPsHardLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 							_m_psubw(
 								_m_por(_m_pand(v13, v11), _m_pandn(v11, _m_psubw(_m_psubw(_m_psllwi(v12, 1u), v13), v7))),
 								v9),
-							_m_punpckldq(v15, v15)),
+							v15),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -895,7 +895,7 @@ void __cdecl TVPPsSoftLightBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(CALC_USING_TABLE(TVPPsTableSoftLight, src[i], dest[i])), _mm_setzero_si64()), v11),
-							_m_punpckldq(v12, v12)),
+							v12),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -926,7 +926,7 @@ void __cdecl TVPPsSoftLightBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(CALC_USING_TABLE(TVPPsTableSoftLight, src[i], dest[i])), _mm_setzero_si64()), v12),
-							_m_punpckldq(v14, v14)),
+							v14),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -1011,7 +1011,7 @@ void __cdecl TVPPsColorDodgeBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(CALC_USING_TABLE(TVPPsTableColorDodge, src[i], dest[i])), _mm_setzero_si64()), v11),
-							_m_punpckldq(v12, v12)),
+							v12),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -1042,7 +1042,7 @@ void __cdecl TVPPsColorDodgeBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(CALC_USING_TABLE(TVPPsTableColorDodge, src[i], dest[i])), _mm_setzero_si64()), v12),
-							_m_punpckldq(v14, v14)),
+							v14),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -1117,7 +1117,7 @@ void __cdecl TVPPsColorDodge5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 		v5 = _mm_cvtsi32_si64(src[i]);
 		v7 = _m_psrldi(v5, 0x19u);
 		v9 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7));
-		v10 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), _m_punpckldq(v9, v9)), 7u), _mm_setzero_si64()));
+		v10 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), v9), 7u), _mm_setzero_si64()));
 		dest[i] = CALC_USING_TABLE(TVPPsTableColorDodge, v10, dest[i]);
 	}
 	_m_empty();
@@ -1137,7 +1137,7 @@ void __cdecl TVPPsColorDodge5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 		v7  = _mm_cvtsi32_si64(src[i]);
 		v10 = _m_psrldi(_m_pmullw(_m_psrldi(v7, 0x19u), v6), 8u);
 		v11 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10));
-		v12 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), _m_punpckldq(v11, v11)), 7u), _mm_setzero_si64()));
+		v12 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), v11), 7u), _mm_setzero_si64()));
 		dest[i] = CALC_USING_TABLE(TVPPsTableColorDodge, v12, dest[i]);
 	}
 	_m_empty();
@@ -1155,7 +1155,7 @@ void __cdecl TVPPsColorDodge5Blend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 		v5  = _mm_cvtsi32_si64(src[i]);
 		v7  = _m_psrldi(v5, 0x19u);
 		v9  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7));
-		v10 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), _m_punpckldq(v9, v9)), 7u), _mm_setzero_si64()));
+		v10 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), v9), 7u), _mm_setzero_si64()));
 		dest[i] = CALC_USING_TABLE_HDA(TVPPsTableColorDodge, v10, dest[i]);
 	}
 	_m_empty();
@@ -1175,7 +1175,7 @@ void __cdecl TVPPsColorDodge5Blend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const
 		v7  = _mm_cvtsi32_si64(src[i]);
 		v10 = _m_psrldi(_m_pmullw(_m_psrldi(v7, 0x19u), v6), 8u);
 		v11 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v10));
-		v12 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), _m_punpckldq(v11, v11)), 7u), _mm_setzero_si64()));
+		v12 = _mm_cvtsi64_si32(_m_packuswb(_m_psrawi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), v11), 7u), _mm_setzero_si64()));
 		dest[i] = CALC_USING_TABLE_HDA(TVPPsTableColorDodge, v12, dest[i]);
 	}
 	_m_empty();
@@ -1203,7 +1203,7 @@ void __cdecl TVPPsColorBurnBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(CALC_USING_TABLE(TVPPsTableColorBurn, src[i], dest[i])), _mm_setzero_si64()), v11),
-							_m_punpckldq(v12, v12)),
+							v12),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -1234,7 +1234,7 @@ void __cdecl TVPPsColorBurnBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 					_m_psrawi(
 						_m_pmullw(
 							_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(CALC_USING_TABLE(TVPPsTableColorBurn, src[i], dest[i])), _mm_setzero_si64()), v12),
-							_m_punpckldq(v14, v14)),
+							v14),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -1316,7 +1316,7 @@ void __cdecl TVPPsLightenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 			_m_packuswb(
 				_m_paddw(
 					v8,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_paddb(v9, _m_psubusb(v8, v9)), v8), _m_punpckldq(v10, v10)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_paddb(v9, _m_psubusb(v8, v9)), v8), v10), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1344,7 +1344,7 @@ void __cdecl TVPPsLightenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 				_m_paddw(
 					v9,
 					_m_psrawi(
-						_m_pmullw(_m_psubw(_m_paddb(v11, _m_psubusb(v9, v11)), v9), _m_punpckldq(v12, v12)),
+						_m_pmullw(_m_psubw(_m_paddb(v11, _m_psubusb(v9, v11)), v9), v12),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -1428,7 +1428,7 @@ void __cdecl TVPPsDarkenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 			_m_packuswb(
 				_m_paddw(
 					v9,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_psubb(v8, _m_psubusb(v8, v9)), v9), _m_punpckldq(v10, v10)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_psubb(v8, _m_psubusb(v8, v9)), v9), v10), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1455,7 +1455,7 @@ void __cdecl TVPPsDarkenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 			_m_packuswb(
 				_m_paddw(
 					v9,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_psubb(v8, _m_psubusb(v8, v9)), v9), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_psubb(v8, _m_psubusb(v8, v9)), v9), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1538,7 +1538,7 @@ void __cdecl TVPPsDiffBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *
 			_m_packuswb(
 				_m_paddw(
 					v10,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v10), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1567,7 +1567,7 @@ void __cdecl TVPPsDiffBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 			_m_packuswb(
 				_m_paddw(
 					v11,
-					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v11), _m_punpckldq(v12, v12)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(_m_punpcklbw(v9, _mm_setzero_si64()), v11), v12), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1643,7 +1643,7 @@ void __cdecl TVPPsDiff5Blend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 		v7  = _m_psrldi(v5, 0x19u);
 		v8  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v7));
 		v9  = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		v10 = _m_psrawi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), _m_punpckldq(v8, v8)), 7u);
+		v10 = _m_psrawi(_m_pmullw(_m_punpcklbw(v5, _mm_setzero_si64()), v8), 7u);
 		dest[i] = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubusw(v9, v10), _m_psubusw(v10, v9)), _mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1665,7 +1665,7 @@ void __cdecl TVPPsDiff5Blend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 		v9  = _m_psrldi(_m_pmullw(_m_psrldi(v7, 0x19u), v6), 8u);
 		v10 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v9));
 		v11 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		v12 = _m_psrawi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), _m_punpckldq(v10, v10)), 7u);
+		v12 = _m_psrawi(_m_pmullw(_m_punpcklbw(v7, _mm_setzero_si64()), v10), 7u);
 		dest[i] = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(_m_psubusw(v11, v12), _m_psubusw(v12, v11)), _mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1728,7 +1728,7 @@ void __cdecl TVPPsExclusionBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uin
 			_m_packuswb(
 				_m_paddw(
 					v8,
-					_m_psrawi(_m_pmullw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 7u)), _m_punpckldq(v10, v10)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 7u)), v10), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();
@@ -1755,7 +1755,7 @@ void __cdecl TVPPsExclusionBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 			_m_packuswb(
 				_m_paddw(
 					v8,
-					_m_psrawi(_m_pmullw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 7u)), _m_punpckldq(v11, v11)), 7u)),
+					_m_psrawi(_m_pmullw(_m_psubw(v9, _m_psrlwi(_m_pmullw(v9, v8), 7u)), v11), 7u)),
 				_mm_setzero_si64()));
 	}
 	_m_empty();

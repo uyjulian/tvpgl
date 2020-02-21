@@ -212,7 +212,6 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 
 void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 *add, const tjs_uint32 *sub, tjs_int n, tjs_int len)
 {
-	__m64       v6;  // mm7
 	__m64       v7;  // mm7
 	int         v8;  // esi
 	__m64       v10; // mm1
@@ -220,8 +219,7 @@ void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum
 	__m64       v14; // mm3
 	__m64       v15; // mm4
 
-	v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
-	v7  = _m_punpckldq(v6, v6);
+	v7  = _mm_set1_pi32((unsigned int)n >> 1);
 	v10 = *(__m64 *)sum;
 	v11 = *((__m64 *)sum + 1);
 	for (tjs_int i = 0; i < len; i += 1)
@@ -240,7 +238,6 @@ void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum
 
 void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 *add, const tjs_uint32 *sub, tjs_int n, tjs_int len)
 {
-	__m64       v6;  // mm7
 	__m64       v7;  // mm7
 	int         v8;  // esi
 	__m64       v10; // mm1
@@ -250,8 +247,7 @@ void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *s
 	int         v15; // eax
 	int         v16; // ebx
 
-	v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
-	v7  = _m_punpckldq(v6, v6);
+	v7  = _mm_set1_pi32((unsigned int)n >> 1);
 	v8  = 0x100000000ll / n;
 	v10 = *(__m64 *)sum;
 	v11 = *((__m64 *)sum + 1);

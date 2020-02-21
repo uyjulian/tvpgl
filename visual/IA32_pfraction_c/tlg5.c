@@ -91,7 +91,6 @@ void __cdecl TVPTLG5ComposeColors3To4_mmx_pfraction_c(tjs_uint8 *outp, const tjs
 	__m64        v6;  // mm6
 	__m64        v7;  // mm7
 	__m64        v8;  // mm4
-	__m64        v9;  // mm0
 	__m64        v10; // mm0
 	tjs_int      i;   // ecx
 
@@ -99,8 +98,7 @@ void __cdecl TVPTLG5ComposeColors3To4_mmx_pfraction_c(tjs_uint8 *outp, const tjs
 	v6  = _mm_cvtsi32_si64(*((tjs_uint32 *)buf + 1));
 	v7  = _mm_cvtsi32_si64(*((tjs_uint32 *)buf + 2));
 	v8  = _mm_setzero_si64();
-	v9  = _mm_cvtsi32_si64(0xFF000000);
-	v10 = _m_punpckldq(v9, v9);
+	v10 = _mm_set1_pi32(0xFF000000);
 	for (i = 0;
 		 i < width;
 		 *(tjs_uint32 *)&outp[4 * i - 4] = _mm_cvtsi64_si32(_m_por(_m_paddb(v8, _mm_cvtsi32_si64(*(tjs_uint32 *)&upper[4 * i - 4])), v10)))

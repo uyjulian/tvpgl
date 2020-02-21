@@ -14,11 +14,9 @@ static const __m64 TVPSubBlend_full_bit_one = (__m64)0xffffffffffffffffull;
 
 void __cdecl TVPSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
-	__m64         v3; // mm7
 	__m64         v4; // mm7
 
-	v3 = _mm_cvtsi32_si64(0xFFFFFFFF);
-	v4 = _m_punpckldq(v3, v3);
+	v4 = _mm_set1_pi32(0xFFFFFFFF);
 	for (tjs_int i = 0; i < len; i += 1)
 	{
 		dest[i] = _mm_cvtsi64_si32(_m_psubusb(_mm_cvtsi32_si64(dest[i]), _m_pxor(_mm_cvtsi32_si64(src[i]), v4)));
@@ -28,15 +26,11 @@ void __cdecl TVPSubBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src
 
 void __cdecl TVPSubBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
 {
-	__m64         v3; // mm7
 	__m64         v4; // mm7
-	__m64         v5; // mm6
 	__m64         v6; // mm6
 
-	v3 = _mm_cvtsi32_si64(0xFFFFFFFF);
-	v4 = _m_punpckldq(v3, v3);
-	v5 = _mm_cvtsi32_si64(0xFFFFFFu);
-	v6 = _m_punpckldq(v5, v5);
+	v4 = _mm_set1_pi32(0xFFFFFFFF);
+	v6 = _mm_set1_pi32(0xFFFFFFu);
 	for (tjs_int i = 0; i < len; i += 1)
 	{
 		dest[i] = _mm_cvtsi64_si32(_m_psubusb(_mm_cvtsi32_si64(dest[i]), _m_pand(_m_pxor(_mm_cvtsi32_si64(src[i]), v4), v6)));

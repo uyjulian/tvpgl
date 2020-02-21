@@ -46,19 +46,15 @@ void __cdecl TVPFillColor_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uin
 
 void __cdecl TVPConstColorAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
 {
-	__m64         v5;  // mm6
 	__m64         v6;  // mm6
-	__m64         v7;  // mm7
 	__m64         v8;  // mm7
 	__m64         v10; // mm2
 	__m64         v11; // mm1
 	__m64         v13; // mm2
 	__m64         v16; // mm3
 
-	v5  = _mm_cvtsi32_si64(0xFF000000);
-	v6  = _m_punpckldq(v5, v5);
-	v7  = _mm_cvtsi32_si64(0xFFFFFFu);
-	v8  = _m_punpckldq(v7, v7);
+	v6  = _mm_set1_pi32(0xFF000000);
+	v8  = _mm_set1_pi32(0xFFFFFFu);
 	v10 = _mm_set1_pi16(opa);
 	v11 = _m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(color), _mm_setzero_si64()), v10);
 	v13 = _mm_set1_pi16((tjs_uint8) ~(tjs_uint8)opa);

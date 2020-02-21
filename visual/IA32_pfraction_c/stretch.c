@@ -14,12 +14,10 @@ void __cdecl TVPStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const
 {
 	tjs_uint32 * v5; // edi
 	unsigned int v6; // ebx
-	tjs_uint32 * v7; // ebp
 
 	v5 = dest;
 	v6 = srcstart;
-	v7 = &dest[len];
-	while (v5 < v7)
+	while (v5 < &dest[len])
 	{
 		*v5 = _mm_cvtsi64_si32(_mm_cvtsi32_si64(src[v6 >> 16]));
 		v6 += srcstep;
@@ -33,16 +31,14 @@ void __cdecl TVPStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 	unsigned int *v6;  // edi
 	unsigned int  v7;  // ebx
 	__m64         v9;  // mm7
-	tjs_uint32 *  v10; // ebp
 	__m64         v11; // mm7
 	__m64         v12; // mm1
 
 	v6  = dest;
 	v7  = srcstart;
 	v9  = _mm_set1_pi16(opa);
-	v10 = &dest[len];
 	v11 = v9;
-	while (v6 < v10)
+	while (v6 < &dest[len])
 	{
 		v12 = _m_punpcklbw(_mm_cvtsi32_si64(*v6), _mm_setzero_si64());
 		*v6 = _mm_cvtsi64_si32(
@@ -63,7 +59,6 @@ void __cdecl TVPStretchAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len,
 {
 	unsigned int *v5;  // edi
 	unsigned int  v6;  // ebx
-	tjs_uint32 *  v7;  // ebp
 	__m64         v8;  // mm3
 	__m64         v9;  // mm5
 	__m64         v10; // mm4
@@ -71,8 +66,7 @@ void __cdecl TVPStretchAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len,
 
 	v5 = dest;
 	v6 = srcstart;
-	v7 = &dest[len];
-	while (v5 < v7)
+	while (v5 < &dest[len])
 	{
 		v8  = _mm_cvtsi32_si64(src[v6 >> 16]);
 		v9  = _m_psrlqi(v8, 0x18u);
@@ -92,7 +86,6 @@ void __cdecl TVPStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_
 {
 	unsigned int *v5;  // edi
 	unsigned int  v6;  // ebx
-	tjs_uint32 *  v7;  // ebp
 	__m64         v8;  // mm4
 	__m64         v9;  // mm2
 	__m64         v10; // mm2
@@ -100,8 +93,7 @@ void __cdecl TVPStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_
 
 	v5 = dest;
 	v6 = srcstart;
-	v7 = &dest[len];
-	while (v5 < v7)
+	while (v5 < &dest[len])
 	{
 		v8  = _mm_cvtsi32_si64(src[v6 >> 16]);
 		v9  = _m_psrlqi(v8, 0x18u);
@@ -160,7 +152,6 @@ void __cdecl TVPInterpStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int dest
 	__m64        v9;  // mm7
 	tjs_uint32 * v10; // edi
 	unsigned int v11; // ebx
-	tjs_uint32 * v12; // ebp
 	__m64        v13; // mm1
 	__m64        v15; // mm3
 	__m64        v16; // mm5
@@ -171,8 +162,7 @@ void __cdecl TVPInterpStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int dest
 	v9  = v8;
 	v10 = dest;
 	v11 = srcstart;
-	v12 = &dest[destlen];
-	while (v10 < v12)
+	while (v10 < &dest[destlen])
 	{
 		v13 = _m_punpcklbw(_mm_cvtsi32_si64(src1[v11 >> 16]), _mm_setzero_si64());
 		v15 = _m_punpcklbw(_mm_cvtsi32_si64(src2[v11 >> 16]), _mm_setzero_si64());
@@ -215,7 +205,6 @@ void __cdecl TVPInterpStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, t
 	__m64         v13; // mm6
 	unsigned int *v14; // edi
 	unsigned int  v15; // ebx
-	tjs_uint32 *  v16; // ebp
 	__m64         v17; // mm1
 	__m64         v19; // mm3
 	__m64         v20; // mm5
@@ -229,8 +218,7 @@ void __cdecl TVPInterpStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, t
 	v13 = v12;
 	v14 = dest;
 	v15 = srcstart;
-	v16 = &dest[destlen];
-	while (v14 < v16)
+	while (v14 < &dest[destlen])
 	{
 		v17 = _m_punpcklbw(_mm_cvtsi32_si64(src1[v15 >> 16]), _mm_setzero_si64());
 		v19 = _m_punpcklbw(_mm_cvtsi32_si64(src2[v15 >> 16]), _mm_setzero_si64());
@@ -280,7 +268,6 @@ void __cdecl TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest
 	__m64         v9;  // mm7
 	unsigned int *v10; // edi
 	unsigned int  v11; // ebx
-	tjs_uint32 *  v12; // ebp
 	__m64         v13; // mm1
 	__m64         v15; // mm3
 	__m64         v16; // mm5
@@ -295,8 +282,7 @@ void __cdecl TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest
 	v9  = v8;
 	v10 = dest;
 	v11 = srcstart;
-	v12 = &dest[destlen];
-	while (v10 < v12)
+	while (v10 < &dest[destlen])
 	{
 		v13 = _m_punpcklbw(_mm_cvtsi32_si64(src1[v11 >> 16]), _mm_setzero_si64());
 		v15 = _m_punpcklbw(_mm_cvtsi32_si64(src2[v11 >> 16]), _mm_setzero_si64());
@@ -338,7 +324,6 @@ void __cdecl TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *de
 	__m64         v13; // mm6
 	unsigned int *v14; // edi
 	unsigned int  v15; // ebx
-	tjs_uint32 *  v16; // ebp
 	__m64         v17; // mm1
 	__m64         v19; // mm3
 	__m64         v20; // mm5
@@ -355,8 +340,7 @@ void __cdecl TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *de
 	v13 = v12;
 	v14 = dest;
 	v15 = srcstart;
-	v16 = &dest[destlen];
-	while (v14 < v16)
+	while (v14 < &dest[destlen])
 	{
 		v17 = _m_punpcklbw(_mm_cvtsi32_si64(src1[v15 >> 16]), _mm_setzero_si64());
 		v19 = _m_punpcklbw(_mm_cvtsi32_si64(src2[v15 >> 16]), _mm_setzero_si64());

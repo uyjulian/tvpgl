@@ -16,7 +16,6 @@ void __cdecl TVPUnivTransBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	unsigned int *   v7;  // ecx
 	unsigned int *   v8;  // ebx
 	const tjs_uint8 *v9;  // ebp
-	tjs_uint32 *     v10; // esi
 	__m64            v12; // mm4
 	__m64            v13; // mm1
 
@@ -24,8 +23,7 @@ void __cdecl TVPUnivTransBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	v7  = (unsigned int *)src1;
 	v8  = (unsigned int *)src2;
 	v9  = rule;
-	v10 = &dest[len];
-	while (v6 < v10)
+	while (v6 < &dest[len])
 	{
 		v12 = _mm_set1_pi16(*(const tjs_uint32 *)((char *)table + 2 * *v9));
 		v13 = _m_punpcklbw(_mm_cvtsi32_si64(*v8), _mm_setzero_si64());
@@ -47,7 +45,6 @@ void __cdecl TVPUnivTransBlend_switch_mmx_pfraction_c(tjs_uint32 *dest, const tj
 	unsigned int *   v9;  // ecx
 	unsigned int *   v10; // ebx
 	const tjs_uint8 *v11; // ebp
-	tjs_uint32 *     v12; // esi
 	__m64            v14; // mm4
 	__m64            v15; // mm1
 
@@ -55,8 +52,7 @@ void __cdecl TVPUnivTransBlend_switch_mmx_pfraction_c(tjs_uint32 *dest, const tj
 	v9  = (unsigned int *)src1;
 	v10 = (unsigned int *)src2;
 	v11 = rule;
-	v12 = &dest[len];
-	while (v8 < v12)
+	while (v8 < &dest[len])
 	{
 		v14 = _mm_set1_pi16(*(const tjs_uint32 *)((char *)table + 2 * *v11));
 		v15 = _m_punpcklbw(_mm_cvtsi32_si64(*v10), _mm_setzero_si64());

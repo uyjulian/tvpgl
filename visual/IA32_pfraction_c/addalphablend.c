@@ -17,14 +17,12 @@ void __cdecl TVPAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 {
 	unsigned int *    v3; // edi
 	const tjs_uint32 *v4; // ebp
-	tjs_uint32 *      v5; // esi
 	__m64             v7; // mm2
 	__m64             v8; // mm1
 
 	v3 = dest;
 	v4 = src;
-	v5 = &dest[len];
-	while (v3 < v5)
+	while (v3 < &dest[len])
 	{
 		v7  = _mm_set1_pi16(*v4 >> 24);
 		v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
@@ -41,7 +39,6 @@ void __cdecl TVPAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	unsigned int *v5;  // ebp
 	__m64         v7;  // mm7
 	__m64         v8;  // mm7
-	tjs_uint32 *  v9;  // esi
 	__m64         v10; // mm2
 	__m64         v11; // mm4
 	__m64         v12; // mm1
@@ -51,8 +48,7 @@ void __cdecl TVPAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	v5 = (unsigned int *)src;
 	v7 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
 	v8 = v7;
-	v9 = &dest[len];
-	while (v4 < v9)
+	while (v4 < &dest[len])
 	{
 		v10 = _m_punpcklbw(_mm_cvtsi32_si64(*v4), _mm_setzero_si64());
 		v11 = _m_psrlwi(_m_pmullw(_m_punpcklbw(_mm_cvtsi32_si64(*v5), _mm_setzero_si64()), v8), 8u);
@@ -69,14 +65,12 @@ void __cdecl TVPAdditiveAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 {
 	unsigned int *    v3; // edi
 	const tjs_uint32 *v4; // ebp
-	tjs_uint32 *      v5; // esi
 	__m64             v7; // mm2
 	__m64             v8; // mm1
 
 	v3 = dest;
 	v4 = src;
-	v5 = &dest[len];
-	while (v3 < v5)
+	while (v3 < &dest[len])
 	{
 		v7  = _mm_set1_pi16(*v4 >> 24);
 		v8  = _m_punpcklbw(_mm_cvtsi32_si64(*v3), _mm_setzero_si64());
@@ -96,7 +90,6 @@ void __cdecl TVPAdditiveAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 {
 	unsigned int *v3; // edi
 	unsigned int *v4; // ebp
-	tjs_uint32 *  v5; // esi
 	__m64         v6; // mm3
 	__m64         v7; // mm4
 	__m64         v8; // mm4
@@ -104,8 +97,7 @@ void __cdecl TVPAdditiveAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 
 	v3 = dest;
 	v4 = (unsigned int *)src;
-	v5 = &dest[len];
-	while (v3 < v5)
+	while (v3 < &dest[len])
 	{
 		v6  = _mm_cvtsi32_si64(*v4);
 		v7  = _m_psrlqi(v6, 0x18u);

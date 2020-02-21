@@ -13,7 +13,6 @@
 void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
 {
 	tjs_uint32 * v3;  // edi
-	tjs_uint32 * v4;  // esi
 	unsigned int v5;  // eax
 	__m64        v6;  // mm2
 	__m64        v9;  // mm1
@@ -23,8 +22,7 @@ void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTV
 	unsigned int v13; // eax
 
 	v3 = dest;
-	v4 = &dest[len];
-	while (v3 < v4)
+	while (v3 < &dest[len])
 	{
 		while (1)
 		{
@@ -34,7 +32,7 @@ void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTV
 			*v3 = (temp->R[(v5 >> 16) & 0xFF] << 16) | (temp->G[BYTE1(v5)] << 8) | temp->B[(tjs_uint8)v5] | 0xFF000000;
 		_TVPAdjustGamma_a_mmx_pfraction_a_ptransp:
 			++v3;
-			if (v3 >= v4)
+			if (v3 >= &dest[len])
 				goto _TVPAdjustGamma_a_mmx_pfraction_a_pexit;
 		}
 		if (!v5)

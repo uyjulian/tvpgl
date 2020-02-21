@@ -14,12 +14,10 @@ void __cdecl TVPBLConvert24BitTo32Bit_mmx_pfraction_c(tjs_uint32 *dest, const tj
 {
 	tjs_uint32 *     v3; // edi
 	const tjs_uint8 *v4; // ecx
-	tjs_uint32 *     v5; // ebx
 
 	v3 = dest;
 	v4 = buf;
-	v5 = &dest[len];
-	while (v3 < v5)
+	while (v3 < &dest[len])
 	{
 		*v3 = ((v4[2] << 16) + (v4[1] << 8) + *v4) | 0xFF000000;
 		++v3;
@@ -32,17 +30,15 @@ void __cdecl TVPDither32BitTo16Bit565_mmx_pfraction_c(tjs_uint16 *dest, const tj
 {
 	tjs_uint16 *      v5;   // edi
 	const tjs_uint32 *v6;   // ebp
-	const tjs_uint32 *v7;   // esi
 	tjs_uint8(*v8)[2][256]; // edx
 	int v9;                 // ecx
 	int v10;                // edx
 
 	v5 = dest;
 	v6 = src;
-	v7 = &src[len];
 	v8 = TVPDitherTable_5_6[yofs & 3];
 	v9 = (xofs & 3) << 9;
-	while (v6 < v7)
+	while (v6 < &src[len])
 	{
 		v10 = (int)v8 + v9;
 		*v5 = *(tjs_uint8 *)(*(tjs_uint8 *)v6 + v10) | 32 * *(tjs_uint8 *)(*((tjs_uint8 *)v6 + 1) + v10 + 256) | (*(tjs_uint8 *)(*((tjs_uint8 *)v6 + 2) + v10) << 11);
@@ -58,17 +54,15 @@ void __cdecl TVPDither32BitTo16Bit555_mmx_pfraction_c(tjs_uint16 *dest, const tj
 {
 	tjs_uint16 *      v5;   // edi
 	const tjs_uint32 *v6;   // ebp
-	const tjs_uint32 *v7;   // esi
 	tjs_uint8(*v8)[2][256]; // edx
 	int v9;                 // ecx
 	int v10;                // edx
 
 	v5 = dest;
 	v6 = src;
-	v7 = &src[len];
 	v8 = TVPDitherTable_5_6[yofs & 3];
 	v9 = (xofs & 3) << 9;
-	while (v6 < v7)
+	while (v6 < &src[len])
 	{
 		v10 = (int)v8 + v9;
 		*v5 = *(tjs_uint8 *)(*(tjs_uint8 *)v6 + v10) | 32 * *(tjs_uint8 *)(*((tjs_uint8 *)v6 + 1) + v10) | (*(tjs_uint8 *)(*((tjs_uint8 *)v6 + 2) + v10) << 10);

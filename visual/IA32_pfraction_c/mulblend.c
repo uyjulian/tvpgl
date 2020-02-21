@@ -19,12 +19,10 @@ void __cdecl TVPMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src
 {
 	tjs_uint32 *  v3; // edi
 	unsigned int *v4; // ebp
-	tjs_uint32 *  v5; // esi
 
 	v3 = dest;
 	v4 = (unsigned int *)src;
-	v5 = &dest[len];
-	while (v3 < v5)
+	while (v3 < &dest[len])
 	{
 		*v3 = _mm_cvtsi64_si32(
 			_m_packuswb(
@@ -44,14 +42,12 @@ void __cdecl TVPMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	__m64         v4; // mm7
 	tjs_uint32 *  v5; // edi
 	unsigned int *v6; // ebp
-	tjs_uint32 *  v7; // esi
 
 	v3 = (__m64)TVPMulBlendHDA_mulmask;
 	v4 = (__m64)TVPMulBlendHDA_100bit;
 	v5 = dest;
 	v6 = (unsigned int *)src;
-	v7 = &dest[len];
-	while (v5 < v7)
+	while (v5 < &dest[len])
 	{
 		*v5 = _mm_cvtsi64_si32(
 			_m_packuswb(
@@ -74,15 +70,13 @@ void __cdecl TVPMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	__m64         v7;  // mm6
 	tjs_uint32 *  v8;  // edi
 	unsigned int *v9;  // ebp
-	tjs_uint32 *  v10; // esi
 
 	v5  = _mm_set1_pi16(opa);
 	v6  = v5;
 	v7  = (__m64)TVPMulBlendHDA_fullbit;
 	v8  = dest;
 	v9  = (unsigned int *)src;
-	v10 = &dest[len];
-	while (v8 < v10)
+	while (v8 < &dest[len])
 	{
 		*v8 = _mm_cvtsi64_si32(
 			_m_packuswb(
@@ -106,7 +100,6 @@ void __cdecl TVPMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	__m64         v8;  // mm7
 	tjs_uint32 *  v9;  // edi
 	unsigned int *v10; // ebp
-	tjs_uint32 *  v11; // esi
 
 	v5  = _mm_set1_pi16(opa);
 	v6  = v5;
@@ -114,8 +107,7 @@ void __cdecl TVPMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	v8  = (__m64)TVPMulBlendHDA_100bit;
 	v9  = dest;
 	v10 = (unsigned int *)src;
-	v11 = &dest[len];
-	while (v9 < v11)
+	while (v9 < &dest[len])
 	{
 		*v9 = _mm_cvtsi64_si32(
 			_m_packuswb(

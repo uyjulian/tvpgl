@@ -15,7 +15,6 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 	tjs_int          result; // eax
 	const tjs_uint8 *v6;     // ebx
 	tjs_uint8 *      v7;     // edi
-	const tjs_uint8 *v8;     // ebp
 	unsigned int     v9;     // ecx
 	char             v10;    // cf
 	tjs_uint8        v11;    // dl
@@ -31,7 +30,6 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 	result = initialr;
 	v6     = in;
 	v7     = out;
-	v8     = &in[insize];
 	if (in < &in[insize])
 	{
 		while (1)
@@ -65,7 +63,7 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 					} while (v14);
 					v6 = v18;
 					v9 = v19;
-					if (v18 >= v8)
+					if (v18 >= &in[insize])
 						return result;
 				}
 				else
@@ -77,7 +75,7 @@ tjs_int __cdecl TVPTLG5DecompressSlide_pfraction_c(tjs_uint8 *out, const tjs_uin
 					++v7;
 					result    = v12 & 0xFFF;
 					*(v7 - 1) = v11;
-					if (v6 >= v8)
+					if (v6 >= &in[insize])
 						return result;
 				}
 			}

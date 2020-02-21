@@ -20,13 +20,11 @@ void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *
 	__m64         v3; // mm6
 	tjs_uint32 *  v4; // edi
 	unsigned int *v5; // ebp
-	tjs_uint32 *  v6; // esi
 
 	v3 = (__m64)TVPScreenMulBlend_full_bit_aligned;
 	v4 = dest;
 	v5 = (unsigned int *)src;
-	v6 = &dest[len];
-	while (v4 < v6)
+	while (v4 < &dest[len])
 	{
 		*v4 = _mm_cvtsi64_si32(
 			_m_pxor(
@@ -50,14 +48,12 @@ void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	__m64         v4; // mm7
 	tjs_uint32 *  v5; // edi
 	unsigned int *v6; // ebp
-	tjs_uint32 *  v7; // esi
 
 	v3 = (__m64)TVPScreenBlendHDA_mul_100bit;
 	v4 = (__m64)TVPScreenBlendHDA_mulmask;
 	v5 = dest;
 	v6 = (unsigned int *)src;
-	v7 = &dest[len];
-	while (v5 < v7)
+	while (v5 < &dest[len])
 	{
 		*v5 = _mm_cvtsi64_si32(
 			_m_pxor(
@@ -82,15 +78,13 @@ void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 	__m64         v7;  // mm6
 	tjs_uint32 *  v8;  // edi
 	unsigned int *v9;  // ebp
-	tjs_uint32 *  v10; // esi
 
 	v5  = _mm_set1_pi16(opa);
 	v6  = v5;
 	v7  = (__m64)TVPScreenMulBlend_full_bit_aligned;
 	v8  = dest;
 	v9  = (unsigned int *)src;
-	v10 = &dest[len];
-	while (v8 < v10)
+	while (v8 < &dest[len])
 	{
 		*v8 = _mm_cvtsi64_si32(
 			_m_pxor(
@@ -116,7 +110,6 @@ void __cdecl TVPScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	__m64         v8;  // mm7
 	tjs_uint32 *  v9;  // edi
 	unsigned int *v10; // ebp
-	tjs_uint32 *  v11; // esi
 
 	v5  = _mm_set1_pi16(opa);
 	v6  = v5;
@@ -124,8 +117,7 @@ void __cdecl TVPScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	v8  = (__m64)TVPScreenBlendHDA_mulmask;
 	v9  = dest;
 	v10 = (unsigned int *)src;
-	v11 = &dest[len];
-	while (v9 < v11)
+	while (v9 < &dest[len])
 	{
 		*v9 = _mm_cvtsi64_si32(
 			_m_por(

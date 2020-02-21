@@ -14,15 +14,13 @@ void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 {
 	unsigned int *    v3; // edi
 	const tjs_uint32 *v4; // ebp
-	tjs_uint32 *      v5; // esi
 	unsigned int      v6; // eax
 	__m64             v8; // mm4
 	__m64             v9; // mm1
 
 	v3 = dest;
 	v4 = src;
-	v5 = &dest[len];
-	while (v3 < v5)
+	while (v3 < &dest[len])
 	{
 		v6 = *v4;
 		if (*v4 < 0xFF000000)
@@ -48,14 +46,12 @@ void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 {
 	unsigned int *v4; // edi
 	unsigned int *v5; // ebp
-	tjs_uint32 *  v6; // esi
 	__m64         v8; // mm4
 	__m64         v9; // mm1
 
 	v4 = dest;
 	v5 = (unsigned int *)src;
-	v6 = &dest[len];
-	while (v4 < v6)
+	while (v4 < &dest[len])
 	{
 		v8  = _mm_set1_pi16((unsigned int)opa * (tjs_uint64)*v5 >> 32);
 		v9  = _m_punpcklbw(_mm_cvtsi32_si64(*v4), _mm_setzero_si64());
@@ -107,7 +103,6 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	tjs_uint32 *      v3;  // edi
 	const tjs_uint32 *v4;  // ebp
 	__m64             v5;  // mm7
-	tjs_uint32 *      v6;  // esi
 	int               v7;  // eax
 	__m64             v8;  // mm1
 	__m64             v10; // mm4
@@ -115,8 +110,7 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	v3 = dest;
 	v4 = src;
 	v5 = _mm_cvtsi32_si64(0xFFFFFFu);
-	v6 = &dest[len];
-	while (v3 < v6)
+	while (v3 < &dest[len])
 	{
 		v7  = (*v3 >> 24) + ((*v4 >> 16) & 0xFF00);
 		v8  = _m_punpcklbw(_m_pand(_mm_cvtsi32_si64(*v3), v5), _mm_setzero_si64());

@@ -170,9 +170,7 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	__m64       v25; // mm5
 	__m64 *     v26; // ebx
 	__m64 *     v27; // ebp
-	tjs_uint32 *v28; // esi
 	__m64       v29; // mm1
-	tjs_uint32 *v30; // [esp+0h] [ebp-20h]
 
 	if (n >= 3 && n < 128)
 	{
@@ -184,8 +182,7 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 		v25 = *(__m64 *)sum;
 		v26 = (__m64 *)add;
 		v27 = (__m64 *)sub;
-		v28 = &dest[len];
-		while (v24 < v28)
+		while (v24 < &dest[len])
 		{
 			v29  = _m_pmulhw(_m_paddw(v25, v20), v23);
 			*v24 = _mm_cvtsi64_si32(_m_packuswb(v29, v29));
@@ -205,8 +202,7 @@ void __cdecl TVPDoBoxBlurAvg16_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 		v11 = *(__m64 *)sum;
 		v12 = (__m64 *)add;
 		v13 = (__m64 *)sub;
-		v30 = &dest[len];
-		while (v10 < v30)
+		while (v10 < &dest[len])
 		{
 			v14  = _m_paddw(v11, v8);
 			v15  = v14;
@@ -245,10 +241,8 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	__m64       v25; // mm5
 	__m64 *     v26; // ebx
 	__m64 *     v27; // ebp
-	tjs_uint32 *v28; // esi
 	__m64       v29; // mm1
 	tjs_uint8 * v30; // ecx
-	tjs_uint32 *v31; // [esp+0h] [ebp-20h]
 
 	if (n >= 3 && n < 128)
 	{
@@ -260,8 +254,7 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 		v25 = *(__m64 *)sum;
 		v26 = (__m64 *)add;
 		v27 = (__m64 *)sub;
-		v28 = &dest[len];
-		while (v24 < v28)
+		while (v24 < &dest[len])
 		{
 			v29  = _m_packuswb(_m_pmulhw(_m_paddw(v25, v20), v23), _mm_setzero_si64());
 			v30  = &TVPDivTable[((unsigned int)_mm_cvtsi64_si32(v29) >> 16) & 0xFF00];
@@ -282,8 +275,7 @@ void __cdecl TVPDoBoxBlurAvg16_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 		v10 = dest;
 		v11 = *(__m64 *)sum;
 		v12 = (__m64 *)sub;
-		v31 = &dest[len];
-		while (v10 < v31)
+		while (v10 < &dest[len])
 		{
 			v13  = _m_paddw(v11, v8);
 			v14  = v13;
@@ -313,7 +305,6 @@ void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum
 	__m64 *     v13; // ebp
 	__m64       v14; // mm3
 	__m64       v15; // mm4
-	tjs_uint32 *v16; // [esp+0h] [ebp-20h]
 
 	v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
 	v7  = _m_punpckldq(v6, v6);
@@ -322,8 +313,7 @@ void __cdecl TVPDoBoxBlurAvg32_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *sum
 	v11 = *((__m64 *)sum + 1);
 	v12 = (__m64 *)add;
 	v13 = (__m64 *)sub;
-	v16 = &dest[len];
-	while (v9 < v16)
+	while (v9 < &dest[len])
 	{
 		v14 = _m_paddd(v10, v7);
 		v15 = _m_paddd(v11, v7);
@@ -353,7 +343,6 @@ void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *s
 	__m64       v14; // mm4
 	int         v15; // eax
 	int         v16; // ebx
-	tjs_uint32 *v17; // [esp+0h] [ebp-20h]
 
 	v6  = _mm_cvtsi32_si64((unsigned int)n >> 1);
 	v7  = _m_punpckldq(v6, v6);
@@ -362,8 +351,7 @@ void __cdecl TVPDoBoxBlurAvg32_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_uint32 *s
 	v10 = *(__m64 *)sum;
 	v11 = *((__m64 *)sum + 1);
 	v12 = (__m64 *)sub;
-	v17 = &dest[len];
-	while (v9 < v17)
+	while (v9 < &dest[len])
 	{
 		v13 = _m_paddd(v10, v7);
 		v14 = _m_paddd(v11, v7);
@@ -392,7 +380,6 @@ void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	__m64       v13; // mm5
 	__m64 *     v14; // ebx
 	__m64 *     v15; // ebp
-	tjs_uint32 *v16; // esi
 	__m64       v17; // mm1
 
 	v7  = _mm_set1_pi16((unsigned int)n >> 1);
@@ -403,8 +390,7 @@ void __cdecl TVPDoBoxBlurAvg16_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *sum
 	v13 = *(__m64 *)sum;
 	v14 = (__m64 *)add;
 	v15 = (__m64 *)sub;
-	v16 = &dest[len];
-	while (v12 < v16)
+	while (v12 < &dest[len])
 	{
 		v17  = _m_pmulhuw(_m_paddw(v13, v8), v11);
 		*v12 = _mm_cvtsi64_si32(_m_packuswb(v17, v17));
@@ -427,7 +413,6 @@ void __cdecl TVPDoBoxBlurAvg16_d_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	__m64       v13; // mm5
 	__m64 *     v14; // ebx
 	__m64 *     v15; // ebp
-	tjs_uint32 *v16; // esi
 	__m64       v17; // mm1
 	tjs_uint8 * v18; // ecx
 
@@ -439,8 +424,7 @@ void __cdecl TVPDoBoxBlurAvg16_d_sse_pfraction_c(tjs_uint32 *dest, tjs_uint16 *s
 	v13 = *(__m64 *)sum;
 	v14 = (__m64 *)add;
 	v15 = (__m64 *)sub;
-	v16 = &dest[len];
-	while (v12 < v16)
+	while (v12 < &dest[len])
 	{
 		v17  = _m_packuswb(_m_pmulhuw(_m_paddw(v13, v8), v11), _mm_setzero_si64());
 		v18  = &TVPDivTable[((unsigned int)_mm_cvtsi64_si32(v17) >> 16) & 0xFF00];

@@ -15,14 +15,12 @@ void __cdecl TVPLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, cons
 	tjs_uint32 *v8;  // edi
 	__m64       v9;  // mm0
 	__m64       v10; // mm2
-	tjs_uint32 *v11; // ebp
 	__m64       v12; // mm5
 
 	v8  = dest;
 	v9  = _m_por(_mm_cvtsi32_si64(sx), _m_psllqi(_mm_cvtsi32_si64(sy), 0x20u));
 	v10 = _m_por(_mm_cvtsi32_si64(stepx), _m_psllqi(_mm_cvtsi32_si64(stepy), 0x20u));
-	v11 = &dest[len];
-	while (v8 < v11)
+	while (v8 < &dest[len])
 	{
 		v12 = _m_psradi(v9, 0x10u);
 		*v8 = *(const tjs_uint32 *)((char *)&src[_mm_cvtsi64_si32(v12)] + srcpitch * _mm_cvtsi64_si32(_m_psrlqi(v12, 0x20u)));
@@ -38,7 +36,6 @@ void __cdecl TVPLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_in
 	__m64         v11; // mm3
 	__m64         v12; // mm3
 	__m64         v13; // mm0
-	tjs_uint32 *  v14; // ebp
 	__m64         v15; // mm5
 	__m64         v16; // mm1
 	__m64         v17; // [esp+0h] [ebp-28h]
@@ -48,8 +45,7 @@ void __cdecl TVPLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_in
 	v12 = v11;
 	v13 = _m_por(_mm_cvtsi32_si64(sx), _m_psllqi(_mm_cvtsi32_si64(sy), 0x20u));
 	v17 = _m_por(_mm_cvtsi32_si64(stepx), _m_psllqi(_mm_cvtsi32_si64(stepy), 0x20u));
-	v14 = &dest[len];
-	while (v9 < v14)
+	while (v9 < &dest[len])
 	{
 		v15 = _m_psradi(v13, 0x10u);
 		v16 = _m_punpcklbw(_mm_cvtsi32_si64(*v9), _mm_setzero_si64());
@@ -78,7 +74,6 @@ void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 	tjs_uint32 *  v8;  // edi
 	unsigned int  v9;  // ecx
 	unsigned int  v10; // edx
-	tjs_uint32 *  v11; // ebp
 	unsigned int *v12; // eax
 	__m64         v14; // mm5
 	__m64         v15; // mm5
@@ -90,8 +85,7 @@ void __cdecl TVPInterpLinTransCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 	v8  = dest;
 	v9  = sx;
 	v10 = sy;
-	v11 = &dest[len];
-	while (v8 < v11)
+	while (v8 < &dest[len])
 	{
 		v12 = (unsigned int *)((char *)&src[v9 >> 16] + srcpitch * (v10 >> 16));
 		v14 = _mm_set1_pi16((unsigned int)(tjs_uint16)v9 >> 8);
@@ -134,7 +128,6 @@ void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, 
 	unsigned int *v12; // edi
 	unsigned int  v13; // ecx
 	unsigned int  v14; // edx
-	tjs_uint32 *  v15; // ebp
 	unsigned int *v16; // eax
 	__m64         v18; // mm5
 	__m64         v19; // mm5
@@ -149,8 +142,7 @@ void __cdecl TVPInterpLinTransConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, 
 	v12 = dest;
 	v13 = sx;
 	v14 = sy;
-	v15 = &dest[len];
-	while (v12 < v15)
+	while (v12 < &dest[len])
 	{
 		v16  = (unsigned int *)((char *)&src[v13 >> 16] + srcpitch * (v14 >> 16));
 		v18  = _mm_set1_pi16((unsigned int)(tjs_uint16)v13 >> 8);
@@ -202,7 +194,6 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 	unsigned int *v8;  // edi
 	unsigned int  v9;  // ecx
 	unsigned int  v10; // edx
-	tjs_uint32 *  v11; // ebp
 	unsigned int *v12; // eax
 	__m64         v14; // mm5
 	__m64         v15; // mm5
@@ -218,8 +209,7 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *des
 	v8  = dest;
 	v9  = sx;
 	v10 = sy;
-	v11 = &dest[len];
-	while (v8 < v11)
+	while (v8 < &dest[len])
 	{
 		v12 = (unsigned int *)((char *)&src[v9 >> 16] + srcpitch * (v10 >> 16));
 		v14 = _mm_set1_pi16((unsigned int)(tjs_uint16)v9 >> 8);
@@ -263,7 +253,6 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *d
 	unsigned int *v12; // edi
 	unsigned int  v13; // ecx
 	unsigned int  v14; // edx
-	tjs_uint32 *  v15; // ebp
 	unsigned int *v16; // eax
 	__m64         v18; // mm5
 	__m64         v19; // mm5
@@ -281,8 +270,7 @@ void __cdecl TVPInterpLinTransAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *d
 	v12 = dest;
 	v13 = sx;
 	v14 = sy;
-	v15 = &dest[len];
-	while (v12 < v15)
+	while (v12 < &dest[len])
 	{
 		v16 = (unsigned int *)((char *)&src[v13 >> 16] + srcpitch * (v14 >> 16));
 		v18 = _mm_set1_pi16((unsigned int)(tjs_uint16)v13 >> 8);

@@ -331,6 +331,15 @@ static void testTLG6_chroma()
 	origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
 	CheckTestData_RGB(#origf);\
 	}
+#define TEST_TVPGL_BOXBLUR_FUNC(origf, DT, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
+	InitTestData();\
+	TVPGL_INIT_FUNCS_1();\
+	origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	TVPGL_INIT_FUNCS_2();\
+	origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	CheckTestData(#origf); \
+	}
 #define TEST_TVPGL_CUSTOM_FUNC(origf, ...) \
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
@@ -649,6 +658,26 @@ static void logTLG6_chroma() {
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
 	}
+#define TEST_TVPGL_BOXBLUR_FUNC(origf, DT, ...) \
+	if(IsDifferentFunction((void **)&origf)){\
+	InitTestData();\
+	TVPGL_INIT_FUNCS_1();\
+	origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	TVPGL_INIT_FUNCS_2();\
+	origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	CheckTestData(#origf); if (TEST_COUNT) {\
+	InitTestData();\
+	TVPGL_INIT_FUNCS_1();\
+	lastTick1 = TVPGetRoughTickCount32();\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	tick1 = TVPGetRoughTickCount32() - lastTick1;\
+	TVPGL_INIT_FUNCS_2();\
+	lastTick2 = TVPGetRoughTickCount32(); \
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	tick2 = TVPGetRoughTickCount32() - lastTick2; \
+	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
+	}\
+	}
 #define TEST_TVPGL_CUSTOM_FUNC(origf, ...) \
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
@@ -717,6 +746,7 @@ static void logTLG6_chroma() {
 #define TEST_TVPGL_LINTRANS_FUNC_2(origf, ...) origf = f;
 #define TEST_TVPGL_LINTRANS_FUNC(origf, ...) origf = f;
 #define TEST_TVPGL_UNIVTRANS_FUNC(origf, ...) origf = f;
+#define TEST_TVPGL_BOXBLUR_FUNC(origf, ...) origf = f;
 #define TEST_TVPGL_CUSTOM_FUNC(origf, ...) origf = f;
 #define TEST_TVPGL_CUSTOM_FUNC_RGB(origf, ...) origf = f;
 #define TEST_TVPGL_CUSTOM_FUNC_TYPE(origf, ...) origf = f;
@@ -918,6 +948,11 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum32, tjs_uint32*, testdata1, testdata2, 64 * 256);
 		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum32_d, tjs_uint32*, testdata1, testdata2, 64 * 256);
 
+		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg16, tjs_uint16*);
+		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg16_d, tjs_uint16*);
+		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg32, tjs_uint32*);
+		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg32_d, tjs_uint32*);
+
 		TEST_TVPGL_CUSTOM_FUNC(TVPDoGrayScale, 256 * 256);
 
 		TEST_TVPGL_CUSTOM_FUNC(TVPExpand8BitTo32BitGray, testrule, 256 * 256);
@@ -1013,11 +1048,6 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_BLEND_FUNC(TVPPsExclusionBlend_HDA_o, 100);
 
 		// TODO: test the following
-		// implemented in IA32:
-		// TVPDoBoxBlurAvg16
-		// TVPDoBoxBlurAvg16_d
-		// TVPDoBoxBlurAvg32
-		// TVPDoBoxBlurAvg32_d
 		// testing in testTLG6_chroma / logTLG6_chroma:
 		// TVPTLG5ComposeColors3To4
 		// TVPTLG5ComposeColors4To4

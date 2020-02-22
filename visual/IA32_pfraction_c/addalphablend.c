@@ -13,7 +13,7 @@
 static const __m64 mask0000ffffffffffff = (__m64)0x0000ffffffffffffull;
 static const __m64 mask00ffffff00ffffff = (__m64)0x00ffffff00ffffffull;
 
-void __cdecl TVPAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPAdditiveAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64             v7; // mm2
 	__m64             v8; // mm1
@@ -27,7 +27,7 @@ void __cdecl TVPAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_u
 	_m_empty();
 }
 
-void __cdecl TVPAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPAdditiveAlphaBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64         v7;  // mm7
 	__m64         v10; // mm2
@@ -47,7 +47,7 @@ void __cdecl TVPAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs
 	_m_empty();
 }
 
-void __cdecl TVPAdditiveAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPAdditiveAlphaBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64             v7; // mm2
 	__m64             v8; // mm1
@@ -66,7 +66,7 @@ void __cdecl TVPAdditiveAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const t
 	_m_empty();
 }
 
-void __cdecl TVPAdditiveAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPAdditiveAlphaBlend_a_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64         v6; // mm3
 	__m64         v7; // mm4

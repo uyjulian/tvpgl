@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	unsigned int      v6; // eax
 	__m64             v8; // mm4
@@ -36,7 +36,7 @@ void __cdecl TVPAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64         v8; // mm4
 	__m64         v9; // mm1
@@ -55,7 +55,7 @@ void __cdecl TVPAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	unsigned int v4; // eax
 	__m64        v6; // mm2
@@ -83,7 +83,7 @@ void __cdecl TVPAlphaBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint3
 	_m_empty();
 }
 
-void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64             v5;  // mm7
 	int               v7;  // eax
@@ -112,7 +112,7 @@ void __cdecl TVPAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPConstAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64   v6; // mm4
 	__m64   v8; // mm1
@@ -128,7 +128,7 @@ void __cdecl TVPConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPConstAlphaBlend_SD_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPConstAlphaBlend_SD_c, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa))
 {
 	__m64   v7;  // mm4
 	__m64   v9;  // mm1

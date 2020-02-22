@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPApplyColorMap65_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 	__m64            v7;  // mm7
 	__m64            v9;  // mm4
@@ -26,7 +26,7 @@ void __cdecl TVPApplyColorMap65_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPApplyColorMap65_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_d_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 	__m64            v7;  // mm7
 	int              v8;  // eax
@@ -49,7 +49,7 @@ void __cdecl TVPApplyColorMap65_d_mmx_pfraction_c(tjs_uint32 *dest, const tjs_ui
 	_m_empty();
 }
 
-void __cdecl TVPApplyColorMap65_a_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color)
+TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_a_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 	__m64            v7;  // mm7
 	__m64            v9;  // mm3

@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPMakeAlphaFromKey_cmovcc_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 key)
+TVP_GL_IA32_FUNC_DECL(void, TVPMakeAlphaFromKey_cmovcc_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 key))
 {
 	int          v6; // eax
 	int          v7; // ebx

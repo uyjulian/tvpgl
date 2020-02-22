@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPBLConvert24BitTo32Bit_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPBLConvert24BitTo32Bit_c, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -19,7 +19,7 @@ void __cdecl TVPBLConvert24BitTo32Bit_mmx_pfraction_c(tjs_uint32 *dest, const tj
 	_m_empty();
 }
 
-void __cdecl TVPDither32BitTo16Bit565_mmx_pfraction_c(tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs)
+TVP_GL_IA32_FUNC_DECL(void, TVPDither32BitTo16Bit565_c, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
 {
 	tjs_uint8(*v8)[2][256]; // edx
 	int v9;                 // ecx
@@ -37,7 +37,7 @@ void __cdecl TVPDither32BitTo16Bit565_mmx_pfraction_c(tjs_uint16 *dest, const tj
 	_m_empty();
 }
 
-void __cdecl TVPDither32BitTo16Bit555_mmx_pfraction_c(tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs)
+TVP_GL_IA32_FUNC_DECL(void, TVPDither32BitTo16Bit555_c, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
 {
 	tjs_uint8(*v8)[2][256]; // edx
 	int v9;                 // ecx

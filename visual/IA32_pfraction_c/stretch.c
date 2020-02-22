@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
+TVP_GL_IA32_FUNC_DECL(void, TVPStretchCopy_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
 	for (tjs_int i = 0, j = srcstart; i < len; i += 1, j += srcstep)
 	{
@@ -19,7 +19,7 @@ void __cdecl TVPStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const
 	_m_empty();
 }
 
-void __cdecl TVPStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa))
 {
 	__m64         v9;  // mm7
 	__m64         v12; // mm1
@@ -40,7 +40,7 @@ void __cdecl TVPStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 	_m_empty();
 }
 
-void __cdecl TVPStretchAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
+TVP_GL_IA32_FUNC_DECL(void, TVPStretchAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
 	__m64         v8;  // mm3
 	__m64         v9;  // mm5
@@ -61,7 +61,7 @@ void __cdecl TVPStretchAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len,
 	_m_empty();
 }
 
-void __cdecl TVPStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep)
+TVP_GL_IA32_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep))
 {
 	__m64         v8;  // mm4
 	__m64         v9;  // mm2
@@ -79,7 +79,7 @@ void __cdecl TVPStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_
 	_m_empty();
 }
 
-void __cdecl TVPFastLinearInterpV2_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src0, const tjs_uint32 *src1)
+TVP_GL_IA32_FUNC_DECL(void, TVPFastLinearInterpV2_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src0, const tjs_uint32 *src1))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -95,7 +95,7 @@ void __cdecl TVPFastLinearInterpV2_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len
 	_m_empty();
 }
 
-void __cdecl TVPFastLinearInterpH2F_mmx_pfraction_c(tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src)
+TVP_GL_IA32_FUNC_DECL(void, TVPFastLinearInterpH2F_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src))
 {
 	for (tjs_int i = 0; i < destlen; i += 1)
 	{
@@ -104,7 +104,7 @@ void __cdecl TVPFastLinearInterpH2F_mmx_pfraction_c(tjs_uint32 *dest, tjs_int de
 	_m_empty();
 }
 
-void __cdecl TVPFastLinearInterpH2B_mmx_pfraction_c(tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src)
+TVP_GL_IA32_FUNC_DECL(void, TVPFastLinearInterpH2B_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src))
 {
 	for (tjs_int i = 0; i < destlen; i += 1)
 	{
@@ -113,7 +113,7 @@ void __cdecl TVPFastLinearInterpH2B_mmx_pfraction_c(tjs_uint32 *dest, tjs_int de
 	_m_empty();
 }
 
-void __cdecl TVPInterpStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep)
+TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchCopy_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep))
 {
 	__m64        v8;  // mm7
 	__m64        v13; // mm1
@@ -154,7 +154,7 @@ void __cdecl TVPInterpStretchCopy_mmx_pfraction_c(tjs_uint32 *dest, tjs_int dest
 	_m_empty();
 }
 
-void __cdecl TVPInterpStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa))
 {
 	__m64         v9;  // mm7
 	__m64         v12; // mm6
@@ -207,7 +207,7 @@ void __cdecl TVPInterpStretchConstAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, t
 	_m_empty();
 }
 
-void __cdecl TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep)
+TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep))
 {
 	__m64         v8;  // mm7
 	__m64         v13; // mm1
@@ -253,7 +253,7 @@ void __cdecl TVPInterpStretchAdditiveAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest
 	_m_empty();
 }
 
-void __cdecl TVPInterpStretchAdditiveAlphaBlend_o_mmx_pfraction_c(tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_o_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep, tjs_int opa))
 {
 	__m64         v9;  // mm7
 	__m64         v12; // mm6

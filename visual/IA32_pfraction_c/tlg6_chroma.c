@@ -21,7 +21,7 @@ static const __m64 b_d_mask    = (__m64)0x000000fe000000feull;
 static const __m64 avg_mask_fe = (__m64)0xfefefefefefefefeull;
 static const __m64 avg_mask_01 = (__m64)0x0101010101010101ull;
 
-void __cdecl TVPTLG6DecodeLine_mmx_pfraction_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
+TVP_GL_IA32_FUNC_DECL(void, TVPTLG6DecodeLine_c, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir))
 {
 	int          v10;             // edx
 	tjs_uint32 * v11;             // edi
@@ -2196,7 +2196,7 @@ void __cdecl TVPTLG6DecodeLine_mmx_pfraction_c(tjs_uint32 *prevline, tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPTLG6DecodeLine_sse_pfraction_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir)
+TVP_GL_IA32_FUNC_DECL(void, TVPTLG6DecodeLine_sse_c, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *input, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir))
 {
 	int          v10;             // edx
 	tjs_uint32 * v11;             // edi

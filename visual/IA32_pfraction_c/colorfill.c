@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPFillARGB_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
+TVP_GL_IA32_FUNC_DECL(void, TVPFillARGB_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -19,7 +19,7 @@ void __cdecl TVPFillARGB_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPFillARGB_sse_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
+TVP_GL_IA32_FUNC_DECL(void, TVPFillARGB_sse_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -27,7 +27,7 @@ void __cdecl TVPFillARGB_sse_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint
 	}
 }
 
-void __cdecl TVPFillARGB_NC_sse_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 value)
+TVP_GL_IA32_FUNC_DECL(void, TVPFillARGB_NC_sse_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -35,7 +35,7 @@ void __cdecl TVPFillARGB_NC_sse_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_u
 	}
 }
 
-void __cdecl TVPFillColor_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 color)
+TVP_GL_IA32_FUNC_DECL(void, TVPFillColor_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -44,7 +44,7 @@ void __cdecl TVPFillColor_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uin
 	_m_empty();
 }
 
-void __cdecl TVPConstColorAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPConstColorAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
 	__m64         v6;  // mm6
 	__m64         v8;  // mm7
@@ -71,7 +71,7 @@ void __cdecl TVPConstColorAlphaBlend_mmx_pfraction_c(tjs_uint32 *dest, tjs_int l
 	_m_empty();
 }
 
-void __cdecl TVPConstColorAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPConstColorAlphaBlend_d_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
 	__m64       v7;  // mm7
 	tjs_int     v8;  // esi
@@ -91,7 +91,7 @@ void __cdecl TVPConstColorAlphaBlend_d_mmx_pfraction_c(tjs_uint32 *dest, tjs_int
 	_m_empty();
 }
 
-void __cdecl TVPConstColorAlphaBlend_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPConstColorAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
 	unsigned int  v6;  // esi
 	__m64         v8;  // mm7

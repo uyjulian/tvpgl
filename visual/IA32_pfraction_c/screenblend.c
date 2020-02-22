@@ -15,7 +15,7 @@ static const __m64 TVPScreenBlendHDA_alphamask        = (__m64)0xff000000ff00000
 static const __m64 TVPScreenBlendHDA_mulmask          = (__m64)0x00ffffff00ffffffull;
 static const __m64 TVPScreenBlendHDA_mul_100bit       = (__m64)0x0100000000000000ull;
 
-void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64         v3; // mm6
 
@@ -36,7 +36,7 @@ void __cdecl TVPScreenBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *
 	_m_empty();
 }
 
-void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64         v3; // mm6
 	__m64         v4; // mm7
@@ -59,7 +59,7 @@ void __cdecl TVPScreenBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint
 	_m_empty();
 }
 
-void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64         v5; // mm5
 	__m64         v7; // mm6
@@ -82,7 +82,7 @@ void __cdecl TVPScreenBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32
 	_m_empty();
 }
 
-void __cdecl TVPScreenBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64         v5;  // mm5
 	__m64         v7;  // mm6

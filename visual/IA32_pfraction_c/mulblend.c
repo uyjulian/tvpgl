@@ -15,7 +15,7 @@ static const __m64 TVPMulBlendHDA_100bit        = (__m64)0x0100000000000000ull;
 static const __m64 TVPMulBlendHDA_fullbit       = (__m64)0xffffffffffffffffull;
 static const __m64 TVPMulBlend_full_bit_aligned = (__m64)0xffffffffffffffffull;
 
-void __cdecl TVPMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	for (tjs_int i = 0; i < len; i += 1)
 	{
@@ -29,7 +29,7 @@ void __cdecl TVPMulBlend_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src
 	_m_empty();
 }
 
-void __cdecl TVPMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len)
+TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	__m64         v3; // mm6
 	__m64         v4; // mm7
@@ -50,7 +50,7 @@ void __cdecl TVPMulBlend_HDA_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 
 	_m_empty();
 }
 
-void __cdecl TVPMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64         v5; // mm5
 	__m64         v7; // mm6
@@ -71,7 +71,7 @@ void __cdecl TVPMulBlend_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *s
 	_m_empty();
 }
 
-void __cdecl TVPMulBlend_HDA_o_mmx_pfraction_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa)
+TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	__m64         v5;  // mm5
 	__m64         v7;  // mm6

@@ -10,7 +10,7 @@
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_pfraction_c.h"
 
-void __cdecl TVPAdjustGamma_a_mmx_pfraction_c(tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp)
+TVP_GL_IA32_FUNC_DECL(void, TVPAdjustGamma_a_c, (tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTempData *temp))
 {
 	__m64        v6;  // mm2
 	__m64        v9;  // mm1

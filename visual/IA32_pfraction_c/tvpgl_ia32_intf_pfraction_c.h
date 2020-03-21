@@ -195,7 +195,7 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPTLG6DecodeLine_sse_c,  (tjs_uint32 *prevl
 /*]*/
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPTLG6DecodeGolombValuesForFirst_c,  (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 );
-TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPTLG6DecodeGolombValues_sse_c,  (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
+TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPTLG6DecodeGolombValues_c,  (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 );
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPTLG6DecodeGolombValuesForFirst_c,  (tjs_int8 *pixelbuf, tjs_int pixel_count, tjs_uint8 *bit_pool)
 );

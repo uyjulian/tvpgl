@@ -9,6 +9,7 @@
 #include "detect_cpu.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <malloc.h>
 extern "C" tjs_uint32 TVPCPUType;
 extern void TVPGL_C_Init();
 extern void TVPGL_SSE2_Init();
@@ -40,52 +41,52 @@ static void InitTestData() {
 	if(!testtable || !testrule || !testbuff) {
 		if(testtable)
 		{
-			free(testtable);
+			_aligned_free(testtable);
 			testtable = NULL;
 		}
-		testtable = (tjs_uint32*)malloc(256 * sizeof(tjs_uint32));
+		testtable = (tjs_uint32*)_aligned_malloc(256 * sizeof(tjs_uint32), 64);
 		for(int x = 0; x < 256; ++x) {
 			testtable[x] = rand() & 0xFF;
 		}
 		if(testrule)
 		{
-			free(testrule);
+			_aligned_free(testrule);
 			testrule = NULL;
 		}
-		testrule = (tjs_uint8*)malloc(256 * 256);
+		testrule = (tjs_uint8*)_aligned_malloc(256 * 256, 64);
 		for(int x = 0; x < 256 * 256; ++x) {
 			testrule[x] = rand() & 0xFF;
 		}
 		if(testbuff)
 		{
-			free(testbuff);
+			_aligned_free(testbuff);
 			testbuff = NULL;
 		}
-		testbuff = (tjs_uint32*)malloc(256 * 256 * sizeof(tjs_uint32));
+		testbuff = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
 		if(testdest1)
 		{
-			free(testdest1);
+			_aligned_free(testdest1);
 			testdest1 = NULL;
 		}
-		testdest1 = (tjs_uint32*)malloc(256 * 256 * sizeof(tjs_uint32));
+		testdest1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
 		if(testdest2)
 		{
-			free(testdest2);
+			_aligned_free(testdest2);
 			testdest2 = NULL;
 		}
-		testdest2 = (tjs_uint32*)malloc(256 * 256 * sizeof(tjs_uint32));
+		testdest2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
 		if(testdata1)
 		{
-			free(testdata1);
+			_aligned_free(testdata1);
 			testdata1 = NULL;
 		}
-		testdata1 = (tjs_uint32*)malloc(256 * 256 * sizeof(tjs_uint32));
+		testdata1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
 		if(testdata2)
 		{
-			free(testdata2);
+			_aligned_free(testdata2);
 			testdata2 = NULL;
 		}
-		testdata2 = (tjs_uint32*)malloc(256 * 256 * sizeof(tjs_uint32));
+		testdata2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
 	}
 	int obfu = 65531;
 	for(int x = 0; x < 256; ++x) {
@@ -1092,37 +1093,37 @@ int wmain(int argc, wchar_t** argv)
 	}
 	if(testtable)
 	{
-		free(testtable);
+		_aligned_free(testtable);
 		testtable = NULL;
 	}
 	if(testrule)
 	{
-		free(testrule);
+		_aligned_free(testrule);
 		testrule = NULL;
 	}
 	if(testbuff)
 	{
-		free(testbuff);
+		_aligned_free(testbuff);
 		testbuff = NULL;
 	}
 	if(testdest1)
 	{
-		free(testdest1);
+		_aligned_free(testdest1);
 		testdest1 = NULL;
 	}
 	if(testdest2)
 	{
-		free(testdest2);
+		_aligned_free(testdest2);
 		testdest2 = NULL;
 	}
 	if(testdata1)
 	{
-		free(testdata1);
+		_aligned_free(testdata1);
 		testdata1 = NULL;
 	}
 	if(testdata2)
 	{
-		free(testdata2);
+		_aligned_free(testdata2);
 		testdata2 = NULL;
 	}
 	return 0;

@@ -38,56 +38,33 @@ static tjs_uint8  *testrule = NULL;
 
 #define DEST_FUNC_APPENDIX(f) TVP_GL_FUNCNAME(f##_c)
 
+#define ENSURE_ALLOCATED(type, size, buffer) \
+	{ \
+		if (buffer) \
+		{ \
+			memset(buffer, 0, size * sizeof(type) * TEST_SIZE_MULTIPLIER); \
+		} \
+		else \
+		{ \
+			buffer = (type*)_aligned_malloc(size * sizeof(type) * TEST_SIZE_MULTIPLIER, 64); \
+		} \
+	}
+
 static void InitTestData() {
 	if(!testtable || !testrule || !testbuff) {
-		if(testtable)
-		{
-			_aligned_free(testtable);
-			testtable = NULL;
-		}
-		testtable = (tjs_uint32*)_aligned_malloc(256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
+		ENSURE_ALLOCATED(tjs_uint32, 256, testtable);
 		for(int x = 0; x < 256 * TEST_SIZE_MULTIPLIER; ++x) {
 			testtable[x] = rand() & 0xFF;
 		}
-		if(testrule)
-		{
-			_aligned_free(testrule);
-			testrule = NULL;
-		}
-		testrule = (tjs_uint8*)_aligned_malloc(256 * 256 * TEST_SIZE_MULTIPLIER, 64);
+		ENSURE_ALLOCATED(tjs_uint8, 256 * 256, testrule);
 		for(int x = 0; x < 256 * 256 * TEST_SIZE_MULTIPLIER; ++x) {
 			testrule[x] = rand() & 0xFF;
 		}
-		if(testbuff)
-		{
-			_aligned_free(testbuff);
-			testbuff = NULL;
-		}
-		testbuff = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
-		if(testdest1)
-		{
-			_aligned_free(testdest1);
-			testdest1 = NULL;
-		}
-		testdest1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
-		if(testdest2)
-		{
-			_aligned_free(testdest2);
-			testdest2 = NULL;
-		}
-		testdest2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
-		if(testdata1)
-		{
-			_aligned_free(testdata1);
-			testdata1 = NULL;
-		}
-		testdata1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
-		if(testdata2)
-		{
-			_aligned_free(testdata2);
-			testdata2 = NULL;
-		}
-		testdata2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testbuff);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdest1);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdest2);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata1);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata2);
 	}
 	int obfu = 65531;
 	for(int x = 0; x < (256 * TEST_SIZE_MULTIPLIER); ++x) {

@@ -24,6 +24,7 @@ static tjs_uint32 *testtable = NULL;
 static tjs_uint8  *testrule = NULL;
 
 #define TEST_COUNT 200
+#define TEST_SIZE_MULTIPLIER 200
 // #define TEST_TVPGL
 #define BENCHMARK_TVPGL
 #define SELF_TEST
@@ -44,8 +45,8 @@ static void InitTestData() {
 			_aligned_free(testtable);
 			testtable = NULL;
 		}
-		testtable = (tjs_uint32*)_aligned_malloc(256 * sizeof(tjs_uint32), 64);
-		for(int x = 0; x < 256; ++x) {
+		testtable = (tjs_uint32*)_aligned_malloc(256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
+		for(int x = 0; x < 256 * TEST_SIZE_MULTIPLIER; ++x) {
 			testtable[x] = rand() & 0xFF;
 		}
 		if(testrule)
@@ -53,8 +54,8 @@ static void InitTestData() {
 			_aligned_free(testrule);
 			testrule = NULL;
 		}
-		testrule = (tjs_uint8*)_aligned_malloc(256 * 256, 64);
-		for(int x = 0; x < 256 * 256; ++x) {
+		testrule = (tjs_uint8*)_aligned_malloc(256 * 256 * TEST_SIZE_MULTIPLIER, 64);
+		for(int x = 0; x < 256 * 256 * TEST_SIZE_MULTIPLIER; ++x) {
 			testrule[x] = rand() & 0xFF;
 		}
 		if(testbuff)
@@ -62,43 +63,43 @@ static void InitTestData() {
 			_aligned_free(testbuff);
 			testbuff = NULL;
 		}
-		testbuff = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
+		testbuff = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
 		if(testdest1)
 		{
 			_aligned_free(testdest1);
 			testdest1 = NULL;
 		}
-		testdest1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
+		testdest1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
 		if(testdest2)
 		{
 			_aligned_free(testdest2);
 			testdest2 = NULL;
 		}
-		testdest2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
+		testdest2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
 		if(testdata1)
 		{
 			_aligned_free(testdata1);
 			testdata1 = NULL;
 		}
-		testdata1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
+		testdata1 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
 		if(testdata2)
 		{
 			_aligned_free(testdata2);
 			testdata2 = NULL;
 		}
-		testdata2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32), 64);
+		testdata2 = (tjs_uint32*)_aligned_malloc(256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER, 64);
 	}
 	int obfu = 65531;
-	for(int x = 0; x < 256; ++x) {
-		for(int y = 0; y < 256; ++y) {
+	for(int x = 0; x < (256 * TEST_SIZE_MULTIPLIER); ++x) {
+		for(int y = 0; y < (256); ++y) {
 			typedef struct {
 				unsigned char a;
 				unsigned char r;
 				unsigned char g;
 				unsigned char b;
 			} clr;
-			clr *clr1 = (clr*)(testdata1 + 256 * y + x),
-				*clr2 = (clr*)(testdata2 + 256 * y + x);
+			clr *clr1 = (clr*)(testdata1 + (256 * TEST_SIZE_MULTIPLIER) * y + x),
+				*clr2 = (clr*)(testdata2 + (256 * TEST_SIZE_MULTIPLIER) * y + x);
 			clr1->a = 255 - x; clr2->a = 255 - y;
 			clr1->r = x; clr2->r = y;
 			clr1->g = y; clr2->g = 255 - x;
@@ -123,13 +124,13 @@ static void InitTestData() {
 		}
 	}
 	}
-	memcpy(testdest1, testdata2, 256 * 256 * sizeof(tjs_uint32));
-	memcpy(testdest2, testdata2, 256 * 256 * sizeof(tjs_uint32));
+	memcpy(testdest1, testdata2, 256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
+	memcpy(testdest2, testdata2, 256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
 }
 
 static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 {
-	for( int j = 0; j < 256 * 256; j++ ) {
+	for( int j = 0; j < 256 * 256 * TEST_SIZE_MULTIPLIER; j++ ) {
 		int a1 = (testdest1[j]>>24)&0xff;
 		int r1 = (testdest1[j]>>16)&0xff;
 		int g1 = (testdest1[j]>> 8)&0xff;
@@ -272,18 +273,18 @@ static void testTLG6_chroma()
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, testdata1, 256 * 256);\
+	origf(testdest1, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, testdata1, 256 * 256);\
+	origf(testdest2, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);\
 	CheckTestData(#origf);\
 	}
 #define TEST_TVPGL_BLEND_FUNC(origf, ...) \
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, testdata1, 256 * 256, __VA_ARGS__);\
+	origf(testdest1, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\\
-	origf(testdest2, testdata1, 256 * 256, __VA_ARGS__);\
+	origf(testdest2, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	CheckTestData(#origf);\
 	}
 #define TEST_TVPGL_STRECH_FUNC_2(origf) \
@@ -308,36 +309,36 @@ static void testTLG6_chroma()
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64);\
+	origf(testdest1, 8 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, (1<<16) * TEST_SIZE_MULTIPLIER, 64);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64);\
+	origf(testdest2, 8 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, (1<<16) * TEST_SIZE_MULTIPLIER, 64);\
 	CheckTestData(#origf);\
 	}
 #define TEST_TVPGL_LINTRANS_FUNC(origf, ...) \
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64, __VA_ARGS__);\
+	origf(testdest1, 8 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, (1<<16) * TEST_SIZE_MULTIPLIER, 64, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, 8 * 256, testdata1, 0, 0, 1<<16, 1<<16, 64, __VA_ARGS__);\
+	origf(testdest2, 8 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, (1<<16) * TEST_SIZE_MULTIPLIER, 64, __VA_ARGS__);\
 	CheckTestData(#origf);\
 	}
 #define TEST_TVPGL_UNIVTRANS_FUNC(origf, ...) \
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
+	origf(testdest1, testdata1, testdata2, testrule, testtable, (256 * 256) * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
+	origf(testdest2, testdata1, testdata2, testrule, testtable, (256 * 256) * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	CheckTestData_RGB(#origf);\
 	}
 #define TEST_TVPGL_BOXBLUR_FUNC(origf, DT, ...) \
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256 * TEST_SIZE_MULTIPLIER);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256 * TEST_SIZE_MULTIPLIER);\
 	CheckTestData(#origf); \
 	}
 #define TEST_TVPGL_CUSTOM_FUNC(origf, ...) \
@@ -500,18 +501,18 @@ static void logTLG6_chroma() {
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, testdata1, 256 * 256);\
+	origf(testdest1, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, testdata1, 256 * 256);\
+	origf(testdest2, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);\
 	CheckTestData(#origf); if (TEST_COUNT) {\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	lastTick1 = TVPGetRoughTickCount32();\
-	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest1, testdata1, 256 * 256); \
+	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest1, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER); \
 	tick1 = TVPGetRoughTickCount32() - lastTick1;\
 	TVPGL_INIT_FUNCS_2();\
 	lastTick2 = TVPGetRoughTickCount32();\
-	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, 256 * 256); \
+	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER); \
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
@@ -521,18 +522,18 @@ static void logTLG6_chroma() {
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, testdata1, 256 * 256, __VA_ARGS__);\
+	origf(testdest1, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, testdata1, 256 * 256, __VA_ARGS__);\
+	origf(testdest2, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	CheckTestData(#origf); if (TEST_COUNT) {\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	lastTick1 = TVPGetRoughTickCount32();\
-	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest1, testdata1, 256 * 256, __VA_ARGS__); \
+	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest1, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__); \
 	tick1 = TVPGetRoughTickCount32() - lastTick1;\
 	TVPGL_INIT_FUNCS_2();\
 	lastTick2 = TVPGetRoughTickCount32();\
-	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, 256 * 256, __VA_ARGS__);\
+	for (int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
@@ -602,18 +603,18 @@ static void logTLG6_chroma() {
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, 127 * 256, testdata1, 0, 0, 1 << 16, 0, 256); \
+	origf(testdest1, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1 << 16) * TEST_SIZE_MULTIPLIER, 0, 256); \
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, 127 * 256, testdata1, 0, 0, 1 << 16, 0, 256); \
+	origf(testdest2, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1 << 16) * TEST_SIZE_MULTIPLIER, 0, 256); \
 	CheckTestData(#origf); if (TEST_COUNT) {\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	lastTick1 = TVPGetRoughTickCount32();\
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, 127 * 256, testdata1, 0, 0, 1 << 16, 0, 256);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1 << 16) * TEST_SIZE_MULTIPLIER, 0, 256);\
 	tick1 = TVPGetRoughTickCount32() - lastTick1;\
 	TVPGL_INIT_FUNCS_2();\
 	lastTick2 = TVPGetRoughTickCount32(); \
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 0, 1 << 16, 0, 256);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1 << 16) * TEST_SIZE_MULTIPLIER, 0, 256);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
@@ -622,18 +623,18 @@ static void logTLG6_chroma() {
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, 127 * 256, testdata1, 0, 0, 1<<16, 0, 256, __VA_ARGS__);\
+	origf(testdest1, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, 0, 256, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, 127 * 256, testdata1, 0, 0, 1<<16, 0, 256, __VA_ARGS__);\
+	origf(testdest2, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, 0, 256, __VA_ARGS__);\
 	CheckTestData(#origf); if (TEST_COUNT) {\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	lastTick1 = TVPGetRoughTickCount32();\
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, 127 * 256, testdata1, 0, 0, 1<<16, 0, 256, __VA_ARGS__);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, 0, 256, __VA_ARGS__);\
 	tick1 = TVPGetRoughTickCount32() - lastTick1;\
 	TVPGL_INIT_FUNCS_2();\
 	lastTick2 = TVPGetRoughTickCount32(); \
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 127 * 256, testdata1, 0, 0, 1<<16, 0, 256, __VA_ARGS__);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, 128 * 256 * TEST_SIZE_MULTIPLIER, testdata1, 0, 0, (1<<16) * TEST_SIZE_MULTIPLIER, 0, 256, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
@@ -642,18 +643,18 @@ static void logTLG6_chroma() {
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
+	origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
+	origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	CheckTestData(#origf); if (TEST_COUNT) {\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	lastTick1 = TVPGetRoughTickCount32();\
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	tick1 = TVPGetRoughTickCount32() - lastTick1;\
 	TVPGL_INIT_FUNCS_2();\
 	lastTick2 = TVPGetRoughTickCount32(); \
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256, __VA_ARGS__);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER, __VA_ARGS__);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
@@ -662,18 +663,18 @@ static void logTLG6_chroma() {
 	if(IsDifferentFunction((void **)&origf)){\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
-	origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256 * TEST_SIZE_MULTIPLIER);\
 	TVPGL_INIT_FUNCS_2();\
-	origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256 * TEST_SIZE_MULTIPLIER);\
 	CheckTestData(#origf); if (TEST_COUNT) {\
 	InitTestData();\
 	TVPGL_INIT_FUNCS_1();\
 	lastTick1 = TVPGetRoughTickCount32();\
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest1, (DT)testdest1, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256 * TEST_SIZE_MULTIPLIER);\
 	tick1 = TVPGetRoughTickCount32() - lastTick1;\
 	TVPGL_INIT_FUNCS_2();\
 	lastTick2 = TVPGetRoughTickCount32(); \
-	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256);\
+	for(int i = 0; i < TEST_COUNT; ++i) origf(testdest2, (DT)testdest2, (const DT)testdata1, (const DT)testdata2, 0x55d20688, 64 * 256 * TEST_SIZE_MULTIPLIER);\
 	tick2 = TVPGetRoughTickCount32() - lastTick2; \
 	fprintf(stderr, "%s: %d ms, Optimized: %d ms(%g%%)\n", #origf, tick1, tick2, (float)tick2 / tick1 * 100); \
 	}\
@@ -775,25 +776,25 @@ int wmain(int argc, wchar_t** argv)
 		logTLG6_chroma();
 #endif
 
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAlphaBlend, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_HDA, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAlphaBlend_o, testdata1, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_HDA_o, testdata1, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_d, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_a, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_do, testdata1, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_ao, testdata1, 256 * 256, 100);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAlphaBlend, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_HDA, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAlphaBlend_o, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_HDA_o, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_d, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_a, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_do, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaBlend_ao, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaColorMat, 0x98765432, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAdditiveAlphaBlend_HDA, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend_o, testdata1, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAdditiveAlphaBlend_HDA_o, testdata1, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend_a, testdata1, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend_ao, testdata1, 256 * 256, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAlphaColorMat, 0x98765432, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAdditiveAlphaBlend_HDA, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend_o, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAdditiveAlphaBlend_HDA_o, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend_a, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPAdditiveAlphaBlend_ao, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPConvertAdditiveAlphaToAlpha, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPConvertAlphaToAdditiveAlpha, 256 * 256);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConvertAdditiveAlphaToAlpha, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConvertAlphaToAdditiveAlpha, 256 * 256 * TEST_SIZE_MULTIPLIER);
 
 		TEST_TVPGL_CUSTOM_FUNC(TVPStretchAlphaBlend, 16 * 256, testdata1, 0, 1 << 16);
 		TEST_TVPGL_CUSTOM_FUNC(TVPStretchAlphaBlend_o, 16 * 256, testdata1, 0, 1 << 16, 100);
@@ -857,44 +858,44 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_LINTRANS_FUNC(TVPLinTransConstAlphaBlend_d, 100);
 		TEST_TVPGL_LINTRANS_FUNC(TVPLinTransConstAlphaBlend_a, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPConstAlphaBlend_SD, testdata1, testdata2, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPConstAlphaBlend_SD_a, testdata1, testdata2, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPConstAlphaBlend_SD_d, testdata1, testdata2, 256 * 256, 100);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPConstAlphaBlend_SD, testdata1, testdata2, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConstAlphaBlend_SD_a, testdata1, testdata2, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConstAlphaBlend_SD_d, testdata1, testdata2, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPUnivTransBlend, testdata1, testdata2, testrule, testtable, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPUnivTransBlend_d, testdata1, testdata2, testrule, testtable, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPUnivTransBlend_a, testdata1, testdata2, testrule, testtable, 256 * 256);
+		TEST_TVPGL_CUSTOM_FUNC_RGB(TVPUnivTransBlend, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPUnivTransBlend_d, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPUnivTransBlend_a, testdata1, testdata2, testrule, testtable, 256 * 256 * TEST_SIZE_MULTIPLIER);
 		TEST_TVPGL_UNIVTRANS_FUNC(TVPUnivTransBlend_switch, 240, 32);
 		TEST_TVPGL_UNIVTRANS_FUNC(TVPUnivTransBlend_switch_d, 240, 32);
 		TEST_TVPGL_UNIVTRANS_FUNC(TVPUnivTransBlend_switch_a, 240, 32);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_HDA, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_d, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_a, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_o, testrule, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_HDA_o, testrule, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_do, testrule, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_ao, testrule, 256 * 256, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_HDA, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_d, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_a, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_o, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_HDA_o, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_do, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap_ao, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_HDA, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_d, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_a, testrule, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_o, testrule, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_HDA_o, testrule, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_do, testrule, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_ao, testrule, 256 * 256, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_HDA, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_d, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_a, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_o, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_HDA_o, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_do, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPApplyColorMap65_ao, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend_d, 256 * 256, 0x55d20688, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend_a, 256 * 256, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend_d, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConstColorAlphaBlend_a, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveConstOpacity, 256 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity, testrule, 255 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity_o, testrule, 255 * 256, 100);
-		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity65, testrule, 255 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity65_o, testrule, 255 * 256, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveConstOpacity, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity_o, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
+		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity65, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPRemoveOpacity65_o, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER, 100);
 
 		TEST_TVPGL_BLEND_FUNC_2(TVPAddBlend);
 		TEST_TVPGL_BLEND_FUNC_2(TVPAddBlend_HDA);
@@ -928,44 +929,44 @@ int wmain(int argc, wchar_t** argv)
 		TEST_TVPGL_BLEND_FUNC_2(TVPScreenBlend_HDA);
 		TEST_TVPGL_BLEND_FUNC(TVPScreenBlend_HDA_o, 100);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpH2B, 256 * 256, testdata1 + (256 * 256));
-		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpH2F, 256 * 256, testdata1);
-		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpV2, 256 * 256, testdata1, testdata2);
+		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpH2B, 256 * 256 * TEST_SIZE_MULTIPLIER, testdata1 + (256 * 256 * TEST_SIZE_MULTIPLIER));
+		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpH2F, 256 * 256 * TEST_SIZE_MULTIPLIER, testdata1);
+		TEST_TVPGL_CUSTOM_FUNC(TVPFastLinearInterpV2, 256 * 256 * TEST_SIZE_MULTIPLIER, testdata1, testdata2);
 
 		TEST_TVPGL_BLEND_FUNC_2(TVPCopyMask);
 		TEST_TVPGL_BLEND_FUNC_2(TVPCopyColor);
-		TEST_TVPGL_CUSTOM_FUNC(TVPBindMaskToMain, testrule, 256 * 256);
+		TEST_TVPGL_CUSTOM_FUNC(TVPBindMaskToMain, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPMakeAlphaFromKey, 256 * 256, *testdata1);
+		TEST_TVPGL_CUSTOM_FUNC(TVPMakeAlphaFromKey, 256 * 256 * TEST_SIZE_MULTIPLIER, *testdata1);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPFillARGB, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPFillARGB_NC, 256 * 256, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPFillARGB, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPFillARGB_NC, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPFillColor, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC(TVPFillMask, 256 * 256, 0x55d20688);
-		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum16, tjs_uint16*, testdata1, testdata2, 128 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum16_d, tjs_uint16*, testdata1, testdata2, 128 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum32, tjs_uint32*, testdata1, testdata2, 64 * 256);
-		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum32_d, tjs_uint32*, testdata1, testdata2, 64 * 256);
+		TEST_TVPGL_CUSTOM_FUNC(TVPFillColor, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC(TVPFillMask, 256 * 256 * TEST_SIZE_MULTIPLIER, 0x55d20688);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum16, tjs_uint16*, testdata1, testdata2, 128 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum16_d, tjs_uint16*, testdata1, testdata2, 128 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum32, tjs_uint32*, testdata1, testdata2, 64 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPAddSubVertSum32_d, tjs_uint32*, testdata1, testdata2, 64 * 256 * TEST_SIZE_MULTIPLIER);
 
 		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg16, tjs_uint16*);
 		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg16_d, tjs_uint16*);
 		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg32, tjs_uint32*);
 		TEST_TVPGL_BOXBLUR_FUNC(TVPDoBoxBlurAvg32_d, tjs_uint32*);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPDoGrayScale, 256 * 256);
+		TEST_TVPGL_CUSTOM_FUNC(TVPDoGrayScale, 256 * 256 * TEST_SIZE_MULTIPLIER);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPExpand8BitTo32BitGray, testrule, 256 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPBLConvert15BitTo32Bit, (const tjs_uint16*)testrule, 128 * 256);
-		TEST_TVPGL_CUSTOM_FUNC(TVPConvert24BitTo32Bit, testrule, 256 * 256 / 3);
-		TEST_TVPGL_CUSTOM_FUNC(TVPBLConvert24BitTo32Bit, testrule, 256 * 256 / 3);
-		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPDither32BitTo16Bit555, tjs_uint16*, testdata1, 256 * 256, 0, 0);
-		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPDither32BitTo16Bit565, tjs_uint16*, testdata1, 256 * 256, 0, 0);
+		TEST_TVPGL_CUSTOM_FUNC(TVPExpand8BitTo32BitGray, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPBLConvert15BitTo32Bit, (const tjs_uint16*)testrule, 128 * 256 * TEST_SIZE_MULTIPLIER);
+		TEST_TVPGL_CUSTOM_FUNC(TVPConvert24BitTo32Bit, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER / 3);
+		TEST_TVPGL_CUSTOM_FUNC(TVPBLConvert24BitTo32Bit, testrule, 256 * 256 * TEST_SIZE_MULTIPLIER / 3);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPDither32BitTo16Bit555, tjs_uint16*, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 0, 0);
+		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPDither32BitTo16Bit565, tjs_uint16*, testdata1, 256 * 256 * TEST_SIZE_MULTIPLIER, 0, 0);
 
 		TEST_TVPGL_CUSTOM_FUNC_TYPE(TVPInitGammaAdjustTempData, tTVPGLGammaAdjustTempData*, (const tTVPGLGammaAdjustData*)testdata1);
 
-		TEST_TVPGL_CUSTOM_FUNC(TVPAdjustGamma, 256 * 256, (tTVPGLGammaAdjustTempData*)testdata1);
-		TEST_TVPGL_CUSTOM_FUNC(TVPAdjustGamma_a, 256 * 256, (tTVPGLGammaAdjustTempData*)testdata1);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAdjustGamma, 256 * 256 * TEST_SIZE_MULTIPLIER, (tTVPGLGammaAdjustTempData*)testdata1);
+		TEST_TVPGL_CUSTOM_FUNC(TVPAdjustGamma_a, 256 * 256 * TEST_SIZE_MULTIPLIER, (tTVPGLGammaAdjustTempData*)testdata1);
 
 		TEST_TVPGL_BLEND_FUNC_2(TVPPsAlphaBlend);
 		TEST_TVPGL_BLEND_FUNC(TVPPsAlphaBlend_o, 100);

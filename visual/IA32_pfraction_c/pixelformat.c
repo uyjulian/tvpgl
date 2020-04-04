@@ -16,7 +16,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPBLConvert24BitTo32Bit_c, (tjs_uint32 *dest, const
 	{
 		dest[i] = ((buf[(i * 3) + 2] << 16) + (buf[(i * 3) + 1] << 8) + buf[(i * 3) + 0]) | 0xFF000000;
 	}
-	_m_empty();
 }
 
 TVP_GL_IA32_FUNC_DECL(void, TVPDither32BitTo16Bit565_c, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
@@ -34,7 +33,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPDither32BitTo16Bit565_c, (tjs_uint16 *dest, const
 		v8 = (tjs_uint8(*)[2][256])(v10 - v9);
 		v9 = ((tjs_uint16)v9 + 512) & 0x600;
 	}
-	_m_empty();
 }
 
 TVP_GL_IA32_FUNC_DECL(void, TVPDither32BitTo16Bit555_c, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
@@ -52,5 +50,4 @@ TVP_GL_IA32_FUNC_DECL(void, TVPDither32BitTo16Bit555_c, (tjs_uint16 *dest, const
 		v8 = (tjs_uint8(*)[2][256])(v10 - v9);
 		v9 = ((tjs_uint16)v9 + 512) & 0x600;
 	}
-	_m_empty();
 }

@@ -14,9 +14,8 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchCopy_c, (tjs_uint32 *dest, tjs_int len, co
 {
 	for (tjs_int i = 0, j = srcstart; i < len; i += 1, j += srcstep)
 	{
-		dest[i] = _mm_cvtsi64_si32(_mm_cvtsi32_si64(src[j >> 16]));
+		dest[i] = src[j >> 16];
 	}
-	_m_empty();
 }
 
 TVP_GL_IA32_FUNC_DECL(void, TVPStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa))
@@ -99,18 +98,16 @@ TVP_GL_IA32_FUNC_DECL(void, TVPFastLinearInterpH2F_c, (tjs_uint32 *dest, tjs_int
 {
 	for (tjs_int i = 0; i < destlen; i += 1)
 	{
-		dest[i] = _mm_cvtsi64_si32(_mm_cvtsi32_si64(*src));
+		dest[i] = *src;
 	}
-	_m_empty();
 }
 
 TVP_GL_IA32_FUNC_DECL(void, TVPFastLinearInterpH2B_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src))
 {
 	for (tjs_int i = 0; i < destlen; i += 1)
 	{
-		dest[i] = _mm_cvtsi64_si32(_mm_cvtsi32_si64(*src));
+		dest[i] = *src;
 	}
-	_m_empty();
 }
 
 TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchCopy_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int blend_y, tjs_int srcstart, tjs_int srcstep))

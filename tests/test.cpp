@@ -23,8 +23,13 @@ static tjs_uint32 *testdest2 = NULL;
 static tjs_uint32 *testtable = NULL;
 static tjs_uint8  *testrule = NULL;
 
-#define TEST_COUNT 200
-#define TEST_SIZE_MULTIPLIER 200
+#if 1
+#define TEST_COUNT 1000
+#define TEST_SIZE_MULTIPLIER 1000
+#else
+#define TEST_COUNT 1
+#define TEST_SIZE_MULTIPLIER 1
+#endif
 // #define TEST_TVPGL
 #define BENCHMARK_TVPGL
 #define SELF_TEST
@@ -35,6 +40,9 @@ static tjs_uint8  *testrule = NULL;
 
 #define TVPGL_INIT_FUNCS_1 TVP_GL_FUNCNAME(TVPInitTVPGL)
 #define TVPGL_INIT_FUNCS_2 TVP_GL_FUNCNAME(TVPInitTVPGL)
+// #define TVPGL_INIT_FUNCS_1 TVPGL_IA32_Init
+// #define TVPGL_INIT_FUNCS_2 TVPGL_IA32_Init
+// #define TVPGL_INIT_FUNCS_2 TVPGL_IA32_c_Init
 
 #define DEST_FUNC_APPENDIX(f) TVP_GL_FUNCNAME(f##_c)
 
@@ -743,6 +751,7 @@ int wmain(int argc, wchar_t** argv)
 	TVPGL_IA32_Init();
 	TVPGL_IA32_c_Init();
 	TVPGL_IA32_pfraction_Init();
+	TVPGL_IA32_pfraction_c_Init();
 	TVPGL_SSE2_Init();
 
 	TVP_GL_FUNCNAME(TVPInitTVPGL)();

@@ -16,8 +16,10 @@
 #include "tvpgl_ia32_intf_c.h"
 #include "tvpgl_ia32_intf_pfraction.h"
 #include "tvpgl_ia32_intf_pfraction_c.h"
-#include "tvpgl_ia32_intf_behavior_c.h"
 #include "detect_cpu.h"
+#endif
+#if 1
+#include "tvpgl_ia32_intf_behavior_c.h"
 #endif
 
 //---------------------------------------------------------------------------
@@ -111,8 +113,10 @@ static void init_tvpgl_replacement()
 	TVPGL_IA32_c_Init();
 	TVPGL_IA32_pfraction_Init();
 	TVPGL_IA32_pfraction_c_Init();
-	TVPGL_IA32_behavior_c_Init();
 	TVPGL_SSE2_Init();
+#endif
+#if 1
+	TVPGL_IA32_behavior_c_Init();
 #endif
 	TVPGL_EXPAND_MACRO(TVPGL_OVERWRITE);
 	inited_tvpgl_replacement = true;

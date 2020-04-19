@@ -6,6 +6,7 @@
 #include "tvpgl_ia32_intf_c.h"
 #include "tvpgl_ia32_intf_pfraction.h"
 #include "tvpgl_ia32_intf_pfraction_c.h"
+#include "tvpgl_ia32_intf_behavior_c.h"
 #include "detect_cpu.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -43,6 +44,7 @@ static tjs_uint8  *testrule = NULL;
 // #define TVPGL_INIT_FUNCS_1 TVPGL_IA32_Init
 // #define TVPGL_INIT_FUNCS_2 TVPGL_IA32_Init
 // #define TVPGL_INIT_FUNCS_2 TVPGL_IA32_c_Init
+// #define TVPGL_INIT_FUNCS_2 TVPGL_IA32_behavior_c_Init
 
 #define DEST_FUNC_APPENDIX(f) TVP_GL_FUNCNAME(f##_c)
 
@@ -752,6 +754,7 @@ int wmain(int argc, wchar_t** argv)
 	TVPGL_IA32_c_Init();
 	TVPGL_IA32_pfraction_Init();
 	TVPGL_IA32_pfraction_c_Init();
+	TVPGL_IA32_behavior_c_Init();
 	TVPGL_SSE2_Init();
 
 	TVP_GL_FUNCNAME(TVPInitTVPGL)();

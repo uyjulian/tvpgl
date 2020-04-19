@@ -109,6 +109,7 @@ static void init_tvpgl_replacement()
 	TVPGL_IA32_Init();
 	TVPGL_IA32_c_Init();
 	TVPGL_IA32_pfraction_Init();
+	TVPGL_IA32_pfraction_c_Init();
 	TVPGL_SSE2_Init();
 #endif
 	TVPGL_EXPAND_MACRO(TVPGL_OVERWRITE);

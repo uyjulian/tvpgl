@@ -25,7 +25,7 @@ void TVPGL_IA32_behavior_c_Init()
 
 	TVPAdditiveAlphaBlend_a =  TVP_GL_IA32_FUNCNAME(TVPAdditiveAlphaBlend_a_c);
 
-#if 0
+#if 1
 	TVPLinTransConstAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPLinTransConstAlphaBlend_c);
 
 	TVPInterpLinTransAdditiveAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPInterpLinTransAdditiveAlphaBlend_c);
@@ -43,7 +43,7 @@ void TVPGL_IA32_behavior_c_Init()
 
 	TVPConstAlphaBlend_SD =  TVP_GL_IA32_FUNCNAME(TVPConstAlphaBlend_SD_c);
 
-#if 0
+#if 1
 	TVPDoBoxBlurAvg32 =  TVP_GL_IA32_FUNCNAME(TVPDoBoxBlurAvg32_c);
 
 	TVPDoBoxBlurAvg32_d =  TVP_GL_IA32_FUNCNAME(TVPDoBoxBlurAvg32_d_c);
@@ -53,7 +53,7 @@ void TVPGL_IA32_behavior_c_Init()
 
 	TVPConstColorAlphaBlend_a =  TVP_GL_IA32_FUNCNAME(TVPConstColorAlphaBlend_a_c);
 
-#if 0
+#if 1
 	TVPApplyColorMap65 =  TVP_GL_IA32_FUNCNAME(TVPApplyColorMap65_c);
 
 	TVPApplyColorMap65_d =  TVP_GL_IA32_FUNCNAME(TVPApplyColorMap65_d_c);
@@ -61,7 +61,7 @@ void TVPGL_IA32_behavior_c_Init()
 	TVPApplyColorMap65_a =  TVP_GL_IA32_FUNCNAME(TVPApplyColorMap65_a_c);
 #endif
 
-#if 0
+#if 1
 	TVPDarkenBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPDarkenBlend_HDA_c);
 #endif
 
@@ -75,7 +75,7 @@ void TVPGL_IA32_behavior_c_Init()
 
 	TVPScreenBlend_HDA_o =  TVP_GL_IA32_FUNCNAME(TVPScreenBlend_HDA_o_c);
 
-#if 0
+#if 1
 	TVPStretchConstAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPStretchConstAlphaBlend_c);
 
 	TVPStretchAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPStretchAlphaBlend_c);

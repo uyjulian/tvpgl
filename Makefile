@@ -15,7 +15,7 @@ GIT_TAG := $(shell git describe --abbrev=0 --tags)
 INCFLAGS += -I. -I.. -Itjs2 -Ivisual -Ivisual/gl -Ivisual/glgen
 ALLSRCFLAGS += $(INCFLAGS) -DGIT_TAG=\"$(GIT_TAG)\"
 ASMFLAGS += $(ALLSRCFLAGS) -fwin32 -DWIN32
-OPTFLAGS := -Ofast -march=ivybridge
+OPTFLAGS := -Ofast -msse2
 CFLAGS += -gstabs 
 CFLAGS += $(ALLSRCFLAGS) -Wall -Wno-unused-value -Wno-format -DNDEBUG -DWIN32 -D_WIN32 -D_WINDOWS 
 CFLAGS += -D_USRDLL -DMINGW_HAS_SECURE_API -DUNICODE -D_UNICODE -DNO_STRICT

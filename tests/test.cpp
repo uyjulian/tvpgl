@@ -16,13 +16,16 @@ extern void TVPGL_C_Init();
 extern void TVPGL_SSE2_Init();
 
 
-static tjs_uint32 *testbuff = NULL;
 static tjs_uint32 *testdata1 = NULL;
+static tjs_uint32 *testdata1_backup = NULL;
 static tjs_uint32 *testdata2 = NULL;
+static tjs_uint32 *testdata2_backup = NULL;
 static tjs_uint32 *testdest1 = NULL;
 static tjs_uint32 *testdest2 = NULL;
 static tjs_uint32 *testtable = NULL;
+static tjs_uint32 *testtable_backup = NULL;
 static tjs_uint8  *testrule = NULL;
+static tjs_uint8  *testrule_backup = NULL;
 
 #if 1
 #define TEST_COUNT 1000
@@ -60,38 +63,45 @@ static tjs_uint8  *testrule = NULL;
 		} \
 	}
 
-static void InitTestData() {
-	if(!testtable || !testrule || !testbuff) {
-		ENSURE_ALLOCATED(tjs_uint32, 256, testtable);
-		for(int x = 0; x < 256 * TEST_SIZE_MULTIPLIER; ++x) {
-			testtable[x] = rand() & 0xFF;
-		}
-		ENSURE_ALLOCATED(tjs_uint8, 256 * 256, testrule);
-		for(int x = 0; x < 256 * 256 * TEST_SIZE_MULTIPLIER; ++x) {
-			testrule[x] = rand() & 0xFF;
-		}
-		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testbuff);
-		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdest1);
-		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdest2);
-		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata1);
-		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata2);
+static void InitOrigTestData()
+{
+	if (testtable_backup && testrule_backup && testdata1_backup && testdata2_backup)
+	{
+		return;
+	}
+	ENSURE_ALLOCATED(tjs_uint32, 256, testtable_backup);
+	ENSURE_ALLOCATED(tjs_uint8, 256 * 256, testrule_backup);
+	ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata1_backup);
+	ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata2_backup);
+
+	srand(1);
+	for (int x = 0; x < 256 * TEST_SIZE_MULTIPLIER; x += 1)
+	{
+		testtable_backup[x] = rand() & 0xFF;
+	}
+	for (int x = 0; x < 256 * 256 * TEST_SIZE_MULTIPLIER; x += 1)
+	{
+		testrule_backup[x] = rand() & 0xFF;
 	}
 	int obfu = 65531;
-	for(int x = 0; x < (256 * TEST_SIZE_MULTIPLIER); ++x) {
-		for(int y = 0; y < (256); ++y) {
+	for (int x = 0; x < (256 * TEST_SIZE_MULTIPLIER); x += 1)
+	{
+		for (int y = 0; y < (256); y += 1)
+		{
 			typedef struct {
 				unsigned char a;
 				unsigned char r;
 				unsigned char g;
 				unsigned char b;
 			} clr;
-			clr *clr1 = (clr*)(testdata1 + (256 * TEST_SIZE_MULTIPLIER) * y + x),
-				*clr2 = (clr*)(testdata2 + (256 * TEST_SIZE_MULTIPLIER) * y + x);
+			clr *clr1 = (clr*)(testdata1_backup + (256 * TEST_SIZE_MULTIPLIER) * y + x),
+				*clr2 = (clr*)(testdata2_backup + (256 * TEST_SIZE_MULTIPLIER) * y + x);
 			clr1->a = 255 - x; clr2->a = 255 - y;
 			clr1->r = x; clr2->r = y;
 			clr1->g = y; clr2->g = 255 - x;
 			clr1->b = 255 - y; clr2->b = x;
-			if (y == 0) {
+			if (y == 0)
+			{
 				clr1->a = obfu;
 				obfu = obfu * 3 + 29;
 				clr2->a = obfu;
@@ -108,9 +118,26 @@ static void InitTestData() {
 				obfu = obfu * 3 + 29;
 				clr2->b = obfu;
 				obfu = obfu * 3 + 29;
+			}
 		}
 	}
+}
+
+static void InitTestData()
+{
+	InitOrigTestData();
+	{
+		ENSURE_ALLOCATED(tjs_uint32, 256, testtable);
+		ENSURE_ALLOCATED(tjs_uint8, 256 * 256, testrule);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdest1);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdest2);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata1);
+		ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata2);
 	}
+	memcpy(testtable, testtable_backup, 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
+	memcpy(testrule, testrule_backup, 256 * 256 * sizeof(tjs_uint8) * TEST_SIZE_MULTIPLIER);
+	memcpy(testdata1, testdata1_backup, 256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
+	memcpy(testdata2, testdata2_backup, 256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
 	memcpy(testdest1, testdata2, 256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
 	memcpy(testdest2, testdata2, 256 * 256 * sizeof(tjs_uint32) * TEST_SIZE_MULTIPLIER);
 }
@@ -143,7 +170,8 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 			if( rdiff < range && gdiff < range && bdiff < range ) {	// warning error level because there is only one difference
 			} else {
 				fprintf(stderr, "test fail on function %s\n", pszFuncName);
-				fprintf(stderr, "invalid color src : 0x%08x, 1 : 0x%08x, 2 : 0x%08x\n", testdata2[j], testdest1[j], testdest2[j] );
+				fprintf(stderr, "invalid color src : 0x%08x, b : 0x%08x, 1 : 0x%08x, 2 : 0x%08x\n", testdata2[j], testdata2_backup[j], testdest1[j], testdest2[j] );
+				fprintf(stderr, "b 0x%08x\n", testdata2_backup[j] );
 				fprintf(stderr, "1 0x%08x\n", testdest1[j] );
 				fprintf(stderr, "2 0x%08x\n", testdest2[j] );
 				int start = (j>>2)<<2;
@@ -151,6 +179,10 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 				fprintf(stderr, "src : " );
 				for( int k = start; k < limit; k++ ) {
 					fprintf(stderr, "0x%08x,", testdata2[k] );
+				}
+				fprintf(stderr, "\nb : " );
+				for( int k = start; k < limit; k++ ) {
+					fprintf(stderr, "0x%08x,", testdata2_backup[k] );
 				}
 				fprintf(stderr, "\n1 : " );
 				for( int k = start; k < limit; k++ ) {
@@ -169,7 +201,8 @@ static void CheckTestData(const char *pszFuncName, bool ischeckalpha=true)
 			if( adiff < range) {	// warning error level
 			} else {
 				fprintf(stderr, "test fail on function %s\n", pszFuncName);
-				fprintf(stderr, "invalid alpha src : 0x%08x, 1 : 0x%08x, 2 : 0x%08x\n", testdata2[j], testdest1[j], testdest2[j] );
+				fprintf(stderr, "invalid alpha src : 0x%08x, b : 0x%08x, 1 : 0x%08x, 2 : 0x%08x\n", testdata2[j], testdata2_backup[j], testdest1[j], testdest2[j] );
+				fprintf(stderr, "b 0x%08x\n", testdata2_backup[j] );
 				fprintf(stderr, "1 0x%08x\n", testdest1[j] );
 				fprintf(stderr, "2 0x%08x\n", testdest2[j] );
 				break;
@@ -1080,41 +1113,6 @@ int wmain(int argc, wchar_t** argv)
 		// TVPTLG6DecodeGolombValuesForFirst
 		// TVPTLG6DecodeLineGeneric
 		// TVPUninitGammaAdjustTempData
-	}
-	if(testtable)
-	{
-		_aligned_free(testtable);
-		testtable = NULL;
-	}
-	if(testrule)
-	{
-		_aligned_free(testrule);
-		testrule = NULL;
-	}
-	if(testbuff)
-	{
-		_aligned_free(testbuff);
-		testbuff = NULL;
-	}
-	if(testdest1)
-	{
-		_aligned_free(testdest1);
-		testdest1 = NULL;
-	}
-	if(testdest2)
-	{
-		_aligned_free(testdest2);
-		testdest2 = NULL;
-	}
-	if(testdata1)
-	{
-		_aligned_free(testdata1);
-		testdata1 = NULL;
-	}
-	if(testdata2)
-	{
-		_aligned_free(testdata2);
-		testdata2 = NULL;
 	}
 	return 0;
 }

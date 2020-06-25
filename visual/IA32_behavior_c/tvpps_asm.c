@@ -111,16 +111,19 @@ TVP_GL_IA32_BLEND_FUNC(Screen, {
 // FIXME: some channel is wrong on regular/HDA versions (not opacity version)
 TVP_GL_IA32_BLEND_FUNC(Overlay, {
 	tjs_uint16 k = s[j];
-	k += d[j];
-	k <<= 1u;
 	tjs_uint16 l = s[j];
 	l *= d[j];
-	l >>= 7u;
-	k -= l;
-	k -= 0xff;
-	if (0x80u > d[j])
+	l >>= 7;
+	if (0x80 > d[j])
 	{
 		k = l;
+	}
+	else
+	{
+		k += d[j];
+		k <<= 1;
+		k -= l;
+		k -= 0xff;
 	}
 	k -= d[j];
 	k *= sevenbit;
@@ -272,16 +275,19 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_HDA_o_c, (tjs_uint32 *dest, const 
 // FIXME: some channel is wrong on regular/HDA versions (not opacity version)
 TVP_GL_IA32_BLEND_FUNC(HardLight, {
 	tjs_uint16 k = s[j];
-	k += d[j];
-	k <<= 1u;
 	tjs_uint16 l = s[j];
 	l *= d[j];
 	l >>= 7u;
-	k -= l;
-	k -= 0xff;
 	if (0x80u > s[j])
 	{
 		k = l;
+	}
+	else
+	{
+		k += d[j];
+		k <<= 1u;
+		k -= l;
+		k -= 0xff;
 	}
 	k -= d[j];
 	k *= sevenbit;

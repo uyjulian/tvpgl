@@ -140,7 +140,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_c, (tjs_uint32 *dest, const tjs_ui
 		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _mm_set1_pi16((tjs_uint16)(src[i] >> 0x19u));
+		__m64 v14 = _mm_set1_pi16((src[i] >> 0x19u));
 		dest[i] = _mm_cvtsi64_si32(
 			_m_packuswb(
 				_m_paddw(
@@ -167,7 +167,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_o_c, (tjs_uint32 *dest, const tjs_
 		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _mm_set1_pi16((tjs_uint16)(((src[i] >> 0x19u) * opa) >> 8u));
+		__m64 v14 = _mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u));
 		dest[i] = _mm_cvtsi64_si32(
 			_m_packuswb(
 				_m_paddw(
@@ -206,7 +206,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_HDA_c, (tjs_uint32 *dest, const tj
 									_m_pand(v12, v13),
 									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
 								d),
-							_m_punpckldq(_mm_set1_pi16((tjs_uint16)(src[i] >> 0x19u)), v14)),
+							_m_punpckldq(_mm_set1_pi16((src[i] >> 0x19u)), v14)),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -233,7 +233,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_HDA_o_c, (tjs_uint32 *dest, const 
 									_m_pand(v12, v13),
 									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
 								d),
-							_m_punpckldq(_mm_set1_pi16((tjs_uint16)(((src[i] >> 0x19u) * opa) >> 8u)), v14)),
+							_m_punpckldq(_mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u)), v14)),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -274,7 +274,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_c, (tjs_uint32 *dest, const tjs_
 		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _mm_set1_pi16((tjs_uint16)(src[i] >> 0x19u));
+		__m64 v14 = _mm_set1_pi16((src[i] >> 0x19u));
 		dest[i] = _mm_cvtsi64_si32(
 			_m_packuswb(
 				_m_paddw(
@@ -301,7 +301,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_o_c, (tjs_uint32 *dest, const tj
 		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _mm_set1_pi16((tjs_uint16)(((src[i] >> 0x19u) * opa) >> 8u));
+		__m64 v14 = _mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u));
 		dest[i] = _mm_cvtsi64_si32(
 			_m_packuswb(
 				_m_paddw(
@@ -340,7 +340,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_HDA_c, (tjs_uint32 *dest, const 
 									_m_pand(v12, v13),
 									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
 								d),
-							_m_punpckldq(_mm_set1_pi16((tjs_uint16)(src[i] >> 0x19u)), v14)),
+							_m_punpckldq(_mm_set1_pi16((src[i] >> 0x19u)), v14)),
 						7u)),
 				_mm_setzero_si64()));
 	}
@@ -367,7 +367,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_HDA_o_c, (tjs_uint32 *dest, cons
 									_m_pand(v12, v13),
 									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
 								d),
-							_m_punpckldq(_mm_set1_pi16((tjs_uint16)(((src[i] >> 0x19u) * opa) >> 8u)), v14)),
+							_m_punpckldq(_mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u)), v14)),
 						7u)),
 				_mm_setzero_si64()));
 	}

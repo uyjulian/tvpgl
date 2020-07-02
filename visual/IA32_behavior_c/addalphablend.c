@@ -7,7 +7,6 @@
 //                                         //
 /////////////////////////////////////////////
 
-#include <mmintrin.h>
 #include "tvpgl_ia32_intf_behavior_c.h"
 
 TVP_GL_IA32_FUNC_DECL(void, TVPAdditiveAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))

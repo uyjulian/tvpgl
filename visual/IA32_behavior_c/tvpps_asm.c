@@ -7,8 +7,6 @@
 //                                         //
 /////////////////////////////////////////////
 
-#include <immintrin.h>
-#include <mmintrin.h>
 #include "tvpgl_ia32_intf_behavior_c.h"
 
 #define TVP_GL_IA32_BLEND_FUNC_BODY(funcname, channelbody, hda) \

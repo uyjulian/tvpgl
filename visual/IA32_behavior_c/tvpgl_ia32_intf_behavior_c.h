@@ -70,6 +70,7 @@ extern char TVPTLG6GolombBitLengthTable[TVP_TLG6_GOLOMB_N_COUNT * 2 * 128][TVP_T
 extern unsigned char TVPPsTableSoftLight[256][256];
 extern unsigned char TVPPsTableColorDodge[256][256];
 extern unsigned char TVPPsTableColorBurn[256][256];
+extern unsigned char TVPPsTableOverlay[256][256];
 
 extern void TVPGL_IA32_behavior_c_Init();
 

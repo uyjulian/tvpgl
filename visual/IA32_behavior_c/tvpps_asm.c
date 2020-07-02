@@ -133,18 +133,6 @@ TVP_GL_IA32_BLEND_FUNC(HardLight, {
 	d[j] = k;
 });
 
-#define CALC_USING_TABLE(x, s, d) (                 \
-	(((s >> 24) & 0xff) << 24) |                    \
-	(x[(s >> 16) & 0xff][(d >> 16) & 0xff] << 16) | \
-	(x[(s >> 8) & 0xff][(d >> 8) & 0xff] << 8) |    \
-	(x[(s >> 0) & 0xff][(d >> 0) & 0xff] << 0))
-
-#define CALC_USING_TABLE_HDA(x, s, d) (             \
-	(((d >> 24) & 0xff) << 24) |                    \
-	(x[(s >> 16) & 0xff][(d >> 16) & 0xff] << 16) | \
-	(x[(s >> 8) & 0xff][(d >> 8) & 0xff] << 8) |    \
-	(x[(s >> 0) & 0xff][(d >> 0) & 0xff] << 0))
-
 TVP_GL_IA32_BLEND_FUNC(SoftLight, {
 	tjs_uint16 k = TVPPsTableSoftLight[s[j]][d[j]];
 	if (j % 4 == 3)

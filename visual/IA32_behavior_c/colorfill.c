@@ -35,17 +35,17 @@ TVP_GL_IA32_FUNC_DECL(void, TVPConstColorAlphaBlend_a_c, (tjs_uint32 *dest, tjs_
 		{
 			tjs_uint16 k = d[j];
 			tjs_uint16 l = d[j];
-			l *= ((unsigned int)opa >> 7) + opa;
+			l *= ((tjs_uint32)opa >> 7) + opa;
 			l >>= 8u;
 			k -= l;
 			tjs_uint16 m = c[j];
 			if (j % 4 == 3)
 			{
-				m = ((unsigned int)opa >> 7) + opa;
+				m = ((tjs_uint32)opa >> 7) + opa;
 			}
 			else
 			{
-				m *= ((unsigned int)opa >> 7) + opa;
+				m *= ((tjs_uint32)opa >> 7) + opa;
 				m >>= 8u;
 			}
 			k += m;

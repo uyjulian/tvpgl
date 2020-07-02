@@ -51,13 +51,13 @@ TVP_GL_IA32_FUNC_DECL(void, TVPDoBoxBlurAvg32_c, (tjs_uint32 *dest, tjs_uint32 *
 	}
 #else
 	__m64       v7;  // mm7
-	int         v8;  // esi
+	tjs_int32   v8;  // esi
 	__m64       v10; // mm1
 	__m64       v11; // mm2
 	__m64       v14; // mm3
 	__m64       v15; // mm4
 
-	v7  = _mm_set1_pi32((unsigned int)n >> 1);
+	v7  = _mm_set1_pi32((tjs_uint32)n >> 1);
 	v10 = *(__m64 *)sum;
 	v11 = *((__m64 *)sum + 1);
 	for (tjs_int i = 0; i < len; i += 1)
@@ -116,15 +116,15 @@ TVP_GL_IA32_FUNC_DECL(void, TVPDoBoxBlurAvg32_d_c, (tjs_uint32 *dest, tjs_uint32
 	}
 #else
 	__m64       v7;  // mm7
-	int         v8;  // esi
+	tjs_int32   v8;  // esi
 	__m64       v10; // mm1
 	__m64       v11; // mm2
 	__m64       v13; // mm3
 	__m64       v14; // mm4
-	int         v15; // eax
-	int         v16; // ebx
+	tjs_int32   v15; // eax
+	tjs_int32   v16; // ebx
 
-	v7  = _mm_set1_pi32((unsigned int)n >> 1);
+	v7  = _mm_set1_pi32((tjs_uint32)n >> 1);
 	v8  = 0x100000000ll / n;
 	v10 = *(__m64 *)sum;
 	v11 = *((__m64 *)sum + 1);

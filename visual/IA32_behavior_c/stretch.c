@@ -80,8 +80,8 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchConstAlphaBlend_c, (tjs_uint32 *dest
 	__m64         v22; // mm1
 	__m64         v23; // mm2
 
-	v9  = _mm_set1_pi16(((unsigned int)blend_y >> 7) + blend_y);
-	v12 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
+	v9  = _mm_set1_pi16(((tjs_uint32)blend_y >> 7) + blend_y);
+	v12 = _mm_set1_pi16(((tjs_uint32)opa >> 7) + opa);
 	for (tjs_int i = 0, j = srcstart; i < destlen; i += 1, j += srcstep)
 	{
 		v17 = _m_punpcklbw(_mm_cvtsi32_si64(src1[j >> 16]), _mm_setzero_si64());
@@ -136,7 +136,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *d
 	__m64         v21; // mm2
 	__m64         v22; // mm3
 
-	v8  = _mm_set1_pi16(((unsigned int)blend_y >> 7) + blend_y);
+	v8  = _mm_set1_pi16(((tjs_uint32)blend_y >> 7) + blend_y);
 	for (tjs_int i = 0, j = srcstart; i < destlen; i += 1, j += srcstep)
 	{
 		v13 = _m_punpcklbw(_mm_cvtsi32_si64(src1[j >> 16]), _mm_setzero_si64());
@@ -182,8 +182,8 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_o_c, (tjs_uint32 
 	__m64         v25; // mm2
 	__m64         v26; // mm3
 
-	v9  = _mm_set1_pi16(((unsigned int)blend_y >> 7) + blend_y);
-	v12 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
+	v9  = _mm_set1_pi16(((tjs_uint32)blend_y >> 7) + blend_y);
+	v12 = _mm_set1_pi16(((tjs_uint32)opa >> 7) + opa);
 	for (tjs_int i = 0, j = srcstart; i < destlen; i += 1, j += srcstep)
 	{
 		v17 = _m_punpcklbw(_mm_cvtsi32_si64(src1[j >> 16]), _mm_setzero_si64());

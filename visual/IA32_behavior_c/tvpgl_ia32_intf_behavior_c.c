@@ -238,7 +238,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInitUnivTransBlendTable_c, (tjs_uint32 *table, tj
 		else if(i>=phasemax) t[i] = 255<<7;
 		else
 		{
-			int tmp = ( i - phase )*255 / vague;
+			tjs_int32 tmp = ( i - phase )*255 / vague;
 			if(tmp<0) tmp = 0;
 			if(tmp>255) tmp = 255;
 			t[i] = tmp << 7;

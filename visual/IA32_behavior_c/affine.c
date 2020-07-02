@@ -46,9 +46,9 @@ TVP_GL_IA32_FUNC_DECL(void, TVPLinTransConstAlphaBlend_c, (tjs_uint32 *dest, tjs
 
 TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch))
 {
-	unsigned int  v9;  // ecx
-	unsigned int  v10; // edx
-	unsigned int *v12; // eax
+	tjs_uint32  v9;  // ecx
+	tjs_uint32  v10; // edx
+	tjs_uint32 *v12; // eax
 	__m64         v14; // mm5
 	__m64         v17; // mm7
 	__m64         v18; // mm1
@@ -63,11 +63,11 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *
 	v10 = sy;
 	for (tjs_int i = 0; i < len; i += 1)
 	{
-		v12 = (unsigned int *)((char *)&src[v9 >> 16] + srcpitch * (v10 >> 16));
-		v14 = _mm_set1_pi16((unsigned int)(tjs_uint16)v9 >> 8);
-		v17 = _mm_set1_pi16(((unsigned int)(tjs_uint16)v10 >> 8) + ((unsigned int)(tjs_uint16)v10 >> 15));
+		v12 = (tjs_uint32 *)((char *)&src[v9 >> 16] + srcpitch * (v10 >> 16));
+		v14 = _mm_set1_pi16((tjs_uint32)(tjs_uint16)v9 >> 8);
+		v17 = _mm_set1_pi16(((tjs_uint32)(tjs_uint16)v10 >> 8) + ((tjs_uint32)(tjs_uint16)v10 >> 15));
 		v18 = _m_punpcklbw(_mm_cvtsi32_si64(*v12), _mm_setzero_si64());
-		v19 = _m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v12 + srcpitch)), _mm_setzero_si64());
+		v19 = _m_punpcklbw(_mm_cvtsi32_si64(*(tjs_uint32 *)((char *)v12 + srcpitch)), _mm_setzero_si64());
 		v20 = _m_paddb(v18, _m_psrlwi(_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(v12[1]), _mm_setzero_si64()), v18), v14), 8u));
 		v21 = _m_paddb(
 			v20,
@@ -79,7 +79,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *
 							_m_psrlwi(
 								_m_pmullw(
 									_m_psubw(
-										_m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v12 + srcpitch + 4)), _mm_setzero_si64()),
+										_m_punpcklbw(_mm_cvtsi32_si64(*(tjs_uint32 *)((char *)v12 + srcpitch + 4)), _mm_setzero_si64()),
 										v19),
 									v14),
 								8u)),
@@ -99,9 +99,9 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *
 TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa))
 {
 	__m64         v10; // mm6
-	unsigned int  v13; // ecx
-	unsigned int  v14; // edx
-	unsigned int *v16; // eax
+	tjs_uint32  v13; // ecx
+	tjs_uint32  v14; // edx
+	tjs_uint32 *v16; // eax
 	__m64         v18; // mm5
 	__m64         v19; // mm5
 	__m64         v21; // mm7
@@ -113,17 +113,17 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32
 	__m64         v27; // mm2
 	__m64         v28; // mm3
 
-	v10 = _mm_set1_pi16(((unsigned int)opa >> 7) + opa);
+	v10 = _mm_set1_pi16(((tjs_uint32)opa >> 7) + opa);
 	v13 = sx;
 	v14 = sy;
 	for (tjs_int i = 0; i < len; i += 1)
 	{
-		v16 = (unsigned int *)((char *)&src[v13 >> 16] + srcpitch * (v14 >> 16));
-		v18 = _mm_set1_pi16((unsigned int)(tjs_uint16)v13 >> 8);
+		v16 = (tjs_uint32 *)((char *)&src[v13 >> 16] + srcpitch * (v14 >> 16));
+		v18 = _mm_set1_pi16((tjs_uint32)(tjs_uint16)v13 >> 8);
 		v19 = v18;
-		v21 = _mm_set1_pi16(((unsigned int)(tjs_uint16)v14 >> 8) + ((unsigned int)(tjs_uint16)v14 >> 15));
+		v21 = _mm_set1_pi16(((tjs_uint32)(tjs_uint16)v14 >> 8) + ((tjs_uint32)(tjs_uint16)v14 >> 15));
 		v22 = _m_punpcklbw(_mm_cvtsi32_si64(*v16), _mm_setzero_si64());
-		v23 = _m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v16 + srcpitch)), _mm_setzero_si64());
+		v23 = _m_punpcklbw(_mm_cvtsi32_si64(*(tjs_uint32 *)((char *)v16 + srcpitch)), _mm_setzero_si64());
 		v24 = _m_paddb(v22, _m_psrlwi(_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(v16[1]), _mm_setzero_si64()), v22), v19), 8u));
 		v25 = _m_psrlwi(
 			_m_pmullw(
@@ -137,7 +137,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32
 									_m_psrlwi(
 										_m_pmullw(
 											_m_psubw(
-												_m_punpcklbw(_mm_cvtsi32_si64(*(unsigned int *)((char *)v16 + srcpitch + 4)), _mm_setzero_si64()),
+												_m_punpcklbw(_mm_cvtsi32_si64(*(tjs_uint32 *)((char *)v16 + srcpitch + 4)), _mm_setzero_si64()),
 												v23),
 											v19),
 										8u)),

@@ -64,7 +64,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_d_c, (tjs_uint32 *dest, const tjs
 		}, len, color, dest);
 #else
 	__m64            v7;  // mm7
-	int              v8;  // eax
+	tjs_int32        v8;  // eax
 	__m64            v9;  // mm1
 	__m64            v11; // mm4
 

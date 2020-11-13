@@ -1,18 +1,25 @@
 
+#ifdef _WIN32
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("ssse3,avx,avx2")
+#define __SSSE3__
+#define __AVX__
+#define __AVX2__
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("ssse3,avx,avx2"))), apply_to=function)
+#define __SSSE3__
+#define __AVX__
+#define __AVX2__
+#endif
+#endif
 
+#ifdef __AVX2__
 
 #include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_ia32_intf.h"
-
-#ifdef __GNUC__
-#pragma GCC push_options
-#pragma GCC target("avx2")
-#endif
-#ifdef __clang__
-#pragma clang attribute push (__attribute__((target("avx2"))), apply_to=function)
-#endif
-
 #include "simd_def_x86x64.h"
 
 #include "blend_functor_avx2.h"
@@ -240,14 +247,6 @@ static void TVPAdditiveAlphaBlend_HDA_avx2_c(tjs_uint32 *dest, const tjs_uint32 
 static void TVPAdditiveAlphaBlend_a_avx2_c(tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len){
 	copy_func_avx2<avx2_premul_alpha_blend_a_functor>( dest, src, len );
 }
-
-#ifdef __clang__
-#pragma clang attribute pop
-#endif
-#ifdef __GNUC__
-#pragma GCC pop_options
-#endif
-
 /*
 DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsAlphaBlend, ps_alpha_blend )
 DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsAddBlend, ps_add_blend )
@@ -266,8 +265,22 @@ DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsDiffBlend, ps_diff_blend )
 DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsDiff5Blend, ps_diff5_blend )
 DEFINE_BLEND_FUNCTION_MIN_VARIATION( PsExclusionBlend, ps_exclusion_blend )
 */
+#endif
+
+#ifdef _WIN32
+#ifdef __clang__
+#pragma clang attribute pop
+#undef __AVX2__
+#endif
+#ifdef __GNUC__
+#pragma GCC pop_options
+#undef __AVX2__
+#endif
+#endif
+
 extern void TVPInitializeResampleAVX2();
 void TVPGL_AVX2_Init() {
+#if defined(_WIN32) || defined(__AVX2__)
 	if( TVPCPUType & TVP_CPU_HAS_AVX2 ) {
 		TVPAdditiveAlphaBlend = TVPAdditiveAlphaBlend_avx2_c;
 		TVPAdditiveAlphaBlend_o = TVPAdditiveAlphaBlend_o_avx2_c;
@@ -392,9 +405,10 @@ void TVPGL_AVX2_Init() {
 		TVPInterpLinTransCopy = TVPInterpLinTransCopy_avx2_c;
 		TVPInterpLinTransConstAlphaBlend = TVPInterpLinTransConstAlphaBlend_avx2_c;
 #endif
-#if 0
+#ifndef _WIN32
 		TVPInitializeResampleAVX2();
 #endif
 	}
+#endif
 }
 

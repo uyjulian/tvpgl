@@ -1,18 +1,22 @@
 
-
-#include "tjsCommHead.h"
-#include "tvpgl.h"
-#include "tvpgl_ia32_intf.h"
-
+#ifdef _WIN32
 #ifdef __GNUC__
 #pragma GCC push_options
 #pragma GCC target("sse2")
+#define __SSE2__
 #endif
 #ifdef __clang__
 #pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#define __SSE2__
+#endif
 #endif
 
+#ifdef __SSE2__
+
+#include "tjsCommHead.h"
 #include "simd_def_x86x64.h"
+#include "tvpgl.h"
+#include "tvpgl_ia32_intf.h"
 
 void TVPConvert24BitTo32Bit_sse2_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len) {
 	const __m128i alphamask( _mm_set1_epi32( 0xff000000 ) );
@@ -110,18 +114,24 @@ void TVPConvert24BitTo32Bit_sse2_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_i
 	}
 }
 
+
+#ifdef _WIN32
 #ifdef __GNUC__
 #pragma GCC push_options
 #pragma GCC target("ssse3")
+#define __SSSE3__
 #endif
 #ifdef __clang__
 #pragma clang attribute push (__attribute__((target("ssse3"))), apply_to=function)
+#define __SSSE3__
 #endif
-
+#endif
+#ifdef __SSSE3__
+#include <tmmintrin.h>
 // SSSE3
 void TVPConvert24BitTo32Bit_ssse3_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len) {
 	const __m128i alphamask( _mm_set1_epi32( 0xff000000 ) );
-	__m128i mask ( _mm_setr_epi8(0x80, 0x0B, 0x0A, 0x09, 0x80, 0x08, 0x07, 0x06, 0x80, 0x05, 0x04, 0x03, 0x80, 0x02, 0x01, 0x00) );
+	__m128i mask ( _mm_setr_epi8(0x00, 0x01, 0x02, 0x80, 0x03, 0x04, 0x05, 0x80, 0x06, 0x07, 0x08, 0x80, 0x09, 0x0A, 0x0B, 0x80) );
 
 	// 16単位
 	tjs_uint32 rem = (len>>4)<<4;
@@ -163,17 +173,16 @@ void TVPConvert24BitTo32Bit_ssse3_c(tjs_uint32 *dest, const tjs_uint8 *buf, tjs_
 		buf+=3; dest++;
 	}
 }
-
+#endif
+#ifdef _WIN32
 #ifdef __clang__
 #pragma clang attribute pop
+#undef __SSSE3__
 #endif
 #ifdef __GNUC__
 #pragma GCC pop_options
+#undef __SSSE3__
+#endif
+#endif
 #endif
 
-#ifdef __clang__
-#pragma clang attribute pop
-#endif
-#ifdef __GNUC__
-#pragma GCC pop_options
-#endif

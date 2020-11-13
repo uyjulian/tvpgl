@@ -1,18 +1,20 @@
 
-
-
-#include "tjsCommHead.h"
-#include "tvpgl.h"
-#include "tvpgl_ia32_intf.h"
-
+#ifdef _WIN32
 #ifdef __GNUC__
 #pragma GCC push_options
 #pragma GCC target("sse2")
+#define __SSE2__
 #endif
 #ifdef __clang__
 #pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#define __SSE2__
+#endif
 #endif
 
+#ifdef __SSE2__
+#include "tjsCommHead.h"
+#include "tvpgl.h"
+#include "tvpgl_ia32_intf.h"
 #include "simd_def_x86x64.h"
 #include "x86simdutil.h"
 
@@ -94,7 +96,7 @@ void TVPAdjustGamma_a_sse2_c(tjs_uint32 *dest, tjs_int len, tTVPGLGammaAdjustTem
 	sse2_adjust_gamma_a_func func(param);
 
 	// アライメント処理
-	tjs_int count = (tjs_int)((unsigned)dest & 0xF);
+	tjs_int count = (tjs_int)((size_t)dest & 0xF);
 	if( count ) {
 		count = (16 - count)>>2;
 		count = count > len ? len : count;
@@ -412,9 +414,5 @@ void TVPInitGammaAdjustTempData_sse2_c( tTVPGLGammaAdjustTempData *temp, const t
 	}
 }
 
-#ifdef __clang__
-#pragma clang attribute pop
 #endif
-#ifdef __GNUC__
-#pragma GCC pop_options
-#endif
+

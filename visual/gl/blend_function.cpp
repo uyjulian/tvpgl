@@ -22,7 +22,11 @@
 #include "tvpgl.h"
 
 #include "tvpgl.h"
+#ifdef _WIN32
 #include "tvpgl_ia32_intf.h"
+#else
+#include "DetectCPU.h"
+#endif
 #include "tvpgl_mathutil.h"
 
 extern "C" {

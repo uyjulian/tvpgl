@@ -11,14 +11,18 @@
 #include "tjsCommHead.h"
 #include "tvpgl.h"
 #include "tvpgl_info.h"
-#if 0
+#if 1
 #include "tvpgl_ia32_intf.h"
+#endif
+#if 0
 #include "tvpgl_ia32_intf_c.h"
 #include "tvpgl_ia32_intf_pfraction.h"
 #include "tvpgl_ia32_intf_pfraction_c.h"
-#include "detect_cpu.h"
 #endif
 #if 1
+#include "detect_cpu.h"
+#endif
+#if 0
 #include "tvpgl_ia32_intf_behavior_c.h"
 #endif
 
@@ -83,7 +87,7 @@ TVPGL_EXPAND_MACRO(TVPGL_DEFINE);
 
 #define EXPORT(hr) extern "C" __declspec(dllexport) hr __stdcall
 
-#if 0
+#if 1
 extern "C" tjs_uint32 TVPCPUType;
 extern void TVPGL_C_Init();
 extern void TVPGL_SSE2_Init();
@@ -98,7 +102,7 @@ static void init_tvpgl_replacement()
 		return;
 	}
 
-#if 0
+#if 1
 	tjs_uint32 features = 0;
 	TVPCheckCPU();
 	features = (TVPCPUFeatures & TVP_CPU_FEATURE_MASK);
@@ -107,15 +111,19 @@ static void init_tvpgl_replacement()
 	TVPCPUType |= features;
 #endif
 	TVP_GL_FUNCNAME(TVPInitTVPGL)();
-#if 0
+#if 1
 	TVPGL_C_Init();
 	TVPGL_IA32_Init();
+#endif
+#if 0
 	TVPGL_IA32_c_Init();
 	TVPGL_IA32_pfraction_Init();
 	TVPGL_IA32_pfraction_c_Init();
-	TVPGL_SSE2_Init();
 #endif
 #if 1
+	TVPGL_SSE2_Init();
+#endif
+#if 0
 	TVPGL_IA32_behavior_c_Init();
 #endif
 	TVPGL_EXPAND_MACRO(TVPGL_OVERWRITE);

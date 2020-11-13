@@ -1,16 +1,20 @@
 
-#include "tjsCommHead.h"
-#include "tvpgl.h"
-#include "tvpgl_ia32_intf.h"
-
+#ifdef _WIN32
 #ifdef __GNUC__
 #pragma GCC push_options
 #pragma GCC target("sse2")
+#define __SSE2__
 #endif
 #ifdef __clang__
 #pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#define __SSE2__
+#endif
 #endif
 
+#ifdef __SSE2__
+#include "tjsCommHead.h"
+#include "tvpgl.h"
+#include "tvpgl_ia32_intf.h"
 #include "simd_def_x86x64.h"
 
 #if 0	// 偏りが多い場合は速いが、通常ケースでは遅い
@@ -419,15 +423,15 @@ void TVPTLG5ComposeColors4To4_sse2_c(tjs_uint8 *outp, const tjs_uint8 *upper, tj
 // This does reordering, color correlation filter, MED/AVG
 #define TVP_TLG6_W_BLOCK_SIZE		8
 
-#define g_mask _mm_set1_epi32( 0x0000ff00 )
-#define b_mask _mm_set1_epi32( 0x000000ff )
-#define r_mask _mm_set1_epi32( 0x00ff0000 )
-#define a_mask _mm_set1_epi32( 0xff000000 )
-#define g_d_mask _mm_set1_epi32( 0x0000fe00 )
-#define r_d_mask _mm_set1_epi32( 0x00fe0000 )
-#define b_d_mask _mm_set1_epi32( 0x000000fe )
-#define avg_mask_fe _mm_set1_epi32( 0xfefefefe )
-#define avg_mask_01 _mm_set1_epi32( 0x01010101 )
+static const __m128i g_mask( _mm_set1_epi32( 0x0000ff00 ) );
+static const __m128i b_mask( _mm_set1_epi32( 0x000000ff ) );
+static const __m128i r_mask( _mm_set1_epi32( 0x00ff0000 ) );
+static const __m128i a_mask( _mm_set1_epi32( 0xff000000 ) );
+static const __m128i g_d_mask( _mm_set1_epi32( 0x0000fe00 ) );
+static const __m128i r_d_mask( _mm_set1_epi32( 0x00fe0000 ) );
+static const __m128i b_d_mask( _mm_set1_epi32( 0x000000fe ) );
+static const __m128i avg_mask_fe( _mm_set1_epi32( 0xfefefefe ) );
+static const __m128i avg_mask_01( _mm_set1_epi32( 0x01010101 ) );
 
 // ( 0, IB, IG, IR)
 struct filter_insts_0_sse2 {
@@ -1140,14 +1144,6 @@ void TVPTLG6DecodeLine_sse2_sse_c(tjs_uint32 *prevline, tjs_uint32 *curline, tjs
 		filtertypes, skipblockbytes, in, initialp, oddskip, dir);
 }
 #endif
-
-#ifdef __clang__
-#pragma clang attribute pop
-#endif
-#ifdef __GNUC__
-#pragma GCC pop_options
-#endif
-
 //#define LZSS_TEST
 #ifdef LZSS_TEST
 #include <windows.h>
@@ -1358,4 +1354,5 @@ void TVPTLG5ComposeColors4To4_test(tjs_uint8 *outp, const tjs_uint8 *upper, tjs_
 tlg6_golomb は、MMX 使っているが、一時変数として使われているのとプリフェッチのみ。SSE2 は意味なさげ
 tlg6_chroma は、MMX(SSE)が使われている
 */
+#endif
 #endif

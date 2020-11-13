@@ -1,3 +1,17 @@
+
+#ifdef _WIN32
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("avx2")
+#define __AVX2__
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("avx2"))), apply_to=function)
+#define __AVX2__
+#endif
+#endif
+
+#ifdef __AVX2__
 /******************************************************************************/
 /**
  * 数学関数 sin, cos, exp を SIMD 化したもの
@@ -9,14 +23,6 @@
  * @note		sse_mathfun を AVX に移植したもの。一部 AVX2 命令を使用している
  *				ので、AVX2 も必要。
  *****************************************************************************/
-
-#ifdef __GNUC__
-#pragma GCC push_options
-#pragma GCC target("avx2")
-#endif
-#ifdef __clang__
-#pragma clang attribute push (__attribute__((target("avx2"))), apply_to=function)
-#endif
 
 #include <immintrin.h> // AVX/AVX2
 
@@ -308,9 +314,4 @@ __m256 mm256_cos_ps(__m256 x) {
   return y;
 }
 
-#ifdef __clang__
-#pragma clang attribute pop
-#endif
-#ifdef __GNUC__
-#pragma GCC pop_options
 #endif

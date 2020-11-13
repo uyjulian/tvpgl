@@ -1,16 +1,20 @@
 
-#include "tjsCommHead.h"
-#include "tvpgl.h"
-#include "tvpgl_ia32_intf.h"
-
+#ifdef _WIN32
 #ifdef __GNUC__
 #pragma GCC push_options
 #pragma GCC target("sse2")
+#define __SSE2__
 #endif
 #ifdef __clang__
 #pragma clang attribute push (__attribute__((target("sse2"))), apply_to=function)
+#define __SSE2__
+#endif
 #endif
 
+#ifdef __SSE2__
+#include "tjsCommHead.h"
+#include "tvpgl.h"
+#include "tvpgl_ia32_intf.h"
 #include "simd_def_x86x64.h"
 
 extern "C" {
@@ -21,7 +25,7 @@ extern unsigned char TVPNegativeMulTable[256*256];
 //--------------------------------------------------------------------
 void TVPFillARGB_sse2_c( tjs_uint32 *dest, tjs_int len, tjs_uint32 value ) {
 	if( len <= 0 ) return;
-	tjs_int count = (tjs_int)((unsigned)dest & 0xF);
+	tjs_int count = (tjs_int)((size_t)dest & 0xF);
 	if( count ) {
 		count = (16 - count)>>2;
 		count = count > len ? len : count;
@@ -53,7 +57,7 @@ void TVPFillARGB_sse2_c( tjs_uint32 *dest, tjs_int len, tjs_uint32 value ) {
 //--------------------------------------------------------------------
 void TVPFillARGB_NC_sse2_c( tjs_uint32 *dest, tjs_int len, tjs_uint32 value ) {
 	if( len <= 0 ) return;
-	tjs_int count = (tjs_int)((unsigned)dest & 0xF);
+	tjs_int count = (tjs_int)((size_t)dest & 0xF);
 	if( count ) {
 		count = (16 - count)>>2;
 		count = count > len ? len : count;
@@ -114,7 +118,7 @@ struct sse2_const_alpha_copy_functor {
 template<typename functor>
 inline void sse2_const_color_copy_unroll( tjs_uint32 *dest, tjs_int len, const functor& func ) {
 	if( len <= 0 ) return;
-	tjs_int count = (tjs_int)((unsigned)dest & 0xF);
+	tjs_int count = (tjs_int)((size_t)dest & 0xF);
 	if( count ) {
 		count = (16 - count)>>2;
 		count = count > len ? len : count;
@@ -344,7 +348,7 @@ struct sse2_const_alpha_fill_blend_a_functor {
 template<typename functor>
 inline void sse2_const_color_alpha_blend( tjs_uint32 *dest, tjs_int len, const functor& func ) {
 	if( len <= 0 ) return;
-	tjs_int count = (tjs_int)((unsigned)dest & 0xF);
+	tjs_int count = (tjs_int)((size_t)dest & 0xF);
 	if( count ) {
 		count = (16 - count)>>2;
 		count = count > len ? len : count;
@@ -437,9 +441,6 @@ void TVPAlphaColorMat_sse2_c(tjs_uint32 *dest, tjs_uint32 color, tjs_int len ) {
 	sse2_const_color_alpha_blend( dest, len, func );
 }
 
-#ifdef __clang__
-#pragma clang attribute pop
 #endif
-#ifdef __GNUC__
-#pragma GCC pop_options
-#endif
+
+

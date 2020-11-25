@@ -43,7 +43,7 @@ static iTVPFunctionExporter * TVPFunctionExporter = NULL;
 #define TVPGL_DEFINE(funcname, signature, rettype, arg, argnames) \
 	rettype (__cdecl * funcname##_old) arg; \
 	uintptr_t *funcname##_oldloc; \
-	rettype __cdecl funcname##_thunk arg \
+	rettype __attribute__((force_align_arg_pointer)) __cdecl funcname##_thunk arg \
 	{ \
 		return funcname argnames ; \
 	}

@@ -83,22 +83,26 @@ OBJECTS_BIN := $(OBJECTS_BIN:.cpp=.o)
 OBJECTS_BIN := $(OBJECTS_BIN:.nas=.o)
 OBJECTS_BIN := $(OBJECTS_BIN:.rc=.o)
 
-BINARY ?= tvpgl.dll
+BINARY ?= tvpgl_unstripped.dll
+BINARY_STRIPPED ?= tvpgl.dll
 BINARY_BIN ?= tvpgl.exe
 ARCHIVE ?= tvpgl.$(GIT_TAG).7z
 
-all: $(BINARY)
+all: $(BINARY_STRIPPED)
 
 archive: $(ARCHIVE)
 
 clean:
 	rm -f $(OBJECTS) $(OBJECTS_BIN) $(BINARY) $(BINARY_BIN) $(ARCHIVE) visual/glgen/tvpgl.c visual/glgen/tvpgl.h visual/glgen/tvpgl_info.h
 
-$(ARCHIVE): $(BINARY) LICENSE
+$(ARCHIVE): $(BINARY_STRIPPED) LICENSE
 	rm -f $(ARCHIVE)
 	7z a $@ $^
 
-$(BINARY): $(OBJECTS) 
+$(BINARY_STRIPPED): $(BINARY)
+	i686-w64-mingw32-strip -o $@ $^
+
+$(BINARY): $(OBJECTS)
 	@printf '\t%s %s\n' LNK $@
 	$(CXX) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_LIB) -o $@ $^ $(LDLIBS)
 

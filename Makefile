@@ -64,8 +64,16 @@ SOURCES_IA32_PFRACTION_C += visual/IA32_pfraction_c/tvpgl_ia32_intf_pfraction_c.
 SOURCES += $(SOURCES_IA32_PFRACTION_C)
 endif
 ifneq (disabled,)
-SOURCES_TEMPLATE += visual/gl/adjust_color_sse2.cpp visual/gl/blend_function.cpp visual/gl/blend_function_avx2.cpp visual/gl/blend_function_sse2.cpp visual/gl/boxblur_sse2.cpp visual/gl/colorfill_sse2.cpp visual/gl/colormap_sse2.cpp visual/gl/pixelformat_sse2.cpp visual/gl/tlg_sse2.cpp visual/gl/univtrans_sse2.cpp visual/gl/x86simdutil.cpp visual/gl/x86simdutilAVX2.cpp
+SOURCES_TEMPLATE += visual/gl/blend_function.cpp
 SOURCES += $(SOURCES_TEMPLATE)
+endif
+ifneq (disabled,)
+SOURCES_SSE2_TEMPLATE += visual/gl/adjust_color_sse2.cpp visual/gl/blend_function_sse2.cpp visual/gl/boxblur_sse2.cpp visual/gl/colorfill_sse2.cpp visual/gl/colormap_sse2.cpp visual/gl/pixelformat_sse2.cpp visual/gl/tlg_sse2.cpp visual/gl/univtrans_sse2.cpp visual/gl/x86simdutil.cpp
+SOURCES += $(SOURCES_SSE2_TEMPLATE)
+endif
+ifeq (disabled,)
+SOURCES_AVX2_TEMPLATE += visual/gl/blend_function_avx2.cpp visual/gl/x86simdutilAVX2.cpp
+SOURCES += $(SOURCES_AVX2_TEMPLATE)
 endif
 ifeq (disabled,)
 SOURCES_IA32_BEHAVIOR_C += visual/IA32_behavior_c/tvpgl_ia32_intf_behavior_c.c visual/IA32_behavior_c/addalphablend.c visual/IA32_behavior_c/affine.c visual/IA32_behavior_c/alphablend.c visual/IA32_behavior_c/boxblur.c visual/IA32_behavior_c/colorfill.c visual/IA32_behavior_c/colormap.c visual/IA32_behavior_c/darkenblend.c visual/IA32_behavior_c/mulblend.c visual/IA32_behavior_c/screenblend.c visual/IA32_behavior_c/stretch.c visual/IA32_behavior_c/tvpps_asm.c visual/IA32_behavior_c/univtrans.c
@@ -122,7 +130,7 @@ $(SOURCES_IA32:.nas=.o): INCFLAGS += -Ivisual/IA32
 
 $(SOURCES_IA32_PFRACTION:.nas=.o): INCFLAGS += -Ivisual/IA32_pfraction
 
-tests/test.o main.o $(SOURCES_TEMPLATE:.cpp=.o): INCFLAGS += -Ivisual/IA32 -Ivisual/IA32_c -Ivisual/IA32_pfraction -Ivisual/IA32_pfraction_c -Ivisual/IA32_behavior_c
+tests/test.o main.o $(SOURCES_TEMPLATE:.cpp=.o) $(SOURCES_SSE2_TEMPLATE:.cpp=.o) $(SOURCES_AVX2_TEMPLATE:.cpp=.o): INCFLAGS += -Ivisual/IA32 -Ivisual/IA32_c -Ivisual/IA32_pfraction -Ivisual/IA32_pfraction_c -Ivisual/IA32_behavior_c
 
 $(SOURCES_IA32:.c=.o): INCFLAGS += -Ivisual/IA32
 

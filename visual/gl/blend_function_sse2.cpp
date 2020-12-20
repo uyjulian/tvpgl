@@ -1713,9 +1713,11 @@ void TVPGL_SSE2_Init() {
 #endif
 	}
 #endif
+#if 0
 	if( TVPCPUType & TVP_CPU_HAS_AVX2 ) {
 		TVPGL_AVX2_Init();
 	}
+#endif
 }
 
 //#define SIMD_BLEND_TEST

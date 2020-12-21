@@ -7,6 +7,30 @@
 //                                         //
 /////////////////////////////////////////////
 
+#ifdef _WIN32
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("mmx")
+#define __MMX__
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("mmx"))), apply_to=function)
+#define __MMX__
+#endif
+#endif
+
+#ifdef _WIN32
+#ifdef __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse")
+#define __SSE__
+#endif
+#ifdef __clang__
+#pragma clang attribute push (__attribute__((target("mmx"))), apply_to=function)
+#define __SSE__
+#endif
+#endif
+
 #include <mmintrin.h>
 #include "tvpgl_ia32_intf_c.h"
 

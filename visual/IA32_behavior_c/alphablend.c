@@ -52,6 +52,10 @@ TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint
 {
 	FOREACH_CHANNEL(
 		{
+			if (src[i] <= 0xFFFFFF)
+			{
+				continue;
+			}
 			tjs_uint16 v7 = (dest[i] >> 24) | ((src[i] >> 16) & 0xFF00);
 			if (j % 4 == 3)
 			{

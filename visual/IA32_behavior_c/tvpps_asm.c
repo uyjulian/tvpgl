@@ -7,19 +7,6 @@
 //                                         //
 /////////////////////////////////////////////
 
-#ifdef _WIN32
-#ifdef __GNUC__
-#pragma GCC push_options
-#pragma GCC target("mmx")
-#define __MMX__
-#endif
-#ifdef __clang__
-#pragma clang attribute push (__attribute__((target("mmx"))), apply_to=function)
-#define __MMX__
-#endif
-#endif
-
-#include <mmintrin.h>
 #include "tvpgl_ia32_intf_behavior_c.h"
 
 #define TVP_GL_IA32_BLEND_FUNC_BODY(funcname, channelbody, hda) \
@@ -116,8 +103,8 @@ TVP_GL_IA32_BLEND_FUNC(Screen, {
 	d[j] = l;
 });
 
-// FIXME: some channel is wrong on regular/HDA versions (not opacity version)
-TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(Overlay, {
+// FIXME: some channel shows up as wrong on regular/HDA versions (not opacity version) on test harness w/ IA32 (asm) only
+TVP_GL_IA32_BLEND_FUNC(Overlay, {
 	tjs_uint16 k = s[j];
 	tjs_uint16 l = s[j];
 	l *= d[j];
@@ -136,60 +123,8 @@ TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(Overlay, {
 	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
-TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _mm_set1_pi16(src[i] >> 0x19u);
-		__m64 k = _m_pand(v12, v13);
-		__m64 l = _m_paddw(s, d);
-		l = _m_psllwi(l, 1u);
-		l = _m_psubw(l, v12);
-		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
-		l = _m_pandn(v13, l);
-		l = _m_por(k, l);
-		l = _m_psubw(l, d);
-		l = _m_pmullw(l, v14);
-		l = _m_psrawi(l, 7u);
-		l = _m_paddw(d, l);
-		l = _m_packuswb(l, _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(l);
-	}
-	_m_empty();
-}
-
-TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _m_psrldi(_mm_cvtsi32_si64(src[i]), 0x19u);
-		__m64 k = _m_pand(v12, v13);
-		__m64 l = _m_paddw(s, d);
-		l = _m_psllwi(l, 1u);
-		l = _m_psubw(l, v12);
-		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
-		l = _m_pandn(v13, l);
-		l = _m_por(k, l);
-		l = _m_psubw(l, d);
-		l = _m_pmullw(l, _m_punpckldq(_mm_set1_pi16(src[i] >> 0x19u), v14));
-		l = _m_psrawi(l, 7u);
-		l = _m_paddw(d, l);
-		l = _m_packuswb(l, _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(l);
-	}
-	_m_empty();
-}
-
-// FIXME: some channel is wrong on regular/HDA versions (not opacity version)
-TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(HardLight, {
+// FIXME: some channel shows up as wrong on regular/HDA versions (not opacity version) on test harness w/ IA32 (asm) only
+TVP_GL_IA32_BLEND_FUNC(HardLight, {
 	tjs_uint16 k = s[j];
 	tjs_uint16 l = s[j];
 	l *= d[j];
@@ -207,58 +142,6 @@ TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(HardLight, {
 	}
 	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
-
-TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _mm_set1_pi16(src[i] >> 0x19u);
-		__m64 k = _m_pand(v12, v13);
-		__m64 l = _m_paddw(s, d);
-		l = _m_psllwi(l, 1u);
-		l = _m_psubw(l, v12);
-		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
-		l = _m_pandn(v13, l);
-		l = _m_por(k, l);
-		l = _m_psubw(l, d);
-		l = _m_pmullw(l, v14);
-		l = _m_psrawi(l, 7u);
-		l = _m_paddw(d, l);
-		l = _m_packuswb(l, _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(l);
-	}
-	_m_empty();
-}
-
-TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _m_psrldi(_mm_cvtsi32_si64(src[i]), 0x19u);
-		__m64 k = _m_pand(v12, v13);
-		__m64 l = _m_paddw(s, d);
-		l = _m_psllwi(l, 1u);
-		l = _m_psubw(l, v12);
-		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
-		l = _m_pandn(v13, l);
-		l = _m_por(k, l);
-		l = _m_psubw(l, d);
-		l = _m_pmullw(l, _m_punpckldq(_mm_set1_pi16(src[i] >> 0x19u), v14));
-		l = _m_psrawi(l, 7u);
-		l = _m_paddw(d, l);
-		l = _m_packuswb(l, _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(l);
-	}
-	_m_empty();
-}
 
 TVP_GL_IA32_BLEND_FUNC(SoftLight, {
 	tjs_uint16 k = TVPPsTableSoftLight[s[j]][d[j]];

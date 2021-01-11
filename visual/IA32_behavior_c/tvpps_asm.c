@@ -62,13 +62,18 @@
 	TVP_GL_IA32_BLEND_FUNC_BODY_OPACITY(TVPPs##funcname##Blend_o_c,     channelbody, 0) \
 	TVP_GL_IA32_BLEND_FUNC_BODY_OPACITY(TVPPs##funcname##Blend_HDA_o_c, channelbody, 1)
 
+#define TVP_GL_IA32_ALPHABLEND(channel, destchannel, sevenbit) \
+	{ \
+		channel -= destchannel; \
+		channel *= sevenbit; \
+		channel >>= 7; \
+		channel += destchannel; \
+		destchannel = channel; \
+	}
+
 TVP_GL_IA32_BLEND_FUNC(Alpha, {
 	tjs_uint16 k = s[j];
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Add, {
@@ -78,11 +83,7 @@ TVP_GL_IA32_BLEND_FUNC(Add, {
 	{
 		k = 0xff;
 	}
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Sub, {
@@ -93,33 +94,26 @@ TVP_GL_IA32_BLEND_FUNC(Sub, {
 	{
 		k = 0;
 	}
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Mul, {
 	tjs_uint16 k = s[j];
 	k *= d[j];
 	k >>= 8u;
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Screen, {
 	tjs_uint16 k = s[j];
 	k *= d[j];
 	k >>= 8u;
-	k = s[j] - k;
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	tjs_uint16 l = s[j];
+	l -= k;
+	l *= sevenbit;
+	l >>= 7;
+	l += d[j];
+	d[j] = l;
 });
 
 // FIXME: some channel is wrong on regular/HDA versions (not opacity version)
@@ -139,11 +133,7 @@ TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(Overlay, {
 		k -= l;
 		k -= 0xff;
 	}
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -215,11 +205,7 @@ TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(HardLight, {
 		k -= l;
 		k -= 0xff;
 	}
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -293,11 +279,7 @@ TVP_GL_IA32_BLEND_FUNC(ColorDodge, {
 	{
 		k = s[j];
 	}
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(ColorDodge5, {
@@ -317,11 +299,7 @@ TVP_GL_IA32_BLEND_FUNC(ColorBurn, {
 	{
 		k = s[j];
 	}
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Lighten, {
@@ -332,11 +310,7 @@ TVP_GL_IA32_BLEND_FUNC(Lighten, {
 		k = 0;
 	}
 	k += s[j];
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Darken, {
@@ -347,11 +321,7 @@ TVP_GL_IA32_BLEND_FUNC(Darken, {
 		k = 0;
 	}
 	k = s[j] - k;
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Diff, {
@@ -368,11 +338,7 @@ TVP_GL_IA32_BLEND_FUNC(Diff, {
 		l = 0;
 	}
 	k += l;
-	k -= d[j];
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	TVP_GL_IA32_ALPHABLEND(k, d[j], sevenbit);
 });
 
 TVP_GL_IA32_BLEND_FUNC(Diff5, {
@@ -399,9 +365,10 @@ TVP_GL_IA32_BLEND_FUNC(Exclusion, {
 	tjs_uint16 k = s[j];
 	k *= d[j];
 	k >>= 7;
-	k = s[j] - k;
-	k *= sevenbit;
-	k >>= 7;
-	k += d[j];
-	d[j] = k;
+	tjs_uint16 l = s[j];
+	l -= k;
+	l *= sevenbit;
+	l >>= 7;
+	l += d[j];
+	d[j] = l;
 });

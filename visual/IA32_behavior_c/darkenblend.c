@@ -24,18 +24,36 @@
 
 TVP_GL_IA32_FUNC_DECL(void, TVPDarkenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
-	__m64         v4; // mm7
-	__m64         v8; // mm1
-
-	v4 = _mm_set1_pi32(0xFFFFFFu);
+#if 1
+	FOREACH_CHANNEL(
+		{
+			if (j % 4 == 3)
+			{
+				continue;
+			}
+			tjs_uint16 m = s[j];
+			tjs_uint16 k = d[j] | 0xff;
+			m = k - m;
+			if (m > 0xff)
+			{
+				m = 0;
+			}
+			m &= 0xff;
+			m = k - m;
+			m &= 0xff;
+			d[j] = m;
+		}, len, src, dest);
+#endif
+#if 0
 	for (tjs_int i = 0; i < len; i += 1)
 	{
-		v8 = _m_por(_mm_cvtsi32_si64(dest[i]), v4);
-		__m64 k = _mm_cvtsi32_si64(src[i]);
-		k = _m_psubusb(v8, k);
-		k = _m_pand(k, v4);
-		k = _m_psubb(v8, k);
-		dest[i] = _mm_cvtsi64_si32(k);
+		__m64 m = _mm_cvtsi32_si64(src[i]);
+		__m64 k = _mm_cvtsi32_si64(dest[i] | 0xFFFFFFu);
+		m = _m_psubusb(k, m);
+		m = _m_pand(m, _mm_set1_pi32(0xFFFFFFu));
+		m = _m_psubb(k, m);
+		dest[i] = _mm_cvtsi64_si32(m);
 	}
 	_m_empty();
+#endif
 }

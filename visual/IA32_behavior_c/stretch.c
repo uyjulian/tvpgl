@@ -31,14 +31,14 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs_
 	for (tjs_int i = 0, j = srcstart; i < len; i += 1, j += srcstep)
 	{
 		v12 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_psrlwi(
-					_m_paddw(
-						_m_psllwi(v12, 8u),
-						_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src[j >> 16]), _mm_setzero_si64()), v12), v9)),
-					8u),
-				_mm_setzero_si64()));
+		__m64 k = _mm_cvtsi32_si64(src[j >> 16]);
+		k = _m_punpcklbw(k, _mm_setzero_si64());
+		k = _m_psubw(k, v12);
+		k = _m_pmullw(k, v9);
+		k = _m_paddw(_m_psllwi(v12, 8u), k);
+		k = _m_psrlwi(k, 8u);
+		k = _m_packuswb(k, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(k);
 	}
 	_m_empty();
 }
@@ -56,10 +56,13 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchAlphaBlend_c, (tjs_uint32 *dest, tjs_int l
 		v9  = _m_psrlqi(v8, 0x18u);
 		v10 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
 		v11 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v9));
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_psrlwi(_m_paddw(_m_pmullw(_m_psubw(_m_punpcklbw(v8, _mm_setzero_si64()), v10), v11), _m_psllwi(v10, 8u)), 8u),
-				_mm_setzero_si64()));
+		__m64 k = _m_punpcklbw(v8, _mm_setzero_si64());
+		k = _m_psubw(k, v10);
+		k = _m_pmullw(k, v11);
+		k = _m_paddw(k, _m_psllwi(v10, 8u));
+		k = _m_psrlwi(k, 8u);
+		k = _m_packuswb(k, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(k);
 	}
 	_m_empty();
 }
@@ -77,7 +80,12 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, t
 		v9  = _m_psrlqi(v8, 0x18u);
 		v10 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v9));
 		v11 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(_m_paddusb(_m_packuswb(_m_psubw(v11, _m_psrlwi(_m_pmullw(v11, v10), 8u)), _mm_setzero_si64()), v8));
+		__m64 k = _m_pmullw(v11, v10);
+		k = _m_psrlwi(k, 8u);
+		k = _m_psubw(v11, k);
+		k = _m_packuswb(k, _mm_setzero_si64());
+		k = _m_paddusb(k, v8);
+		dest[i] = _mm_cvtsi64_si32(k);
 	}
 	_m_empty();
 }
@@ -99,38 +107,29 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchConstAlphaBlend_c, (tjs_uint32 *dest
 		v17 = _m_punpcklbw(_mm_cvtsi32_si64(src1[j >> 16]), _mm_setzero_si64());
 		v19 = _m_punpcklbw(_mm_cvtsi32_si64(src2[j >> 16]), _mm_setzero_si64());
 		v20 = _mm_set1_pi16((tjs_uint16)j >> 8);
-		v22 = _m_paddb(
-			v17,
-			_m_psrlwi(
-				_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src1[(j >> 16) + 1]), _mm_setzero_si64()), v17), v20),
-				8u));
-		v23  = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddb(
-					v23,
-					_m_psrlwi(
-						_m_pmullw(
-							_m_psubw(
-								_m_paddb(
-									v22,
-									_m_psrlwi(
-										_m_pmullw(
-											_m_psubw(
-												_m_paddb(
-													v19,
-													_m_psrlwi(
-														_m_pmullw(
-															_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src2[(j >> 16) + 1]), _mm_setzero_si64()), v19),
-															v20),
-														8u)),
-												v22),
-											v9),
-										8u)),
-								v23),
-							v12),
-						8u)),
-				_mm_setzero_si64()));
+		__m64 k = _mm_cvtsi32_si64(src1[(j >> 16) + 1]);
+		k = _m_punpcklbw(k, _mm_setzero_si64());
+		k = _m_psubw(k, v17);
+		k = _m_pmullw(k, v20);
+		k = _m_psrlwi(k, 8u);
+		v22 = _m_paddb(v17, k);
+		v23 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
+		__m64 l = _mm_cvtsi32_si64(src2[(j >> 16) + 1]);
+		l = _m_punpcklbw(l, _mm_setzero_si64());
+		l = _m_psubw(l, v19);
+		l = _m_pmullw(l, v20);
+		l = _m_psrlwi(l, 8u);
+		l = _m_paddb(v19, l);
+		l = _m_psubw(l, v22);
+		l = _m_pmullw(l, v9);
+		l = _m_psrlwi(l, 8u);
+		l = _m_paddb(v22, l);
+		l = _m_psubw(l, v23);
+		l = _m_pmullw(l, v12);
+		l = _m_psrlwi(l, 8u);
+		l = _m_paddb(v23, l);
+		l = _m_packuswb(l, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(l);
 	}
 	_m_empty();
 }
@@ -140,7 +139,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *d
 	__m64         v8;  // mm7
 	__m64         v13; // mm1
 	__m64         v15; // mm3
-	__m64         v16; // mm5
 	__m64         v17; // mm5
 	__m64         v18; // mm1
 	__m64         v19; // mm1
@@ -153,30 +151,32 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *d
 	{
 		v13 = _m_punpcklbw(_mm_cvtsi32_si64(src1[j >> 16]), _mm_setzero_si64());
 		v15 = _m_punpcklbw(_mm_cvtsi32_si64(src2[j >> 16]), _mm_setzero_si64());
-		v16 = _mm_set1_pi16((tjs_uint16)j >> 8);
-		v17 = v16;
-		v18 = _m_paddb(
-			v13,
-			_m_psrlwi(
-				_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src1[(j >> 16) + 1]), _mm_setzero_si64()), v13), v17),
-				8u));
-		v19 = _m_paddb(
-			v18,
-			_m_psrlwi(
-				_m_pmullw(
-					_m_psubw(
-						_m_paddb(
-							v15,
-							_m_psrlwi(
-								_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src2[(j >> 16) + 1]), _mm_setzero_si64()), v15), v17),
-								8u)),
-						v18),
-					v8),
-				8u));
-		v20  = _m_psrlqi(v19, 0x30u);
-		v21  = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		v22  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v20));
-		dest[i] = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(v19, _m_psubw(v21, _m_psrlwi(_m_pmullw(v21, v22), 8u))), _mm_setzero_si64()));
+		v17 = _mm_set1_pi16((tjs_uint16)j >> 8);
+		__m64 k = _mm_cvtsi32_si64(src1[(j >> 16) + 1]);
+		k = _m_punpcklbw(k, _mm_setzero_si64());
+		k = _m_psubw(k, v13);
+		k = _m_pmullw(k, v17);
+		k = _m_psrlwi(k, 8u);
+		v18 = _m_paddb(v13, k);
+		__m64 l = _mm_cvtsi32_si64(src2[(j >> 16) + 1]);
+		l = _m_punpcklbw(l, _mm_setzero_si64());
+		l = _m_psubw(l, v15);
+		l = _m_pmullw(l, v17);
+		l = _m_psrlwi(l, 8u);
+		l = _m_paddb(v15, l);
+		l = _m_psubw(l, v18);
+		l = _m_pmullw(l, v8);
+		l = _m_psrlwi(l, 8u);
+		v19 = _m_paddb(v18, l);
+		v20 = _m_psrlqi(v19, 0x30u);
+		v21 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
+		v22 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v20));
+		__m64 m = _m_pmullw(v21, v22);
+		m = _m_psrlwi(m, 8u);
+		m = _m_psubw(v21, m);
+		m = _m_paddw(v19, m);
+		m = _m_packuswb(m, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(m);
 	}
 	_m_empty();
 }
@@ -201,32 +201,33 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_o_c, (tjs_uint32 
 		v17 = _m_punpcklbw(_mm_cvtsi32_si64(src1[j >> 16]), _mm_setzero_si64());
 		v19 = _m_punpcklbw(_mm_cvtsi32_si64(src2[j >> 16]), _mm_setzero_si64());
 		v20 = _mm_set1_pi16((tjs_uint16)j >> 8);
-		v22 = _m_paddb(
-			v17,
-			_m_psrlwi(
-				_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src1[(j >> 16) + 1]), _mm_setzero_si64()), v17), v20),
-				8u));
-		v23 = _m_psrlwi(
-			_m_pmullw(
-				_m_paddb(
-					v22,
-					_m_psrlwi(
-						_m_pmullw(
-							_m_psubw(
-								_m_paddb(
-									v19,
-									_m_psrlwi(
-										_m_pmullw(_m_psubw(_m_punpcklbw(_mm_cvtsi32_si64(src2[(j >> 16) + 1]), _mm_setzero_si64()), v19), v20),
-										8u)),
-								v22),
-							v9),
-						8u)),
-				v12),
-			8u);
-		v24  = _m_psrlqi(v23, 0x30u);
-		v25  = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		v26  = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v24));
-		dest[i] = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(v23, _m_psubw(v25, _m_psrlwi(_m_pmullw(v25, v26), 8u))), _mm_setzero_si64()));
+		__m64 k = _mm_cvtsi32_si64(src1[(j >> 16) + 1]);
+		k = _m_punpcklbw(k, _mm_setzero_si64());
+		k = _m_psubw(k, v17);
+		k = _m_pmullw(k, v20);
+		k = _m_psrlwi(k, 8u);
+		v22 = _m_paddb(v17, k);
+		__m64 l = _mm_cvtsi32_si64(src2[(j >> 16) + 1]);
+		l = _m_punpcklbw(l, _mm_setzero_si64());
+		l = _m_psubw(l, v19);
+		l = _m_pmullw(l, v20);
+		l = _m_psrlwi(l, 8u);
+		l = _m_paddb(v19, l);
+		l = _m_psubw(l, v22);
+		l = _m_pmullw(l, v9);
+		l = _m_psrlwi(l, 8u);
+		l = _m_paddb(v22, l);
+		l = _m_pmullw(l, v12);
+		v23 = _m_psrlwi(l, 8u);
+		v24 = _m_psrlqi(v23, 0x30u);
+		v25 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
+		v26 = _mm_set1_pi16((tjs_uint16)_mm_cvtsi64_si32(v24));
+		__m64 m = _m_pmullw(v25, v26);
+		m = _m_psrlwi(m, 8u);
+		m = _m_psubw(v25, m);
+		m = _m_paddw(v23, m);
+		m = _m_packuswb(m, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(m);
 	}
 	_m_empty();
 }

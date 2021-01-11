@@ -30,8 +30,12 @@ TVP_GL_IA32_FUNC_DECL(void, TVPDarkenBlend_HDA_c, (tjs_uint32 *dest, const tjs_u
 	v4 = _mm_set1_pi32(0xFFFFFFu);
 	for (tjs_int i = 0; i < len; i += 1)
 	{
-		v8  = _m_por(_mm_cvtsi32_si64(dest[i]), v4);
-		dest[i] = _mm_cvtsi64_si32(_m_psubb(v8, _m_pand(_m_psubusb(v8, _mm_cvtsi32_si64(src[i])), v4)));
+		v8 = _m_por(_mm_cvtsi32_si64(dest[i]), v4);
+		__m64 k = _mm_cvtsi32_si64(src[i]);
+		k = _m_psubusb(v8, k);
+		k = _m_pand(k, v4);
+		k = _m_psubb(v8, k);
+		dest[i] = _mm_cvtsi64_si32(k);
 	}
 	_m_empty();
 }

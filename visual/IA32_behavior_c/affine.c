@@ -62,11 +62,11 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *
 	__m64         v23; // mm2
 	__m64         v24; // mm3
 
-	for (tjs_int i = 0, j = sx, k = sy; i < len; i += 1, j += stepx, k += stepy)
+	for (tjs_int i = 0, i2 = sx, i3 = sy; i < len; i += 1, i2 += stepx, i3 += stepy)
 	{
-		v12 = (tjs_uint32 *)((char *)&src[j >> 16] + srcpitch * (k >> 16));
-		v14 = _mm_set1_pi16((tjs_uint32)(tjs_uint16)j >> 8);
-		v17 = _mm_set1_pi16(((tjs_uint32)(tjs_uint16)k >> 8) + ((tjs_uint32)(tjs_uint16)k >> 15));
+		v12 = (tjs_uint32 *)((char *)&src[i2 >> 16] + srcpitch * (i3 >> 16));
+		v14 = _mm_set1_pi16((tjs_uint32)(tjs_uint16)i2 >> 8);
+		v17 = _mm_set1_pi16(((tjs_uint32)(tjs_uint16)i3 >> 8) + ((tjs_uint32)(tjs_uint16)i3 >> 15));
 		v18 = _m_punpcklbw(_mm_cvtsi32_si64(*v12), _mm_setzero_si64());
 		v19 = _m_punpcklbw(_mm_cvtsi32_si64(*(tjs_uint32 *)((char *)v12 + srcpitch)), _mm_setzero_si64());
 		__m64 k = _mm_cvtsi32_si64(v12[1]);
@@ -113,11 +113,11 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32
 	__m64         v28; // mm3
 
 	v10 = _mm_set1_pi16(((tjs_uint32)opa >> 7) + opa);
-	for (tjs_int i = 0, j = sx, k = sy; i < len; i += 1, j += stepx, k += stepy)
+	for (tjs_int i = 0, i2 = sx, i3 = sy; i < len; i += 1, i2 += stepx, i3 += stepy)
 	{
-		v16 = (tjs_uint32 *)((char *)&src[j >> 16] + srcpitch * (k >> 16));
-		v19 = _mm_set1_pi16((tjs_uint32)(tjs_uint16)j >> 8);
-		v21 = _mm_set1_pi16(((tjs_uint32)(tjs_uint16)k >> 8) + ((tjs_uint32)(tjs_uint16)k >> 15));
+		v16 = (tjs_uint32 *)((char *)&src[i2 >> 16] + srcpitch * (i3 >> 16));
+		v19 = _mm_set1_pi16((tjs_uint32)(tjs_uint16)i2 >> 8);
+		v21 = _mm_set1_pi16(((tjs_uint32)(tjs_uint16)i3 >> 8) + ((tjs_uint32)(tjs_uint16)i3 >> 15));
 		v22 = _m_punpcklbw(_mm_cvtsi32_si64(*v16), _mm_setzero_si64());
 		v23 = _m_punpcklbw(_mm_cvtsi32_si64(*(tjs_uint32 *)((char *)v16 + srcpitch)), _mm_setzero_si64());
 		__m64 k = _mm_cvtsi32_si64(v16[1]);

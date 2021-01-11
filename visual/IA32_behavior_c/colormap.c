@@ -24,36 +24,29 @@
 
 TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
-#if 0
-	// XXX: this doesn't match the MMX version
 	FOREACH_CHANNEL_COLOR(
 		{
-			tjs_uint16 k = c[j];
+			tjs_int16 k = c[j];
 			k -= d[j];
 			k *= src[i];
 			k >>= 6u;
 			k += d[j];
+			if (k & (1 << 15))
+			{
+				k = 0;
+			}
+			if (k & (~0xFF))
+			{
+				k = 0xFF;
+			}
 			d[j] = k;
 		}, len, color, dest);
-#else
-	__m64            v7;  // mm7
-	__m64            v9;  // mm4
-	__m64            v10; // mm1
-
-	v7 = _m_punpcklbw(_mm_cvtsi32_si64(color), _mm_setzero_si64());
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		v9  = _mm_set1_pi16(src[i]);
-		v10 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(_m_packuswb(_m_paddw(v10, _m_psrawi(_m_pmullw(_m_psubw(v7, v10), v9), 6u)), _mm_setzero_si64()));
-	}
-	_m_empty();
-#endif
 }
 
 TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_d_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 #if 0
+	// XXX: this doesn't match the MMX version
 	FOREACH_CHANNEL_COLOR(
 		{
 			tjs_uint16 l = src[i];
@@ -84,14 +77,18 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_d_c, (tjs_uint32 *dest, const tjs
 	for (tjs_int i = 0; i < len; i += 1)
 	{
 		v8  = (dest[i] >> 24) + (src[i] << 8);
-		v9  = _m_punpcklbw(_m_psrlqi(_m_psllqi(_mm_cvtsi32_si64(dest[i]), 0x28u), 0x28u), _mm_setzero_si64());
+		__m64 k = _mm_cvtsi32_si64(dest[i]);
+		k = _m_psllqi(k, 0x28u);
+		k = _m_psrlqi(k, 0x28u);
+		v9  = _m_punpcklbw(k, _mm_setzero_si64());
 		v11 = _mm_set1_pi16(TVPOpacityOnOpacityTable65[v8]);
-		dest[i] = (TVPNegativeMulTable65[v8] << 24) | _mm_cvtsi64_si32(
-													  _m_packuswb(
-														  _m_psrlwi(
-															  _m_paddw(_m_psllwi(v9, 8u), _m_pmullw(_m_psubw(v7, v9), v11)),
-															  8u),
-														  _mm_setzero_si64()));
+		__m64 l = _m_psllwi(v9, 8u);
+		__m64 m = _m_psubw(v7, v9);
+		m = _m_pmullw(m, v11);
+		m = _m_paddw(l, m);
+		m = _m_psrlwi(m, 8u);
+		m = _m_packuswb(m, _mm_setzero_si64());
+		dest[i] = (TVPNegativeMulTable65[v8] << 24) | _mm_cvtsi64_si32(m);
 	}
 	_m_empty();
 #endif
@@ -111,11 +108,19 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_a_c, (tjs_uint32 *dest, const tjs
 			k *= src[i];
 			k >>= 6u;
 			tjs_uint16 l = src[i];
-			l += d[j];
+			l *= d[j];
 			l >>= 6u;
 			tjs_uint16 m = d[j];
 			m -= l;
 			k += m;
+			if (k & (1 << 15))
+			{
+				k = 0;
+			}
+			if (k & (~0xFF))
+			{
+				k = 0xFF;
+			}
 			d[j] = k;
 		}, len, color, dest);
 #else
@@ -128,10 +133,14 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_a_c, (tjs_uint32 *dest, const tjs
 	{
 		v9  = _mm_set1_pi16(src[i]);
 		v11 = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(_m_psubw(v11, _m_psrlwi(_m_pmullw(v11, v9), 6u)), _m_psrlwi(_m_pmullw(v9, v7), 6u)),
-				_mm_setzero_si64()));
+		__m64 k = _m_pmullw(v11, v9);
+		k = _m_psrlwi(k, 6u);
+		k = _m_psubw(v11, k);
+		__m64 l = _m_pmullw(v9, v7);
+		l = _m_psrlwi(l, 6u);
+		l = _m_paddw(k, l);
+		l = _m_packuswb(l, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(l);
 	}
 	_m_empty();
 #endif

@@ -58,6 +58,10 @@
 	TVP_GL_IA32_BLEND_FUNC_BODY        (TVPPs##funcname##Blend_HDA_c,   channelbody, 1) \
 	TVP_GL_IA32_BLEND_FUNC_BODY_OPACITY(TVPPs##funcname##Blend_HDA_o_c, channelbody, 1)
 
+#define TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(funcname, channelbody) \
+	TVP_GL_IA32_BLEND_FUNC_BODY_OPACITY(TVPPs##funcname##Blend_o_c,     channelbody, 0) \
+	TVP_GL_IA32_BLEND_FUNC_BODY_OPACITY(TVPPs##funcname##Blend_HDA_o_c, channelbody, 1)
+
 TVP_GL_IA32_BLEND_FUNC(Alpha, {
 	tjs_uint16 k = s[j];
 	k -= d[j];
@@ -118,9 +122,8 @@ TVP_GL_IA32_BLEND_FUNC(Screen, {
 	d[j] = k;
 });
 
-#if 0
 // FIXME: some channel is wrong on regular/HDA versions (not opacity version)
-TVP_GL_IA32_BLEND_FUNC(Overlay, {
+TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(Overlay, {
 	tjs_uint16 k = s[j];
 	tjs_uint16 l = s[j];
 	l *= d[j];
@@ -142,7 +145,7 @@ TVP_GL_IA32_BLEND_FUNC(Overlay, {
 	k += d[j];
 	d[j] = k;
 });
-#else
+
 TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	for (tjs_int i = 0; i < len; i += 1)
@@ -151,48 +154,20 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_c, (tjs_uint32 *dest, const tjs_ui
 		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _mm_set1_pi16((src[i] >> 0x19u));
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							v14),
-						7u)),
-				_mm_setzero_si64()));
-	}
-	_m_empty();
-}
-
-TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u));
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							v14),
-						7u)),
-				_mm_setzero_si64()));
+		__m64 v14 = _mm_set1_pi16(src[i] >> 0x19u);
+		__m64 k = _m_pand(v12, v13);
+		__m64 l = _m_paddw(s, d);
+		l = _m_psllwi(l, 1u);
+		l = _m_psubw(l, v12);
+		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
+		l = _m_pandn(v13, l);
+		l = _m_por(k, l);
+		l = _m_psubw(l, d);
+		l = _m_pmullw(l, v14);
+		l = _m_psrawi(l, 7u);
+		l = _m_paddw(d, l);
+		l = _m_packuswb(l, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(l);
 	}
 	_m_empty();
 }
@@ -206,55 +181,25 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_HDA_c, (tjs_uint32 *dest, const tj
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
 		__m64 v14 = _m_psrldi(_mm_cvtsi32_si64(src[i]), 0x19u);
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							_m_punpckldq(_mm_set1_pi16((src[i] >> 0x19u)), v14)),
-						7u)),
-				_mm_setzero_si64()));
+		__m64 k = _m_pand(v12, v13);
+		__m64 l = _m_paddw(s, d);
+		l = _m_psllwi(l, 1u);
+		l = _m_psubw(l, v12);
+		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
+		l = _m_pandn(v13, l);
+		l = _m_por(k, l);
+		l = _m_psubw(l, d);
+		l = _m_pmullw(l, _m_punpckldq(_mm_set1_pi16(src[i] >> 0x19u), v14));
+		l = _m_psrawi(l, 7u);
+		l = _m_paddw(d, l);
+		l = _m_packuswb(l, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(l);
 	}
 	_m_empty();
 }
 
-TVP_GL_IA32_FUNC_DECL(void, TVPPsOverlayBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), d);
-		__m64 v14 = _m_psrldi(_m_pmullw(_m_psrldi(_mm_cvtsi32_si64(src[i]), 0x19u), _mm_cvtsi32_si64(opa)), 8u);
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							_m_punpckldq(_mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u)), v14)),
-						7u)),
-				_mm_setzero_si64()));
-	}
-	_m_empty();
-}
-#endif
-
-#if 0
 // FIXME: some channel is wrong on regular/HDA versions (not opacity version)
-TVP_GL_IA32_BLEND_FUNC(HardLight, {
+TVP_GL_IA32_BLEND_FUNC_OPACITY_ONLY(HardLight, {
 	tjs_uint16 k = s[j];
 	tjs_uint16 l = s[j];
 	l *= d[j];
@@ -276,7 +221,7 @@ TVP_GL_IA32_BLEND_FUNC(HardLight, {
 	k += d[j];
 	d[j] = k;
 });
-#else
+
 TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	for (tjs_int i = 0; i < len; i += 1)
@@ -285,48 +230,20 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_c, (tjs_uint32 *dest, const tjs_
 		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _mm_set1_pi16((src[i] >> 0x19u));
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							v14),
-						7u)),
-				_mm_setzero_si64()));
-	}
-	_m_empty();
-}
-
-TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u));
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							v14),
-						7u)),
-				_mm_setzero_si64()));
+		__m64 v14 = _mm_set1_pi16(src[i] >> 0x19u);
+		__m64 k = _m_pand(v12, v13);
+		__m64 l = _m_paddw(s, d);
+		l = _m_psllwi(l, 1u);
+		l = _m_psubw(l, v12);
+		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
+		l = _m_pandn(v13, l);
+		l = _m_por(k, l);
+		l = _m_psubw(l, d);
+		l = _m_pmullw(l, v14);
+		l = _m_psrawi(l, 7u);
+		l = _m_paddw(d, l);
+		l = _m_packuswb(l, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(l);
 	}
 	_m_empty();
 }
@@ -340,51 +257,22 @@ TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_HDA_c, (tjs_uint32 *dest, const 
 		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
 		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
 		__m64 v14 = _m_psrldi(_mm_cvtsi32_si64(src[i]), 0x19u);
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							_m_punpckldq(_mm_set1_pi16((src[i] >> 0x19u)), v14)),
-						7u)),
-				_mm_setzero_si64()));
+		__m64 k = _m_pand(v12, v13);
+		__m64 l = _m_paddw(s, d);
+		l = _m_psllwi(l, 1u);
+		l = _m_psubw(l, v12);
+		l = _m_psubw(l, _mm_set1_pi16(0x00FF));
+		l = _m_pandn(v13, l);
+		l = _m_por(k, l);
+		l = _m_psubw(l, d);
+		l = _m_pmullw(l, _m_punpckldq(_mm_set1_pi16(src[i] >> 0x19u), v14));
+		l = _m_psrawi(l, 7u);
+		l = _m_paddw(d, l);
+		l = _m_packuswb(l, _mm_setzero_si64());
+		dest[i] = _mm_cvtsi64_si32(l);
 	}
 	_m_empty();
 }
-
-TVP_GL_IA32_FUNC_DECL(void, TVPPsHardLightBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
-{
-	for (tjs_int i = 0; i < len; i += 1)
-	{
-		__m64 d = _m_punpcklbw(_mm_cvtsi32_si64(dest[i]), _mm_setzero_si64());
-		__m64 s = _m_punpcklbw(_mm_cvtsi32_si64(src[i]), _mm_setzero_si64());
-		__m64 v12 = _m_psrlwi(_m_pmullw(s, d), 7u);
-		__m64 v13 = _m_pcmpgtw(_mm_set1_pi16(0x0080), s);
-		__m64 v14 = _m_psrldi(_m_pmullw(_m_psrldi(_mm_cvtsi32_si64(src[i]), 0x19u), _mm_cvtsi32_si64(opa)), 8u);
-		dest[i] = _mm_cvtsi64_si32(
-			_m_packuswb(
-				_m_paddw(
-					d,
-					_m_psrawi(
-						_m_pmullw(
-							_m_psubw(
-								_m_por(
-									_m_pand(v12, v13),
-									_m_pandn(v13, _m_psubw(_m_psubw(_m_psllwi(_m_paddw(s, d), 1u), v12), _mm_set1_pi16(0x00FF)))),
-								d),
-							_m_punpckldq(_mm_set1_pi16((((src[i] >> 0x19u) * opa) >> 8u)), v14)),
-						7u)),
-				_mm_setzero_si64()));
-	}
-	_m_empty();
-}
-#endif
 
 TVP_GL_IA32_BLEND_FUNC(SoftLight, {
 	tjs_uint16 k = TVPPsTableSoftLight[s[j]][d[j]];

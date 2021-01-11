@@ -24,7 +24,7 @@
 
 TVP_GL_IA32_FUNC_DECL(void, TVPUnivTransBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len))
 {
-#if 0
+#if 1
 	FOREACH_CHANNEL_2SRC(
 		{
 			tjs_uint32 k = s1[j];
@@ -33,6 +33,15 @@ TVP_GL_IA32_FUNC_DECL(void, TVPUnivTransBlend_c, (tjs_uint32 *dest, const tjs_ui
 			k >>= 16;
 			k <<= 1;
 			k += s2[j];
+			k &= 0xFFFF;
+			if (k & (1 << 15))
+			{
+				k = 0;
+			}
+			if (k & (~0xFF))
+			{
+				k = 0xFF;
+			}
 			d[j] = k;
 		}, len, src1, src2, dest);
 #else

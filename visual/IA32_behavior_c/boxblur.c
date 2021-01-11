@@ -20,7 +20,6 @@
 #endif
 
 #include <mmintrin.h>
-#include <xmmintrin.h>
 #include "tvpgl_ia32_intf_behavior_c.h"
 
 static const __m64 c_0000ffffffffffff = (__m64)0x0000ffffffffffffull;

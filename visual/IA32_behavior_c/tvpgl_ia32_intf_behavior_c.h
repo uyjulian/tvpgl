@@ -43,9 +43,6 @@
  extern "C" {
 #endif
 
-// adjust_color
-extern tjs_uint16 TVPRecipTable256_16[256];
-
 // alphablend, colorfill
 extern unsigned char TVPOpacityOnOpacityTable[256 * 256];
 extern unsigned char TVPNegativeMulTable[256 * 256];
@@ -57,20 +54,10 @@ extern unsigned char TVPDivTable[256 * 256];
 extern unsigned char TVPNegativeMulTable65[65 * 256];
 extern unsigned char TVPOpacityOnOpacityTable65[65 * 256];
 
-// pixelformat
-extern unsigned char TVPDitherTable_5_6[8][4][2][256];
-
-// tlg6_golomb
-#ifndef TVP_TLG6_GOLOMB_N_COUNT
-#define TVP_TLG6_GOLOMB_N_COUNT 4
-#endif
-extern char TVPTLG6GolombBitLengthTable[TVP_TLG6_GOLOMB_N_COUNT * 2 * 128][TVP_TLG6_GOLOMB_N_COUNT];
-
 // tvpps_asm
 extern unsigned char TVPPsTableSoftLight[256][256];
 extern unsigned char TVPPsTableColorDodge[256][256];
 extern unsigned char TVPPsTableColorBurn[256][256];
-extern unsigned char TVPPsTableOverlay[256][256];
 
 extern void TVPGL_IA32_behavior_c_Init();
 

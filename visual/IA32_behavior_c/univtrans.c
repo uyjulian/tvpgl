@@ -24,10 +24,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPUnivTransBlend_c, (tjs_uint32 *dest, const tjs_ui
 			{
 				k = 0;
 			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k;
 		}, len, src1, src2, dest);
 }

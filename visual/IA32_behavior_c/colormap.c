@@ -22,10 +22,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_c, (tjs_uint32 *dest, const tjs_u
 			{
 				k = 0;
 			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k;
 		}, len, color, dest);
 }
@@ -51,10 +48,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_d_c, (tjs_uint32 *dest, const tjs
 			{
 				k = 0;
 			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k;
 		}, len, color, dest);
 }
@@ -80,10 +74,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPApplyColorMap65_a_c, (tjs_uint32 *dest, const tjs
 			{
 				l = 0;
 			}
-			if (l & (~0xFF))
-			{
-				l = 0xFF;
-			}
+			l |= -(l > 0xff);
 			d[j] = l;
 		}, len, color, dest);
 }

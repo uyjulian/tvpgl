@@ -24,14 +24,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPLinTransConstAlphaBlend_c, (tjs_uint32 *dest, tjs
 			k *= opa;
 			k += (d[j] << 8);
 			k >>= 8;
-			if (k & (1 << 15))
-			{
-				k = 0;
-			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k; 
 		}
 	}
@@ -80,10 +73,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_c, (tjs_uint32 *
 			{
 				k = 0;
 			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k; 
 		}
 	}
@@ -135,10 +125,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32
 			{
 				k = 0;
 			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k; 
 		}
 	}

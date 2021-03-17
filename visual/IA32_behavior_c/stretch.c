@@ -35,14 +35,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs_
 			k *= opa;
 			k += (d[j] << 8);
 			k >>= 8;
-			if (k & (1 << 15))
-			{
-				k = 0;
-			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
 			d[j] = k; 
 		}
 	}
@@ -62,14 +54,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchAlphaBlend_c, (tjs_uint32 *dest, tjs_int l
 			k *= alpha;
 			k += (d[j] << 8);
 			k >>= 8;
-			if (k & (1 << 15))
-			{
-				k = 0;
-			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
 			d[j] = k; 
 		}
 	}
@@ -92,19 +76,9 @@ TVP_GL_IA32_FUNC_DECL(void, TVPStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, t
 			{
 				k = 0;
 			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			k += s[j];
-			if (k & (1 << 15))
-			{
-				k = 0;
-			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k; 
 		}
 	}
@@ -230,14 +204,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *d
 			k >>= 8;
 			k = d[j] - k;
 			k += vals_tmp[j];
-			if (k & (1 << 15))
-			{
-				k = 0;
-			}
-			if (k & (~0xFF))
-			{
-				k = 0xFF;
-			}
+			k |= -(k > 0xff);
 			d[j] = k; 
 		}
 	}

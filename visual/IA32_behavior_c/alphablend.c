@@ -22,10 +22,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32
 			k -= d[j];
 			k *= *sa;
 			k >>= 8;
-			if (k > 0xff)
-			{
-				k = 0xff;
-			}
 			k += d[j];
 			d[j] = k;
 		}, len, src, dest);
@@ -40,10 +36,6 @@ TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_o_c, (tjs_uint32 *dest, const tjs_uint
 			k *= (tjs_uint32)opa * (tjs_uint64)src[i] >> 32;
 			k += d[j] << 8;
 			k >>= 8;
-			if (k > 0xff)
-			{
-				k = 0xff;
-			}
 			d[j] = k;
 		}, len, src, dest);
 }

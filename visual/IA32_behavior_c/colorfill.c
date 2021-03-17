@@ -49,10 +49,7 @@ TVP_GL_IA32_FUNC_DECL(void, TVPConstColorAlphaBlend_a_c, (tjs_uint32 *dest, tjs_
 				m >>= 8u;
 			}
 			k += m;
-			if (k > 0xff)
-			{
-				k = 0xff;
-			}
+			k |= -(k > 0xff);
 			d[j] = k;
 		}, len, color, dest);
 }

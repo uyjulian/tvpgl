@@ -120,7 +120,7 @@ static void init_tvpgl_replacement()
 	TVPGL_IA32_pfraction_Init();
 	TVPGL_IA32_pfraction_c_Init();
 #endif
-#if 1
+#if 0
 	TVPGL_SSE2_Init();
 #endif
 #if 0

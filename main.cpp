@@ -16,6 +16,8 @@
 #endif
 #if 0
 #include "tvpgl_ia32_intf_c.h"
+#endif
+#if 0
 #include "tvpgl_ia32_intf_pfraction.h"
 #include "tvpgl_ia32_intf_pfraction_c.h"
 #endif
@@ -113,14 +115,18 @@ static void init_tvpgl_replacement()
 	TVP_GL_FUNCNAME(TVPInitTVPGL)();
 #if 1
 	TVPGL_C_Init();
+#endif
+#if 1
 	TVPGL_IA32_Init();
 #endif
 #if 0
 	TVPGL_IA32_c_Init();
+#endif
+#if 0
 	TVPGL_IA32_pfraction_Init();
 	TVPGL_IA32_pfraction_c_Init();
 #endif
-#if 0
+#if 1
 	TVPGL_SSE2_Init();
 #endif
 #if 0

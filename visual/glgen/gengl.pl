@@ -15,6 +15,7 @@ EOF
 $rev = "0.1";
 
 $should_unroll = 0;
+$skip_template_funcs = 0;
 
 ;#-----------------------------------------------------------------
 ;# file content retrieving
@@ -664,7 +665,12 @@ print FH $cnt;
 ;# simple pixel alpha blending ( destination alpha alpha/additive-alpha/off )
 ;# alpha blending with opacity ( destination alpha alpha/additive-alpha/off )
 
-
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -694,9 +700,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /* HDA : hold destination alpha */
 
@@ -727,9 +745,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -759,9 +789,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 
 /*export*/
@@ -791,9 +833,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -825,10 +879,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_a_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -847,10 +913,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_do_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -882,10 +960,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaBlend_ao_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -903,11 +993,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# alpha blend matting
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAlphaColorMat_c, (tjs_uint32 *dest, const tjs_uint32 color, tjs_int len))
@@ -936,6 +1038,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
@@ -946,6 +1054,12 @@ EOF
 ;# additive alpha blending with opacity ( destination alpha alpha/additive-alpha/off )
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -963,10 +1077,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /* HDA : hold destination alpha */
 
@@ -985,9 +1111,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -1005,9 +1143,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 
 /*export*/
@@ -1025,11 +1175,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -1047,10 +1209,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_a_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -1068,9 +1242,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_do_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -1088,9 +1274,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAdditiveAlphaBlend_ao_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -1108,12 +1306,24 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 ;# conversion between additive-alpha and simple alpha
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConvertAdditiveAlphaToAlpha_c, (tjs_uint32 *buf, tjs_int len))
@@ -1141,9 +1351,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 
 /*export*/
@@ -1162,6 +1384,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
@@ -2362,6 +2590,12 @@ EOF
 ;# constant ratio alpha blending
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPCopyOpaqueImage_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -2400,9 +2634,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -2430,9 +2676,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -2460,10 +2718,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -2496,9 +2766,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_a_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -2516,6 +2798,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# constant ratio alpha blending with stretching
@@ -3010,6 +3298,12 @@ EOF
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_c, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa))
@@ -3038,9 +3332,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_a_c, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa))
@@ -3057,11 +3363,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_d_c, (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, tjs_int len, tjs_int opa))
@@ -3101,6 +3419,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 
@@ -3464,8 +3788,20 @@ EOF
 
 }
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 &alpha_color_map(8, '');
 &alpha_color_map(6, '65');
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
@@ -3540,8 +3876,20 @@ EOF
 
 }
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 &alpha_color_map_hda(8, '');
 &alpha_color_map_hda(6, '65');
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
@@ -3583,8 +3931,20 @@ EOF
 
 }
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 &alpha_color_map_d('');
 &alpha_color_map_d('65');
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
@@ -3627,8 +3987,20 @@ EOF
 
 }
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 &alpha_color_map_a('', 8);
 &alpha_color_map_a('65', 6);
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
@@ -3672,8 +4044,20 @@ EOF
 }
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 &alpha_color_map_do('');
 &alpha_color_map_do('65');
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
@@ -3715,14 +4099,32 @@ EOF
 
 }
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 &alpha_color_map_ao('', 8);
 &alpha_color_map_ao('65', 6);
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# constant ratio constant color alpha blending
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
@@ -3749,10 +4151,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_d_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
@@ -3783,9 +4197,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
@@ -3804,6 +4230,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# opacity removal
@@ -3812,6 +4244,12 @@ EOF
 ;# ??? where are these used in ?
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveConstOpacity_c, (tjs_uint32 *dest, tjs_int len, tjs_int strength))
@@ -3853,9 +4291,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len))
@@ -3890,9 +4340,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_int strength))
@@ -3932,9 +4394,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity65_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len))
@@ -3969,9 +4443,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveOpacity65_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_int strength))
@@ -4012,10 +4498,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveConstOpacity_c, (tjs_uint32 *dest, tjs_int len, tjs_int strength))
@@ -4023,9 +4521,21 @@ TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveConstOpacity_c, (tjs_uint32 *dest, tjs_i
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len))
@@ -4033,10 +4543,22 @@ TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity_c, (tjs_uint32 *dest, const tjs_
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_int strength))
@@ -4044,10 +4566,22 @@ TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity_o_c, (tjs_uint32 *dest, const tj
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity65_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len))
@@ -4055,10 +4589,22 @@ TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity65_c, (tjs_uint32 *dest, const tj
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*not export*/
 TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity65_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_int strength))
@@ -4066,6 +4612,12 @@ TVP_GL_FUNC_DECL(void, TVPRemoveAdditiveOpacity65_o_c, (tjs_uint32 *dest, const 
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 
@@ -4073,6 +4625,12 @@ EOF
 ;# pixel addition with saturation
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAddBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4096,10 +4654,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAddBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4123,10 +4693,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAddBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4153,10 +4735,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPAddBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4183,6 +4777,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# pixel subtract with saturation
@@ -4190,6 +4790,12 @@ EOF
 
 ;# thanks Mr. Sugi
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSubBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4213,9 +4819,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSubBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4240,9 +4858,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSubBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4270,9 +4900,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSubBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4300,11 +4942,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# pixel multiplactive blend
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPMulBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4330,9 +4984,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPMulBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4358,10 +5024,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPMulBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4391,10 +5069,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPMulBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4424,11 +5114,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# "color dodge" blend
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4457,10 +5159,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4489,9 +5203,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4521,9 +5247,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPColorDodgeBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4553,11 +5291,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# darken blend
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDarkenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4582,9 +5332,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDarkenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4609,9 +5371,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDarkenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4642,9 +5416,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDarkenBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4674,11 +5460,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# lighten blend
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPLightenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4703,9 +5501,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPLightenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4730,10 +5540,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPLightenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4764,10 +5586,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPLightenBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4797,11 +5631,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# pixel screen multiplactive blend
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPScreenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4829,10 +5675,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPScreenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -4860,9 +5718,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPScreenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4893,10 +5763,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPScreenBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
@@ -4927,6 +5809,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
@@ -5345,6 +6233,12 @@ EOF
 ;# make alpha from the color key
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPMakeAlphaFromKey_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 key))
@@ -5382,6 +6276,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 
@@ -5389,6 +6289,12 @@ EOF
 ;# copy the mask only
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPCopyMask_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -5424,12 +6330,24 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 ;# copy the color (main) only
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPCopyColor_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
@@ -5465,11 +6383,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# bind mask image to main image 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPBindMaskToMain_c, (tjs_uint32 *main, const tjs_uint8 *mask, tjs_int len))
@@ -5488,12 +6418,24 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 ;#-----------------------------------------------------------------
 ;# fill ARGB
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFillARGB_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value))
@@ -5512,9 +6454,21 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFillARGB_NC_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 value))
@@ -5535,11 +6489,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# fill color
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFillColor_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color))
@@ -5584,11 +6550,23 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# fill mask
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFillMask_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 mask))
@@ -5632,6 +6610,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# functions for blur operation
@@ -5887,6 +6871,12 @@ EOF
 ;# UD/LR flip
 ;#-----------------------------------------------------------------
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSwapLine8_c, (tjs_uint8 *line1, tjs_uint8 *line2, tjs_int len))
@@ -5907,10 +6897,22 @@ TVP_GL_FUNC_DECL(void, TVPSwapLine8_c, (tjs_uint8 *line1, tjs_uint8 *line2, tjs_
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSwapLine32_c, (tjs_uint32 *line1, tjs_uint32 *line2, tjs_int len))
@@ -5949,10 +6951,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPReverse8_c, (tjs_uint8 *pixels, tjs_int len))
@@ -5977,10 +6991,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPReverse32_c, (tjs_uint32 *pixels, tjs_int len))
@@ -6005,6 +7031,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 
 
@@ -6013,6 +7045,12 @@ EOF
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDoGrayScale_c, (tjs_uint32 *dest, tjs_int len))
@@ -6056,6 +7094,12 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# BGRA to RGBA
@@ -6291,6 +7335,12 @@ EOF
 
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 
 /*export*/
@@ -6329,10 +7379,22 @@ print FC <<EOF;
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
 print FC <<EOF;
 
 /*export*/
@@ -6370,6 +7432,16 @@ EOF
 print FC <<EOF;
 }
 
+EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
+
+
+print FC <<EOF;
 
 /* fast_int_hypot from http://demo.and.or.jp/makedemo/effect/math/hypot/fast_hypot.c */
 TVP_GL_FUNC_STATIC_DECL(tjs_uint, fast_int_hypot, (tjs_int lx, tjs_int ly))
@@ -6400,7 +7472,15 @@ TVP_GL_FUNC_STATIC_DECL(tjs_uint, fast_int_hypot, (tjs_int lx, tjs_int ly))
 	return length;
 }
 
+EOF
 
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
+print FC <<EOF;
 
 /* simple blur for character data */
 /* shuld be more optimized */
@@ -6450,6 +7530,23 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy65_c, (tjs_uint8 *dest, tjs_int destpitch, t
 		}
 	}
 }
+
+EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
+
+
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
+print FC <<EOF;
 
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 *src, tjs_int len, tjs_int level) )
@@ -6510,6 +7607,22 @@ print FC <<EOF;
 	}
 }
 
+EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
+
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
+print FC <<EOF;
+
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurAddMulCopy_c, (tjs_uint8 *dest, const tjs_uint8 *src, tjs_int len, tjs_int level) )
 {
@@ -6569,6 +7682,21 @@ print FC <<EOF;
 	}
 }
 
+EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
+
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#if 0
+EOF
+}
+print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs_int destwidth, tjs_int destheight, const tjs_uint8 * src, tjs_int srcpitch, tjs_int srcwidth, tjs_int srcheight, tjs_int blurwidth, tjs_int blurlevel) )
 {
@@ -6616,6 +7744,12 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs
 }
 
 EOF
+if($skip_template_funcs == 1)
+{
+print FC <<EOF;
+#endif
+EOF
+}
 
 ;#-----------------------------------------------------------------
 ;# pixel format conversion

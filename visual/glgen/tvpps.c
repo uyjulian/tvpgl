@@ -25,6 +25,7 @@ TVP_GL_DATA_INIT unsigned char TVPPsTableOverlay[256][256];
 /* --------------------------------------------------------------------
   Operation defines
 -------------------------------------------------------------------- */
+#ifdef TVPPS_UNROLL_LOOPS
 #define TVPPS_MAINLOOP \
 		if(len > 0) {                                        \
 			tjs_int lu_n = (len + (4-1)) / 4;                \
@@ -38,6 +39,13 @@ TVP_GL_DATA_INIT unsigned char TVPPsTableOverlay[256][256];
 					} while(-- lu_n);                        \
 			}                                                \
 		}
+#else
+#define TVPPS_MAINLOOP \
+        for(int lu_n = 0; lu_n < len; lu_n++)                \
+        {                                                    \
+            OPERATION1;                                      \
+        }
+#endif
 
 #define TVPPS_ALPHABLEND { \
         TVPPS_REG tjs_uint32 d1 = d&0x00ff00ff, d2 = d&0x0000ff00;                                         \

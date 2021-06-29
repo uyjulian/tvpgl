@@ -140,16 +140,15 @@ EOF
 	else
 	{
 	  	print FC <<EOF;
-		while($times >= 0)
+	  	for(int ___index = $times; ___index >= 0; ___index--)
 		{
 EOF
 
 		$con = $content;
-		$con =~ s/\{ofs\}/$times/g;
+		$con =~ s/\{ofs\}/___index/g;
 		print FC $con;
 
 	  	print FC <<EOF;
-			$times --;
 		}
 EOF
 	}
@@ -205,9 +204,7 @@ EOF
 	{
 		print FC <<EOF;
 		{
-			int ___index = 0;
-
-			while(___index < $times)
+			for(int ___index = 0; ___index < $times; ___index++)
 			{
 EOF
 
@@ -216,7 +213,6 @@ EOF
 			print FC $con;
 
 	  		print FC <<EOF;
-				___index ++;
 			}
 		}
 EOF
@@ -289,9 +285,7 @@ EOF
 	{
 		print FC <<EOF;
 		{
-			int ___index = 0;
-
-			while(___index < $times)
+			for(int ___index = 0; ___index < $times; ___index++)
 			{
 EOF
 
@@ -300,7 +294,6 @@ EOF
 		print FC $con;
 
 	  	print FC <<EOF;
-				___index ++;
 			}
 		}
 EOF
@@ -6883,7 +6876,7 @@ TVP_GL_FUNC_DECL(void, TVPSwapLine8_c, (tjs_uint8 *line1, tjs_uint8 *line2, tjs_
 {
 	#define swap_tmp_buf_size 256
 	tjs_uint8 swap_tmp_buf[swap_tmp_buf_size];
-	while(len)
+	while(len > 0)
 	{
 		tjs_int le = len < swap_tmp_buf_size ? len : swap_tmp_buf_size;
 		memcpy(swap_tmp_buf, line1, le);
@@ -7565,13 +7558,14 @@ if($should_unroll == 0)
 	tjs_int a;
 EOF
 }
-
 print FC <<EOF;
 	{
-		int ___index = 0;
 EOF
 
 if($should_unroll == 1) {
+print FC <<EOF;
+		int ___index = 0;
+EOF
 	print FC <<EOF;
 		len -= (4-1);
 
@@ -7594,8 +7588,6 @@ if($should_unroll == 1) {
 
 		len += (4-1);
 EOF
-}
-
 print FC <<EOF;
 		while(___index < len)
 		{
@@ -7604,10 +7596,26 @@ print FC <<EOF;
 			dest[___index] = a;;
 			___index ++;
 		}
+EOF
+}
+else
+{
+print FC <<EOF;
+		for(int ___index = 0; ___index < len; ___index++)
+		{
+			a = (src[___index] * level >> 18);;
+			if(a>=255) a = 255;
+			dest[___index] = a;;
+		}
+EOF
+}
+
+print FC <<EOF;
 	}
 }
 
 EOF
+
 if($skip_template_funcs == 1)
 {
 print FC <<EOF;
@@ -7643,10 +7651,12 @@ EOF
 
 print FC <<EOF;
 	{
-		int ___index = 0;
 EOF
 
 if($should_unroll == 1) {
+print FC <<EOF;
+		int ___index = 0;
+EOF
 	print FC <<EOF;
 		len -= (4-1);
 
@@ -7669,8 +7679,6 @@ if($should_unroll == 1) {
 
 		len += (4-1);
 EOF
-}
-
 print FC <<EOF;
 		while(___index < len)
 		{
@@ -7679,6 +7687,23 @@ print FC <<EOF;
 			dest[___index] = a;;
 			___index ++;
 		}
+EOF
+}
+else
+{
+print FC <<EOF;
+		for(int ___index = 0; ___index < len; ___index++)
+		{
+			a = dest[___index] +(src[___index] * level >> 18);;
+			if(a>=255) a = 255;;
+			dest[___index] = a;;
+			___index ++;
+		}
+EOF
+}
+
+
+print FC <<EOF;
 	}
 }
 

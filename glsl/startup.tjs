@@ -1,0 +1,77 @@
+
+// Test program for TVPGL ubershader.
+
+System.setArgument("-graphicsystem", "canvas");
+
+global.bmCopy = 0;
+global.bmCopyOnAlpha = 1;
+global.bmAlpha = 2;
+global.bmAlphaOnAlpha = 3;
+global.bmAdd = 4;
+global.bmSub = 5;
+global.bmMul = 6;
+global.bmDodge = 7;
+global.bmDarken = 8;
+global.bmLighten = 9;
+global.bmScreen = 10;
+global.bmAddAlpha = 11;
+global.bmAddAlphaOnAddAlpha = 12;
+global.bmAddAlphaOnAlpha = 13;
+global.bmAlphaOnAddAlpha = 14;
+global.bmCopyOnAddAlpha = 15;
+global.bmPsNormal = 16;
+global.bmPsAdditive = 17;
+global.bmPsSubtractive = 18;
+global.bmPsMultiplicative = 19;
+global.bmPsScreen = 20;
+global.bmPsOverlay = 21;
+global.bmPsHardLight = 22;
+global.bmPsSoftLight = 23;
+global.bmPsColorDodge = 24;
+global.bmPsColorDodge5 = 25;
+global.bmPsColorBurn = 26;
+global.bmPsLighten = 27;
+global.bmPsDarken = 28;
+global.bmPsDifference = 29;
+global.bmPsDifference5 = 30;
+global.bmPsExclusion = 31;
+
+class MainWindow extends Window
+{
+	function MainWindow(width, height)
+	{
+		super.Window();
+		this.setInnerSize(width, height);
+
+		this.drawCycle = 60;
+		this.visible = true;
+	}
+
+	function onDraw()
+	{
+		this.canvas.clearColor = 0xff000000;
+		var offscreen = new Offscreen(this.width, this.height);
+		this.canvas.renderTarget = offscreen;
+		this.canvas.matrix.reset();
+		this.canvas.clear(0xffffffff);
+		this.canvas.blendMode = bmOpaque;
+
+		var shader = new ShaderProgram("tvpgl.vert", "tvpgl.frag");
+		shader.a_method = bmAdd * 1.0;
+		shader.a_hda = 0.0;
+		shader.a_opa = 255.0;
+
+		var tex1 = new Texture("01src.png");
+		var tex2 = new Texture("02dest.png");
+		this.canvas.drawTexture(tex1, tex2, shader);
+
+		this.canvas.renderTarget = void;
+
+		var bitmap = new Bitmap();
+		offscreen.copyTo(bitmap);
+		bitmap.save("test.png", "png");
+		System.exit(0);
+	}
+}
+
+global.main_window = new MainWindow(64, 64);

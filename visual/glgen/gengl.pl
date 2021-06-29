@@ -515,8 +515,8 @@ $cnt =  <<EOF;
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPSaturatedAdd, (tjs_uint32 a, tjs_uint32 b))
 {
 	/* Add each byte of packed 8bit values in two 32bit uint32, with saturation. */
-	tjs_uint32 tmp = (  ( a & b ) + ( ((a ^ b)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-	tmp = (tmp<<1) - (tmp>>7);
+	tjs_uint32 tmp = (  ( a & b ) + ( ((a ^ b)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+	tmp = (tmp<<1u) - (tmp>>7u);
 	return (a + b - tmp) | tmp;
 }
 
@@ -529,28 +529,28 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPSaturatedAdd, (tjs_uint32 a, tjs_uint32 b
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_n_a, (tjs_uint32 dest, tjs_uint32 src))
 {
-	tjs_uint32 sopa = (~src) >> 24;
-	return TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ff)*sopa >> 8) & 0xff00ff) + 
-		(((dest & 0xff00)*sopa >> 8) & 0xff00), src);
+	tjs_uint32 sopa = (~src) >> 24u;
+	return TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ffu)*sopa >> 8u) & 0xff00ffu) + 
+		(((dest & 0xff00u)*sopa >> 8u) & 0xff00u), src);
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_HDA_n_a, (tjs_uint32 dest, tjs_uint32 src))
 {
-	return (dest & 0xff000000) + (TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest, src) & 0xffffff);
+	return (dest & 0xff000000u) + (TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest, src) & 0xffffffu);
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_n_a_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
-	src = (((src & 0xff00ff)*opa >> 8) & 0xff00ff) + (((src >> 8) & 0xff00ff)*opa & 0xff00ff00);
+	src = (((src & 0xff00ffu)*opa >> 8u) & 0xff00ffu) + (((src >> 8u) & 0xff00ffu)*opa & 0xff00ff00u);
 	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest, src);
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_HDA_n_a_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
-	return (dest & 0xff000000) + (TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest, src, opa) & 0xffffff);
+	return (dest & 0xff000000u) + (TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest, src, opa) & 0xffffffu);
 }
 
 /*not export*/
@@ -561,15 +561,15 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_a, (tjs_uint32 dest, tjs_
 		Da = Sa + Da - SaDa
 	*/
 
-	tjs_uint32 dopa = dest >> 24;
-	tjs_uint32 sopa = src >> 24;
-	dopa = dopa + sopa - (dopa*sopa >> 8);
-	dopa -= (dopa >> 8); /* adjust alpha */
-	sopa ^= 0xff;
-	src &= 0xffffff;
-	return (dopa << 24) + 
-		TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ff)*sopa >> 8) & 0xff00ff) +
-			(((dest & 0xff00)*sopa >> 8) & 0xff00), src);
+	tjs_uint32 dopa = dest >> 24u;
+	tjs_uint32 sopa = src >> 24u;
+	dopa = dopa + sopa - (dopa*sopa >> 8u);
+	dopa -= (dopa >> 8u); /* adjust alpha */
+	sopa ^= 0xffu;
+	src &= 0xffffffu;
+	return (dopa << 24u) + 
+		TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ffu)*sopa >> 8u) & 0xff00ffu) +
+			(((dest & 0xff00u)*sopa >> 8u) & 0xff00u), src);
 }
 
 /*not export*/
@@ -580,39 +580,39 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_ca, (tjs_uint32 dest, tjs
 		Da = Sa + Da - SaDa
 	*/
 
-	tjs_uint32 dopa = dest >> 24;
-	dopa = dopa + sopa - (dopa*sopa >> 8);
-	dopa -= (dopa >> 8); /* adjust alpha */
-	return (dopa << 24) + 
-		TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ff)*sopa_inv >> 8) & 0xff00ff) +
-			(((dest & 0xff00)*sopa_inv >> 8) & 0xff00), src);
+	tjs_uint32 dopa = dest >> 24u;
+	dopa = dopa + sopa - (dopa*sopa >> 8u);
+	dopa -= (dopa >> 8u); /* adjust alpha */
+	return (dopa << 24u) + 
+		TVP_GL_FUNCNAME(TVPSaturatedAdd)((((dest & 0xff00ffu)*sopa_inv >> 8u) & 0xff00ffu) +
+			(((dest & 0xff00u)*sopa_inv >> 8u) & 0xff00u), src);
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_a_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
-	src = (((src & 0xff00ff)*opa >> 8) & 0xff00ff) + (((src >> 8) & 0xff00ff)*opa & 0xff00ff00);
+	src = (((src & 0xff00ffu)*opa >> 8u) & 0xff00ffu) + (((src >> 8u) & 0xff00ffu)*opa & 0xff00ff00u);
 	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest, src);
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPMulColor, (tjs_uint32 color, tjs_uint32 fac))
 {
-	return (((((color & 0x00ff00) * fac) & 0x00ff0000) +
-			(((color & 0xff00ff) * fac) & 0xff00ff00) ) >> 8);
+	return (((((color & 0x00ff00u) * fac) & 0x00ff0000u) +
+			(((color & 0xff00ffu) * fac) & 0xff00ff00u) ) >> 8u);
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAlphaAndColorToAdditiveAlpha, (tjs_uint32 alpha, tjs_uint32 color))
 {
-	return TVP_GL_FUNCNAME(TVPMulColor)(color, alpha) + (color & 0xff000000);
+	return TVP_GL_FUNCNAME(TVPMulColor)(color, alpha) + (color & 0xff000000u);
 
 }
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAlphaToAdditiveAlpha, (tjs_uint32 a))
 {
-	return TVP_GL_FUNCNAME(TVPAlphaAndColorToAdditiveAlpha)(a >> 24, a);
+	return TVP_GL_FUNCNAME(TVPAlphaAndColorToAdditiveAlpha)(a >> 24u, a);
 }
 
 /*not export*/
@@ -624,7 +624,7 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_d, (tjs_uint32 dest, tjs_
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPAddAlphaBlend_a_d_o, (tjs_uint32 dest, tjs_uint32 src, tjs_int opa))
 {
-	src = (src & 0xffffff) + ((((src >> 24) * opa) >> 8) << 24);
+	src = (src & 0xffffffu) + ((((src >> 24u) * opa) >> 8u) << 24u);
 	return TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(dest, src);
 }
 
@@ -637,11 +637,11 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, TVPBlendARGB, (tjs_uint32 b, tjs_uint32 a, t
 	/* returns a * ratio + b * (1 - ratio) */
 	tjs_uint32 b2;
 	tjs_uint32 t;
-	b2 = b & 0x00ff00ff;
-	t = (b2 + (((a & 0x00ff00ff) - b2) * ratio >> 8)) & 0x00ff00ff;
-	b2 = (b & 0xff00ff00) >> 8;
+	b2 = b & 0x00ff00ffu;
+	t = (b2 + (((a & 0x00ff00ffu) - b2) * ratio >> 8u)) & 0x00ff00ffu;
+	b2 = (b & 0xff00ff00u) >> 8u;
 	return t + 
-		(((b2 + (( ((a & 0xff00ff00) >> 8) - b2) * ratio >> 8)) << 8)& 0xff00ff00);
+		(((b2 + (( ((a & 0xff00ff00u) >> 8u) - b2) * ratio >> 8u)) << 8u)& 0xff00ff00u);
 }
 
 
@@ -677,12 +677,12 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -722,12 +722,12 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff) + (d & 0xff000000); /* hda */
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu) + (d & 0xff000000u); /* hda */
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -766,12 +766,12 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	sopa = ((s >> 24) * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = ((s >> 24u) * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -810,12 +810,12 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	sopa = ((s >> 24) * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = ((s >> 24u) * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -854,14 +854,14 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	addr = ((s >> 16) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable[addr]<<24;
+	addr = ((s >> 16u) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + destalpha;
 	dest++;
 }
 EOF
@@ -935,14 +935,14 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	addr = (( (s>>24)*opa) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable[addr]<<24;
+	addr = (( (s>>24u)*opa) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + destalpha;
 	dest++;
 }
 EOF
@@ -1015,12 +1015,12 @@ $content = <<EOF;
 {
 	s = *dest;
 	d = color;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + 0xff000000;
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + 0xff000000u;
 	dest++;
 }
 EOF
@@ -1193,7 +1193,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = 0;
+	dest[{ofs}] = 0u;
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -1258,7 +1258,7 @@ EOF
 
 
 $content = <<EOF;
-	dest[{ofs}] = 0;
+	dest[{ofs}] = 0u;
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -1329,11 +1329,11 @@ EOF
 $content = <<EOF;
 {
 	tmp = *buf;
-	t = ((tmp >> 16) & 0xff00) + TVPDivTable;
-	*buf = (tmp & 0xff000000) +
-		(t[(tmp >> 16) & 0xff] << 16) +
-		(t[(tmp >>  8) & 0xff] <<  8) +
-		(t[ tmp        & 0xff]      );
+	t = ((tmp >> 16u) & 0xff00u) + TVPDivTable;
+	*buf = (tmp & 0xff000000u) +
+		(t[(tmp >> 16u) & 0xffu] << 16u) +
+		(t[(tmp >>  8u) & 0xffu] <<  8u) +
+		(t[ tmp        & 0xffu]      );
 	buf++;
 }
 EOF
@@ -1403,15 +1403,15 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -1436,15 +1436,15 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff) + (d & 0xff000000); /* hda */
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu) + (d & 0xff000000u); /* hda */
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -1467,15 +1467,15 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	sopa = ((s >> 24) * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = ((s >> 24u) * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -1499,15 +1499,15 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	sopa = ((s >> 24) * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = ((s >> 24u) * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -1530,17 +1530,17 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	addr = ((s >> 16) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable[addr]<<24;
+	addr = ((s >> 16u) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + destalpha;
 	dest++;
 }
 EOF
@@ -1562,7 +1562,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(*dest, src[srcstart >> 16u]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1586,17 +1586,17 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	addr = (( (s>>24)*opa) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable[addr]<<24;
+	addr = (( (s>>24u)*opa) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + destalpha;
 	dest++;
 }
 EOF
@@ -1618,7 +1618,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d_o)(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d_o)(*dest, src[srcstart >> 16u], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1649,7 +1649,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(*dest, src[srcstart >> 16u]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1672,7 +1672,7 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_c, (tjs_uint32 *dest, 
 	tjs_int blend_x;
 	tjs_int sp;
 
-	blend_y += blend_y >> 7; /* adjust blend ratio */
+	blend_y += blend_y >> 7u; /* adjust blend ratio */
 
 EOF
 
@@ -1682,23 +1682,23 @@ if($should_unroll == 1)
 		destlen -= 1;
 		while(destlen > 0)
 		{
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y));
 			srcstart += srcstep;
 
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[1u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[1u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y));
 			srcstart += srcstep;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 
@@ -1710,11 +1710,11 @@ print FC <<EOF;
 
 	while(destlen > 0)
 	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+		blend_x = (srcstart & 0xffffu) >> 8u;
+		sp = srcstart >> 16u;
+		dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 				blend_y));
 		srcstart += srcstep;
 		dest ++;
@@ -1736,7 +1736,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a)(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a)(*dest, src[srcstart >> 16u]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1759,7 +1759,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(*dest, src[srcstart >> 16u], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1783,7 +1783,7 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchAdditiveAlphaBlend_o_c, (tjs_uint32 *dest
 	tjs_int blend_x;
 	tjs_int sp;
 
-	blend_y += blend_y >> 7; /* adjust blend ratio */
+	blend_y += blend_y >> 7u; /* adjust blend ratio */
 
 EOF
 
@@ -1793,23 +1793,23 @@ if($should_unroll == 1)
 		destlen -= 1;
 		while(destlen > 0)
 		{
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[1u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[1u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 		destlen += 1;
@@ -1819,11 +1819,11 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+		blend_x = (srcstart & 0xffffu) >> 8u;
+		sp = srcstart >> 16u;
+		dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 				blend_y), opa);
 		srcstart += srcstep;
 		dest ++;
@@ -1844,7 +1844,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a_o)(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a_o)(*dest, src[srcstart >> 16u], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1868,7 +1868,7 @@ EOF
 $content = <<EOF;
 {
 	srcstart += srcstep;
-	*dest = 0;
+	*dest = 0u;
 	dest++;
 }
 EOF
@@ -1890,7 +1890,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, src[srcstart >> 16]);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, src[srcstart >> 16u]);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1914,7 +1914,7 @@ EOF
 $content = <<EOF;
 {
 	srcstart += srcstep;
-	*dest = 0;
+	*dest = 0u;
 	dest++;
 }
 EOF
@@ -1937,7 +1937,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a_o)(*dest, src[srcstart >> 16], opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a_o)(*dest, src[srcstart >> 16u], opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -1970,16 +1970,16 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2005,16 +2005,16 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	sopa = s >> 24;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff) + (d & 0xff000000); /* hda */
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = s >> 24u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu) + (d & 0xff000000u); /* hda */
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2037,16 +2037,16 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	sopa = ((s >> 24) * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = ((s >> 24u) * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2070,16 +2070,16 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	sopa = ((s >> 24) * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00);
+	sopa = ((s >> 24u) * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2102,18 +2102,18 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	addr = ((s >> 16) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable[addr]<<24;
+	addr = ((s >> 16u) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + destalpha;
 	dest++;
 }
 EOF
@@ -2137,7 +2137,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2162,18 +2162,18 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	addr = (( (s>>24)*opa) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable[addr]<<24;
+	addr = (( (s>>24u)*opa) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 + ((d + ((s - d) * sopa >> 8)) & 0xff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 + ((d + ((s - d) * sopa >> 8u)) & 0xff00u) + destalpha;
 	dest++;
 }
 EOF
@@ -2196,7 +2196,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_d_o)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)), opa);
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2229,7 +2229,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2263,31 +2263,31 @@ if($should_unroll == 1)
 			int blend_x, blend_y;
 			const tjs_uint32 *p0, *p1;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y));
 			sx += stepx, sy += stepy;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[1u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[1u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y));
 			sx += stepx, sy += stepy;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 		destlen += 1;
@@ -2300,15 +2300,15 @@ print FC <<EOF;
 		int blend_x, blend_y;
 		const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+		blend_x = (sx & 0xffffu) >> 8u;
+		blend_x += blend_x >> 7u;
+		blend_y = (sy & 0xffffu) >> 8u;
+		blend_y += blend_y >> 7u;
+		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+		dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 				blend_y));
 		sx += stepx, sy += stepy;
 
@@ -2333,7 +2333,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2359,7 +2359,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)), opa);
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2381,7 +2381,7 @@ TVP_GL_FUNC_DECL(void, TVPInterpLinTransAdditiveAlphaBlend_o_c, (tjs_uint32 *des
 {
 	/* bilinear interpolation version */
 	/* note that srcpitch unit is in byte */
-	opa += opa >> 7;
+	opa += opa >> 7u;
 EOF
 
 if($should_unroll == 1)
@@ -2393,31 +2393,31 @@ if($should_unroll == 1)
 			int blend_x, blend_y;
 			const tjs_uint32 *p0, *p1;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[1u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[1u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 		destlen += 1;
@@ -2430,15 +2430,15 @@ print FC <<EOF;
 		int blend_x, blend_y;
 		const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+		blend_x = (sx & 0xffffu) >> 8u;
+		blend_x += blend_x >> 7u;
+		blend_y = (sy & 0xffffu) >> 8u;
+		blend_y += blend_y >> 7u;
+		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+		dest[0u] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_n_a_o)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 				blend_y), opa);
 		sx += stepx, sy += stepy;
 
@@ -2462,7 +2462,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_HDA_n_a_o)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)), opa);
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2486,7 +2486,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = 0;
+	*dest = 0u;
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2511,7 +2511,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2535,7 +2535,7 @@ EOF
 
 $content = <<EOF;
 {
-	*dest = 0;
+	*dest = 0u;
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2560,7 +2560,7 @@ EOF
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a_o)(*dest, 
-		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)), opa);
+		*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)), opa);
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -2611,13 +2611,13 @@ EOF
 
 $content = <<EOF;
 	t1 = src[{ofs}];;
-	t1 |= 0xff000000;;
+	t1 |= 0xff000000u;;
 	dest[{ofs}] = t1;;
 EOF
 
 $content2 = <<EOF;
 	t2 = src[{ofs}];;
-	t2 |= 0xff000000;;
+	t2 |= 0xff000000u;;
 	dest[{ofs}] = t2;;
 EOF
 	
@@ -2654,11 +2654,11 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * opa >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2696,11 +2696,11 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * opa >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2733,7 +2733,7 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint
 {
 	tjs_uint32 d1, s, d, addr;
 	tjs_int alpha;
-	opa <<= 8;
+	opa <<= 8u;
 EOF
 
 $content = <<EOF;
@@ -2741,14 +2741,14 @@ $content = <<EOF;
 	s = *src;
 	src++;
 	d = *dest;
-	addr = opa + (d>>24);
+	addr = opa + (d>>24u);
 	alpha = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * alpha >> 8)) & 0xff00ff) +
-		(TVPNegativeMulTable[addr]<<24);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * alpha >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * alpha >> 8u)) & 0xff00ffu) +
+		(TVPNegativeMulTable[addr]<<24u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * alpha >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2778,11 +2778,11 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_a_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
-	opa <<= 24;
+	opa <<= 24u;
 EOF
 
 $content = <<EOF;
-	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest[{ofs}], (src[{ofs}] & 0xffffff) | opa);
+	dest[{ofs}] = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(dest[{ofs}], (src[{ofs}] & 0xffffffu) | opa);
 EOF
 
 &loop_unroll_c_2($content, 'len', 4);
@@ -2816,15 +2816,15 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = 0xff000000 | src[srcstart >> 16];
+			dest[0u] = 0xff000000u | src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest[1] = 0xff000000 | src[srcstart >> 16];
+			dest[1u] = 0xff000000u | src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest[2] = 0xff000000 | src[srcstart >> 16];
+			dest[2u] = 0xff000000u | src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest[3] = 0xff000000 | src[srcstart >> 16];
+			dest[3u] = 0xff000000u | src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest += 4;
+			dest += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -2834,7 +2834,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = 0xff000000 | src[srcstart >> 16];
+		dest[0u] = 0xff000000u | src[srcstart >> 16u];
 		srcstart += srcstep;
 		dest ++;
 		destlen --;
@@ -2855,14 +2855,14 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart>>16];
+	s = src[srcstart>>16u];
 	srcstart += srcstep;
 	d = *dest;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * opa >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2883,8 +2883,8 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchConstAlphaBlend_c, (tjs_uint32 *dest, tjs
 	tjs_int blend_x;
 	tjs_int sp;
 
-	blend_y += blend_y >> 7; /* adjust blend ratio */
-	opa += opa > 7; /* adjust opa */
+	blend_y += blend_y >> 7u; /* adjust blend ratio */
+	opa += opa > 7u; /* adjust opa */
 
 EOF
 
@@ -2894,23 +2894,23 @@ if($should_unroll == 1)
 		destlen -= 1;
 		while(destlen > 0)
 		{
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[1u] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[1u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y), opa);
 			srcstart += srcstep;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 		destlen += 1;
@@ -2920,11 +2920,11 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+		blend_x = (srcstart & 0xffffu) >> 8u;
+		sp = srcstart >> 16u;
+		dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 				blend_y), opa);
 		srcstart += srcstep;
 		dest ++;
@@ -2945,14 +2945,14 @@ EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * opa >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -2972,22 +2972,22 @@ TVP_GL_FUNC_DECL(void, TVPStretchConstAlphaBlend_d_c, (tjs_uint32 *dest, tjs_int
 {
 	tjs_uint32 d1, s, d, addr;
 	tjs_int alpha;
-	if(opa > 128) opa ++; /* adjust for error */
+	if(opa > 128u) opa ++; /* adjust for error */
 EOF
 
 $content = <<EOF;
 {
-	s = src[srcstart >> 16];
+	s = src[srcstart >> 16u];
 	srcstart += srcstep;
 	d = *dest;
-	addr = (( (s>>24)*opa) & 0xff00) + (d>>24);
+	addr = (( (s>>24u)*opa) & 0xff00u) + (d>>24u);
 	alpha = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * alpha >> 8)) & 0xff00ff) +
-		(TVPNegativeMulTable[addr]<<24);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * alpha >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * alpha >> 8u)) & 0xff00ffu) +
+		(TVPNegativeMulTable[addr]<<24u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * alpha >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3005,12 +3005,12 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPStretchConstAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int srcstart, tjs_int srcstep, tjs_int opa))
 {
-	opa <<= 24;
+	opa <<= 24u;
 EOF
 
 $content = <<EOF;
 {
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, (src[srcstart >> 16] & 0xffffff) | opa);
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, (src[srcstart >> 16u] & 0xffffffu) | opa);
 	srcstart += srcstep;
 	dest++;
 }
@@ -3045,19 +3045,19 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[0u] = 0xff000000u | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx;
 			sy += stepy;
-			dest[1] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[1u] = 0xff000000u | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx;
 			sy += stepy;
-			dest[2] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[2u] = 0xff000000u | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx;
 			sy += stepy;
-			dest[3] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[3u] = 0xff000000u | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx;
 			sy += stepy;
-			dest += 4;
+			dest += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -3067,7 +3067,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = 0xff000000 | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+		dest[0u] = 0xff000000u | *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 		sx += stepx;
 		sy += stepy;
 		dest ++;
@@ -3089,15 +3089,15 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	d1 = d & 0xff00ff;
-	d1 = (d1 + (((s & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff;
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * opa >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + (((s & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu;
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3117,7 +3117,7 @@ TVP_GL_FUNC_DECL(void, TVPInterpLinTransConstAlphaBlend_c, (tjs_uint32 *dest, tj
 {
 	/* bilinear interpolation version */
 	/* note that srcpitch unit is in byte */
-	opa += opa >> 7; /* adjust opacity */
+	opa += opa >> 7u; /* adjust opacity */
 EOF
 
 if($should_unroll == 1)
@@ -3129,31 +3129,31 @@ if($should_unroll == 1)
 			int blend_x, blend_y;
 			const tjs_uint32 *p0, *p1;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[1], TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[1u] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[1u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y), opa);
 			sx += stepx, sy += stepy;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 
@@ -3167,15 +3167,15 @@ print FC <<EOF;
 		int blend_x, blend_y;
 		const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+		blend_x = (sx & 0xffffu) >> 8u;
+		blend_x += blend_x >> 7u;
+		blend_y = (sy & 0xffffu) >> 8u;
+		blend_y += blend_y >> 7u;
+		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0], TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+		dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(dest[0u], TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 				blend_y), opa);
 		sx += stepx, sy += stepy;
 
@@ -3198,15 +3198,15 @@ EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * opa >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3226,23 +3226,23 @@ TVP_GL_FUNC_DECL(void, TVPLinTransConstAlphaBlend_d_c, (tjs_uint32 *dest, tjs_in
 {
 	tjs_uint32 d1, s, d, addr;
 	tjs_int alpha;
-	opa <<= 8;
+	opa <<= 8u;
 EOF
 
 $content = <<EOF;
 {
-	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+	s = *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 	sx += stepx;
 	sy += stepy;
 	d = *dest;
-	addr = opa + (d>>24);
+	addr = opa + (d>>24u);
 	alpha = TVPOpacityOnOpacityTable[addr];
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + (((s & 0xff00ff) - d1) * alpha >> 8)) & 0xff00ff) +
-		(TVPNegativeMulTable[addr]<<24);
-	d &= 0xff00;
-	s &= 0xff00;
-	*dest = d1 | ((d + ((s - d) * alpha >> 8)) & 0xff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + (((s & 0xff00ffu) - d1) * alpha >> 8u)) & 0xff00ffu) +
+		(TVPNegativeMulTable[addr]<<24u);
+	d &= 0xff00u;
+	s &= 0xff00u;
+	*dest = d1 | ((d + ((s - d) * alpha >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3260,13 +3260,13 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPLinTransConstAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, const tjs_uint32 *src, tjs_int sx, tjs_int sy, tjs_int stepx, tjs_int stepy, tjs_int srcpitch, tjs_int opa))
 {
-	opa <<= 24;
+	opa <<= 24u;
 EOF
 
 $content = <<EOF;
 {
 	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_a)(*dest, 
-		((*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16))) & 0xffffff) | opa);
+		((*( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u))) & 0xffffffu) | opa);
 	sx += stepx;
 	sy += stepy;
 	dest++;
@@ -3308,13 +3308,13 @@ $content = <<EOF;
 {
 	s1 = *src1;
 	s2 = *src2;
-	s1_ = s1 & 0xff00ff;
-	s1_ = (s1_ + (((s2 & 0xff00ff) - s1_) * opa >> 8)) & 0xff00ff;
+	s1_ = s1 & 0xff00ffu;
+	s1_ = (s1_ + (((s2 & 0xff00ffu) - s1_) * opa >> 8u)) & 0xff00ffu;
 	src1++;
 	src2++;
-	s2 &= 0xff00;
-	s1 &= 0xff00;
-	*dest = s1_ | ((s1 + ((s2 - s1) * opa >> 8)) & 0xff00);
+	s2 &= 0xff00u;
+	s1 &= 0xff00u;
+	*dest = s1_ | ((s1 + ((s2 - s1) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3381,8 +3381,8 @@ TVP_GL_FUNC_DECL(void, TVPConstAlphaBlend_SD_d_c, (tjs_uint32 *dest, const tjs_u
 	tjs_uint32 a1, a2;
 	tjs_int alpha;
 	tjs_int iopa;
-	if(opa > 127) opa ++; /* adjust for error */
-	iopa = 256 - opa;
+	if(opa > 127u) opa ++; /* adjust for error */
+	iopa = 256u - opa;
 	/* blending function for 'alpha-per-pixel enabled alpha blending' is complex. */
 EOF
 
@@ -3390,18 +3390,18 @@ $content = <<EOF;
 {
 	s1 = *src1;
 	s2 = *src2;
-	a1 = s1 >> 24;
-	a2 = s2 >> 24;
-	addr = (a2*opa & 0xff00) + (a1*iopa >> 8);
+	a1 = s1 >> 24u;
+	a2 = s2 >> 24u;
+	addr = (a2*opa & 0xff00u) + (a1*iopa >> 8u);
 	alpha = TVPOpacityOnOpacityTable[addr];
-	s1_ = s1 & 0xff00ff;
-	s1_ = ((s1_ + (((s2 & 0xff00ff) - s1_) * alpha >> 8)) & 0xff00ff);
+	s1_ = s1 & 0xff00ffu;
+	s1_ = ((s1_ + (((s2 & 0xff00ffu) - s1_) * alpha >> 8u)) & 0xff00ffu);
 	src1++;
 	src2++;
-	s1 &= 0xff00;
-	s2 &= 0xff00;
-	s1_ |= (a1 + ((a2 - a1)*opa >> 8)) << 24;
-	*dest = s1_ | ((s1 + ((s2 - s1) * alpha >> 8)) & 0xff00);
+	s1 &= 0xff00u;
+	s2 &= 0xff00u;
+	s1_ |= (a1 + ((a2 - a1)*opa >> 8u)) << 24u;
+	*dest = s1_ | ((s1 + ((s2 - s1) * alpha >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3436,15 +3436,15 @@ TVP_GL_FUNC_DECL(void, TVPInitUnivTransBlendTable_c, (tjs_uint32 *table, tjs_int
 	tjs_int i;
 	tjs_int phasemax = phase;
 	phase -= vague;
-	for(i = 0; i<256; i++)
+	for(i = 0u; i<256u; i++)
 	{
-		if(i<phase) table[i] = 255;
-		else if(i>=phasemax) table[i] = 0;
+		if(i<phase) table[i] = 255u;
+		else if(i>=phasemax) table[i] = 0u;
 		else
 		{
-			int tmp = (255-(( i - phase )*255 / vague));
-			if(tmp<0) tmp = 0;
-			if(tmp>255) tmp = 255;
+			int tmp = (255u-(( i - phase )*255u / vague));
+			if(tmp<0u) tmp = 0u;
+			if(tmp>255u) tmp = 255u;
 			table[i] = tmp;
 		}
 	}
@@ -3495,11 +3495,11 @@ $content = <<EOF;
 	src1++;
 	s2 = *src2;
 	src2++;
-	s1_ = s1 & 0xff00ff;
-	s1_ = (s1_ + (((s2 & 0xff00ff) - s1_) * opa >> 8)) & 0xff00ff;
-	s2 &= 0xff00;
-	s1 &= 0xff00;
-	*dest = s1_ | ((s1 + ((s2 - s1) * opa >> 8)) & 0xff00);
+	s1_ = s1 & 0xff00ffu;
+	s1_ = (s1_ + (((s2 & 0xff00ffu) - s1_) * opa >> 8u)) & 0xff00ffu;
+	s2 &= 0xff00u;
+	s1 &= 0xff00u;
+	*dest = s1_ | ((s1 + ((s2 - s1) * opa >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3542,11 +3542,11 @@ $content = <<EOF;
 		src1++;
 		s2 = *src2;
 		src2++;
-		s1_ = s1 & 0xff00ff;
-		s1_ = (s1_ + (((s2 & 0xff00ff) - s1_) * opa >> 8)) & 0xff00ff;
-		s2 &= 0xff00;
-		s1 &= 0xff00;
-		*dest = s1_ | ((s1 + ((s2 - s1) * opa >> 8)) & 0xff00);
+		s1_ = s1 & 0xff00ffu;
+		s1_ = (s1_ + (((s2 & 0xff00ffu) - s1_) * opa >> 8u)) & 0xff00ffu;
+		s2 &= 0xff00u;
+		s1 &= 0xff00u;
+		*dest = s1_ | ((s1 + ((s2 - s1) * opa >> 8u)) & 0xff00u);
 		dest++;
 	}
 }
@@ -3577,18 +3577,18 @@ $content = <<EOF;
 	rule++;
 	s1 = *src1;
 	s2 = *src2;
-	a1 = s1 >> 24;
-	a2 = s2 >> 24;
-	addr = (a2*opa & 0xff00) + (a1*(256-opa) >> 8);
+	a1 = s1 >> 24u;
+	a2 = s2 >> 24u;
+	addr = (a2*opa & 0xff00u) + (a1*(256u-opa) >> 8u);
 	alpha = TVPOpacityOnOpacityTable[addr];
-	s1_ = s1 & 0xff00ff;
-	s1_ = ((s1_ + (((s2 & 0xff00ff) - s1_) * alpha >> 8)) & 0xff00ff);
+	s1_ = s1 & 0xff00ffu;
+	s1_ = ((s1_ + (((s2 & 0xff00ffu) - s1_) * alpha >> 8u)) & 0xff00ffu);
 	src1++;
 	src2++;
-	s1 &= 0xff00;
-	s2 &= 0xff00;
-	s1_ |= (a1 + ((a2 - a1)*opa >> 8)) << 24;
-	*dest = s1_ | ((s1 + ((s2 - s1) * alpha >> 8)) & 0xff00);
+	s1 &= 0xff00u;
+	s2 &= 0xff00u;
+	s1_ |= (a1 + ((a2 - a1)*opa >> 8u)) << 24u;
+	*dest = s1_ | ((s1 + ((s2 - s1) * alpha >> 8u)) & 0xff00u);
 	dest++;
 }
 EOF
@@ -3632,18 +3632,18 @@ $content = <<EOF;
 		rule++;
 		s1 = *src1;
 		s2 = *src2;
-		a1 = s1 >> 24;
-		a2 = s2 >> 24;
-		addr = (a2*opa & 0xff00) + (a1*(256-opa) >> 8);
+		a1 = s1 >> 24u;
+		a2 = s2 >> 24u;
+		addr = (a2*opa & 0xff00u) + (a1*(256u-opa) >> 8u);
 		alpha = TVPOpacityOnOpacityTable[addr];
-		s1_ = s1 & 0xff00ff;
-		s1_ = ((s1_ + (((s2 & 0xff00ff) - s1_) * alpha >> 8)) & 0xff00ff) +
-			(TVPNegativeMulTable[addr]<<24);
+		s1_ = s1 & 0xff00ffu;
+		s1_ = ((s1_ + (((s2 & 0xff00ffu) - s1_) * alpha >> 8u)) & 0xff00ffu) +
+			(TVPNegativeMulTable[addr]<<24u);
 		src1++;
 		src2++;
-		s1 &= 0xff00;
-		s2 &= 0xff00;
-		*dest = s1_ | ((s1 + ((s2 - s1) * alpha >> 8)) & 0xff00);
+		s1 &= 0xff00u;
+		s2 &= 0xff00u;
+		*dest = s1_ | ((s1 + ((s2 - s1) * alpha >> 8u)) & 0xff00u);
 		dest++;
 	}
 }
@@ -3722,18 +3722,18 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 	tjs_uint32 d1, d, sopa;
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
 	sopa = *src;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ff);
-	d &= 0xff00;
-	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ffu);
+	d &= 0xff00u;
+	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00u);
 	src++;
 	dest++;
 }
@@ -3752,18 +3752,18 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
 	tjs_uint32 d1, d, sopa;
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
-	sopa = (*src * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ff);
-	d &= 0x00ff00;
-	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00);
+	sopa = (*src * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ffu);
+	d &= 0x00ff00u;
+	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00u);
 	src++;
 	dest++;
 }
@@ -3810,18 +3810,18 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_HDA_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 	tjs_uint32 d1, d, sopa;
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
 	sopa = *src;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0xff00;
-	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00);
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0xff00u;
+	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00u);
 	src++;
 	dest++;
 }
@@ -3840,18 +3840,18 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_HDA_o_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
 	tjs_uint32 d1, d, sopa;
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
-	sopa = (*src * opa) >> 8;
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ff) + (d & 0xff000000);
-	d &= 0x00ff00;
-	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00);
+	sopa = (*src * opa) >> 8u;
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + ((c1 - d1) * sopa >> $bit)) & 0xff00ffu) + (d & 0xff000000u);
+	d &= 0x00ff00u;
+	*dest = d1 | ((d + ((color - d) * sopa >> $bit)) & 0x00ff00u);
 	src++;
 	dest++;
 }
@@ -3896,20 +3896,20 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_d_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
 	tjs_uint32 d1, d, sopa, addr, destalpha;
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
-	addr = (*src<<8) + (d>>24);
-	destalpha = TVPNegativeMulTable${namesuffix}[addr]<<24;
+	addr = (*src<<8u) + (d>>24u);
+	destalpha = TVPNegativeMulTable${namesuffix}[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable${namesuffix}[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + ((c1 - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0x00ff00;
-	*dest = d1 + ((d + ((color - d) * sopa >> 8)) & 0x00ff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + ((c1 - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0x00ff00u;
+	*dest = d1 + ((d + ((color - d) * sopa >> 8u)) & 0x00ff00u) + destalpha;
 	src++;
 	dest++;
 }
@@ -3953,19 +3953,19 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_a_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color))
 {
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	tjs_int s_tmp = *src;
 	tjs_uint32 tmp =
-		((s_tmp * (c1    & 0xff00ff) >> $shift) & 0xff00ff) + 
-		((s_tmp * (color & 0x00ff00) >> $shift) & 0x00ff00);
-	s_tmp <<= (8 - $shift);
-	s_tmp -= (s_tmp >> 8); /* adjust alpha */
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(*dest, s_tmp, s_tmp ^ 0xff, tmp);
+		((s_tmp * (c1    & 0xff00ffu) >> $shift) & 0xff00ffu) + 
+		((s_tmp * (color & 0x00ff00u) >> $shift) & 0x00ff00u);
+	s_tmp <<= (8u - $shift);
+	s_tmp -= (s_tmp >> 8u); /* adjust alpha */
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(*dest, s_tmp, s_tmp ^ 0xffu, tmp);
 	src++;
 	dest++;
 }
@@ -4008,20 +4008,20 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_do_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
 	tjs_uint32 d1, d, sopa, addr, destalpha;
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
-	addr = ((*src * opa) & 0xff00) + (d>>24);
-	destalpha = TVPNegativeMulTable${namesuffix}[addr]<<24;
+	addr = ((*src * opa) & 0xff00u) + (d>>24u);
+	destalpha = TVPNegativeMulTable${namesuffix}[addr]<<24u;
 	sopa = TVPOpacityOnOpacityTable${namesuffix}[addr];
-	d1 = d & 0xff00ff;
-	d1 = (d1 + ((c1 - d1) * sopa >> 8)) & 0xff00ff;
-	d &= 0x00ff00;
-	*dest = d1 + ((d + ((color - d) * sopa >> 8)) & 0x00ff00) + destalpha;
+	d1 = d & 0xff00ffu;
+	d1 = (d1 + ((c1 - d1) * sopa >> 8u)) & 0xff00ffu;
+	d &= 0x00ff00u;
+	*dest = d1 + ((d + ((color - d) * sopa >> 8u)) & 0x00ff00u) + destalpha;
 	src++;
 	dest++;
 }
@@ -4065,19 +4065,19 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPApplyColorMap${namesuffix}_ao_c, (tjs_uint32 *dest, const tjs_uint8 *src, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
-	tjs_uint32 c1 = color & 0xff00ff;
-	color = color & 0x00ff00;
+	tjs_uint32 c1 = color & 0xff00ffu;
+	color = color & 0x00ff00u;
 EOF
 
 $content = <<EOF;
 {
-	tjs_int s_tmp = (*src * opa) >> 8;
+	tjs_int s_tmp = (*src * opa) >> 8u;
 	tjs_uint32 tmp =
-		((s_tmp * (c1    & 0xff00ff) >> $shift) & 0xff00ff) + 
-		((s_tmp * (color & 0x00ff00) >> $shift) & 0x00ff00);
-	s_tmp <<= (8 - $shift);
-	s_tmp -= (s_tmp >> 8); /* adjust alpha */
-	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(*dest, s_tmp, s_tmp ^ 0xff, tmp);
+		((s_tmp * (c1    & 0xff00ffu) >> $shift) & 0xff00ffu) + 
+		((s_tmp * (color & 0x00ff00u) >> $shift) & 0x00ff00u);
+	s_tmp <<= (8u - $shift);
+	s_tmp -= (s_tmp >> 8u); /* adjust alpha */
+	*dest = TVP_GL_FUNCNAME(TVPAddAlphaBlend_a_ca)(*dest, s_tmp, s_tmp ^ 0xffu, tmp);
 	src++;
 	dest++;
 }
@@ -4124,16 +4124,16 @@ TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_c, (tjs_uint32 *dest, tjs_int len
 {
 	/* this function always holds desitination alpha channel */
 	tjs_uint32 s1, d;
-	s1 = (color & 0xff00ff)*opa ;
-	color = (color & 0xff00)*opa ;
-	opa = 255 - opa;
+	s1 = (color & 0xff00ffu)*opa ;
+	color = (color & 0xff00u)*opa ;
+	opa = 255u - opa;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
-	*dest = (d & 0xff000000) + ((((d & 0xff00ff) * opa + s1) >> 8) & 0xff00ff) +
-		((((d&0xff00) * opa + color) >> 8) & 0xff00);
+	*dest = (d & 0xff000000u) + ((((d & 0xff00ffu) * opa + s1) >> 8u) & 0xff00ffu) +
+		((((d&0xff00u) * opa + color) >> 8u) & 0xff00u);
 	dest ++;
 }
 EOF
@@ -4166,20 +4166,20 @@ TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_d_c, (tjs_uint32 *dest, tjs_int l
 {
 	tjs_uint32 d1, s1, d, dopa;
 	tjs_int alpha;
-	s1 = color & 0xff00ff;
-	color = color & 0xff00;
+	s1 = color & 0xff00ffu;
+	color = color & 0xff00u;
 EOF
 
 $content = <<EOF;
 {
 	d = *dest;
-	dopa = d>>24;
-	alpha = TVPOpacityOnOpacityTable[dopa + (opa<<8)];
-	d1 = d & 0xff00ff;
-	d1 = ((d1 + ((s1 - d1) * alpha >> 8)) & 0xff00ff) |
-		((255-((255-dopa)*(255-opa)>>8)) << 24);
-	d &= 0xff00;
-	*dest = d1 | ((d + ((color - d) * alpha >> 8)) & 0xff00);
+	dopa = d>>24u;
+	alpha = TVPOpacityOnOpacityTable[dopa + (opa<<8u)];
+	d1 = d & 0xff00ffu;
+	d1 = ((d1 + ((s1 - d1) * alpha >> 8u)) & 0xff00ffu) |
+		((255u-((255u-dopa)*(255u-opa)>>8u)) << 24u);
+	d &= 0xff00u;
+	*dest = d1 | ((d + ((color - d) * alpha >> 8u)) & 0xff00u);
 	dest ++;
 }
 EOF
@@ -4209,8 +4209,8 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPConstColorAlphaBlend_a_c, (tjs_uint32 *dest, tjs_int len, tjs_uint32 color, tjs_int opa))
 {
-	tjs_uint32 src = TVP_GL_FUNCNAME(TVPMulColor)(color & 0xffffff, opa);
-	tjs_uint32 opa_inv = opa ^ 0xff;
+	tjs_uint32 src = TVP_GL_FUNCNAME(TVPMulColor)(color & 0xffffffu, opa);
+	tjs_uint32 opa_inv = opa ^ 0xffu;
 EOF
 
 $content = <<EOF;
@@ -4264,18 +4264,18 @@ EOF
 
 print FC <<EOF;
 
-	strength = 255 - strength;
+	strength = 255u - strength;
 
 EOF
 
 $content = <<EOF;
 	d = dest[{ofs}];;
-	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24)*strength) << 16) & 0xff000000);;
+	dest[{ofs}] = (d & 0xffffffu) + ( (((d>>24u)*strength) << 16u) & 0xff000000u);;
 EOF
 
 $content2 = <<EOF;
 	d2 = dest[{ofs}];;
-	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24)*strength) << 16) & 0xff000000);;
+	dest[{ofs}] = (d2 & 0xffffffu) + ( (((d2>>24u)*strength) << 16u) & 0xff000000u);;
 EOF
 
 &loop_unroll_c_int_2($content, $content2, 'len', 4);
@@ -4320,11 +4320,11 @@ EOF
 
 $content = <<EOF;
 	d = dest[{ofs}];;
-	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24) * (255-src[{ofs}])) << 16) & 0xff000000);;
+	dest[{ofs}] = (d & 0xffffffu) + ( (((d>>24u) * (255u-src[{ofs}])) << 16u) & 0xff000000u);;
 EOF
 $content2 = <<EOF;
 	d2 = dest[{ofs}];;
-	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24) * (255-src[{ofs}])) << 16) & 0xff000000);;
+	dest[{ofs}] = (d2 & 0xffffffu) + ( (((d2>>24u) * (255u-src[{ofs}])) << 16u) & 0xff000000u);;
 EOF
 
 &loop_unroll_c_int_2($content, $content2, 'len', 4);
@@ -4369,16 +4369,16 @@ EOF
 
 print FC <<EOF;
 
-	if(strength > 127) strength ++; /* adjust for error */
+	if(strength > 127u) strength ++; /* adjust for error */
 EOF
 
 $content = <<EOF;
 	d = dest[{ofs}];;
-	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24) * (65535-src[{ofs}]*strength )) << 8) & 0xff000000);;
+	dest[{ofs}] = (d & 0xffffffu) + ( (((d>>24u) * (65535u-src[{ofs}]*strength )) << 8u) & 0xff000000u);;
 EOF
 $content2 = <<EOF;
 	d2 = dest[{ofs}];;
-	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24) * (65535-src[{ofs}]*strength )) << 8) & 0xff000000);;
+	dest[{ofs}] = (d2 & 0xffffffu) + ( (((d2>>24u) * (65535u-src[{ofs}]*strength )) << 8u) & 0xff000000u);;
 EOF
 
 &loop_unroll_c_int_2($content, $content2, 'len', 4);
@@ -4423,11 +4423,11 @@ EOF
 
 $content = <<EOF;
 	d = dest[{ofs}];;
-	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24) * (64-src[{ofs}])) << 18) & 0xff000000);;
+	dest[{ofs}] = (d & 0xffffffu) + ( (((d>>24u) * (64u-src[{ofs}])) << 18u) & 0xff000000u);;
 EOF
 $content2 = <<EOF;
 	d2 = dest[{ofs}];;
-	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24) * (64-src[{ofs}])) << 18) & 0xff000000);;
+	dest[{ofs}] = (d2 & 0xffffffu) + ( (((d2>>24u) * (64u-src[{ofs}])) << 18u) & 0xff000000u);;
 EOF
 
 &loop_unroll_c_int_2($content, $content2, 'len', 4);
@@ -4472,17 +4472,17 @@ EOF
 
 print FC <<EOF;
 
-	if(strength > 127) strength ++; /* adjust for error */
+	if(strength > 127u) strength ++; /* adjust for error */
 EOF
 
 $content = <<EOF;
 	d = dest[{ofs}];;
-	dest[{ofs}] = (d & 0xffffff) + ( (((d>>24) * (16384-src[{ofs}]*strength )) << 10) & 0xff000000);;
+	dest[{ofs}] = (d & 0xffffffu) + ( (((d>>24u) * (16384u-src[{ofs}]*strength )) << 10u) & 0xff000000u);;
 EOF
 
 $content2 = <<EOF;
 	d2 = dest[{ofs}];;
-	dest[{ofs}] = (d2 & 0xffffff) + ( (((d2>>24) * (16384-src[{ofs}]*strength )) << 10) & 0xff000000);;
+	dest[{ofs}] = (d2 & 0xffffffu) + ( (((d2>>24u) * (16384u-src[{ofs}]*strength )) << 10u) & 0xff000000u);;
 EOF
 
 &loop_unroll_c_int_2($content, $content2, 'len', 4);
@@ -4633,8 +4633,8 @@ EOF
 
 $content = <<EOF;
 {
-tmp = (  ( *src & *dest ) + ( ((*src^*dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-tmp = (tmp<<1) - (tmp>>7);
+tmp = (  ( *src & *dest ) + ( ((*src^*dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+tmp = (tmp<<1u) - (tmp>>7u);
 *dest= (*src + *dest - tmp) | tmp;
 dest++;
 src++;
@@ -4672,9 +4672,9 @@ EOF
 
 $content = <<EOF;
 {
-tmp = (  ( *src & *dest ) + ( ((*src^*dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-tmp = (tmp<<1) - (tmp>>7);
-*dest= (((*src + *dest - tmp) | tmp) & 0xffffff) | (*dest & 0xff000000) ;
+tmp = (  ( *src & *dest ) + ( ((*src^*dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+tmp = (tmp<<1u) - (tmp>>7u);
+*dest= (((*src + *dest - tmp) | tmp) & 0xffffffu) | (*dest & 0xff000000u) ;
 dest++;
 src++;
 }
@@ -4712,11 +4712,11 @@ EOF
 
 $content = <<EOF;
 {
-s = ( ((*src&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (*src&0xff00ff) * opa >> 8)&0xff00ff);
-tmp = (  ( s & *dest ) + ( ((s^*dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
+s = ( ((*src&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (*src&0xff00ffu) * opa >> 8u)&0xff00ffu);
+tmp = (  ( s & *dest ) + ( ((s^*dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
 src++;
-tmp = (tmp<<1) - (tmp>>7);
+tmp = (tmp<<1u) - (tmp>>7u);
 *dest= (s + *dest - tmp) | tmp;
 dest++;
 }
@@ -4754,12 +4754,12 @@ EOF
 
 $content = <<EOF;
 {
-s = ( ((*src&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (*src&0xff00ff) * opa >> 8)&0xff00ff);
-tmp = (  ( s & *dest ) + ( ((s^*dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
+s = ( ((*src&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (*src&0xff00ffu) * opa >> 8u)&0xff00ffu);
+tmp = (  ( s & *dest ) + ( ((s^*dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
 src++;
-tmp = (tmp<<1) - (tmp>>7);
-*dest= (((s + *dest - tmp) | tmp) & 0xffffff) + (*dest & 0xff000000) ;
+tmp = (tmp<<1u) - (tmp>>7u);
+*dest= (((s + *dest - tmp) | tmp) & 0xffffffu) + (*dest & 0xff000000u) ;
 dest++;
 }
 EOF
@@ -4798,8 +4798,8 @@ EOF
 
 $content = <<EOF;
 {
-tmp = (  ( *src & *dest ) + ( ((*src ^ *dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+tmp = (  ( *src & *dest ) + ( ((*src ^ *dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 *dest = (*src + *dest - tmp) & tmp;
 dest++;
 src++;
@@ -4836,9 +4836,9 @@ EOF
 
 $content = <<EOF;
 {
-s = *src | 0xff000000;
-tmp = (  ( s & *dest ) + ( ((s ^ *dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+s = *src | 0xff000000u;
+tmp = (  ( s & *dest ) + ( ((s ^ *dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 *dest = (s + *dest - tmp) & tmp;
 dest++;
 src++;
@@ -4877,10 +4877,10 @@ EOF
 $content = <<EOF;
 {
 s = ~*src;
-s = ~ (( ((s&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (s&0xff00ff) * opa >> 8)&0xff00ff) );
-tmp = (  ( s & *dest ) + ( ((s ^ *dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+s = ~ (( ((s&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (s&0xff00ffu) * opa >> 8u)&0xff00ffu) );
+tmp = (  ( s & *dest ) + ( ((s ^ *dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 *dest = (s + *dest - tmp) & tmp;
 dest++;
 src++;
@@ -4919,10 +4919,10 @@ EOF
 $content = <<EOF;
 {
 s = ~*src;
-s = 0xff000000 | ~ (( ((s&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (s&0xff00ff) * opa >> 8)&0xff00ff) );
-tmp = (  ( s & *dest ) + ( ((s ^ *dest)>>1) & 0x7f7f7f7f)  ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+s = 0xff000000u | ~ (( ((s&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (s&0xff00ffu) * opa >> 8u)&0xff00ffu) );
+tmp = (  ( s & *dest ) + ( ((s ^ *dest)>>1u) & 0x7f7f7f7fu)  ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 *dest = (s + *dest - tmp) & tmp;
 dest++;
 src++;
@@ -4961,10 +4961,10 @@ EOF
 
 $content = <<EOF;
 {
-tmp  = (*dest & 0xff) * (*src & 0xff) & 0xff00;
-tmp |= ((*dest & 0xff00) >> 8) * (*src & 0xff00) & 0xff0000;
-tmp |= ((*dest & 0xff0000) >> 16) * (*src & 0xff0000) & 0xff000000;
-tmp >>= 8;
+tmp  = (*dest & 0xffu) * (*src & 0xffu) & 0xff00u;
+tmp |= ((*dest & 0xff00u) >> 8u) * (*src & 0xff00u) & 0xff0000u;
+tmp |= ((*dest & 0xff0000u) >> 16u) * (*src & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
 *dest = tmp;
 dest++;
 src++;
@@ -5001,11 +5001,11 @@ EOF
 
 $content = <<EOF;
 {
-tmp  = (*dest & 0xff) * (*src & 0xff) & 0xff00;
-tmp |= ((*dest & 0xff00) >> 8) * (*src & 0xff00) & 0xff0000;
-tmp |= ((*dest & 0xff0000) >> 16) * (*src & 0xff0000) & 0xff000000;
-tmp >>= 8;
-*dest = tmp + (*dest & 0xff000000);
+tmp  = (*dest & 0xffu) * (*src & 0xffu) & 0xff00u;
+tmp |= ((*dest & 0xff00u) >> 8u) * (*src & 0xff00u) & 0xff0000u;
+tmp |= ((*dest & 0xff0000u) >> 16u) * (*src & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
+*dest = tmp + (*dest & 0xff000000u);
 dest++;
 src++;
 }
@@ -5044,12 +5044,12 @@ EOF
 $content = <<EOF;
 {
 s = ~*src;
-s = ~( ( ((s&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (s&0xff00ff) * opa >> 8)&0xff00ff));
-tmp  = (*dest & 0xff) * (s & 0xff) & 0xff00;
-tmp |= ((*dest & 0xff00) >> 8) * (s & 0xff00) & 0xff0000;
-tmp |= ((*dest & 0xff0000) >> 16) * (s & 0xff0000) & 0xff000000;
-tmp >>= 8;
+s = ~( ( ((s&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (s&0xff00ffu) * opa >> 8u)&0xff00ffu));
+tmp  = (*dest & 0xffu) * (s & 0xffu) & 0xff00u;
+tmp |= ((*dest & 0xff00u) >> 8u) * (s & 0xff00u) & 0xff0000u;
+tmp |= ((*dest & 0xff0000u) >> 16u) * (s & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
 *dest = tmp;
 dest++;
 src++;
@@ -5089,13 +5089,13 @@ EOF
 $content = <<EOF;
 {
 s = ~*src;
-s = ~( ( ((s&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (s&0xff00ff) * opa >> 8)&0xff00ff));
-tmp  = (*dest & 0xff) * (s & 0xff) & 0xff00;
-tmp |= ((*dest & 0xff00) >> 8) * (s & 0xff00) & 0xff0000;
-tmp |= ((*dest & 0xff0000) >> 16) * (s & 0xff0000) & 0xff000000;
-tmp >>= 8;
-*dest = tmp + (*dest & 0xff000000);
+s = ~( ( ((s&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (s&0xff00ffu) * opa >> 8u)&0xff00ffu));
+tmp  = (*dest & 0xffu) * (s & 0xffu) & 0xff00u;
+tmp |= ((*dest & 0xff00u) >> 8u) * (s & 0xff00u) & 0xff0000u;
+tmp |= ((*dest & 0xff0000u) >> 16u) * (s & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
+*dest = tmp + (*dest & 0xff000000u);
 dest++;
 src++;
 }
@@ -5134,12 +5134,12 @@ EOF
 $content = <<EOF;
 {
 tmp2 = ~*src;
-tmp = (*dest & 0xff) * TVPRecipTable256[tmp2 & 0xff] >> 8;
-tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100) >> 31)) & 0xff;
-tmp = ((*dest & 0xff00)>>8) * TVPRecipTable256[(tmp2 & 0xff00)>>8];
-tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00;
-tmp = ((*dest & 0xff0000)>>16) * TVPRecipTable256[(tmp2 & 0xff0000)>>16];
-tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00 ) << 8;
+tmp = (*dest & 0xffu) * TVPRecipTable256[tmp2 & 0xffu] >> 8u;
+tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100u) >> 31u)) & 0xffu;
+tmp = ((*dest & 0xff00u)>>8u) * TVPRecipTable256[(tmp2 & 0xff00u)>>8u];
+tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u;
+tmp = ((*dest & 0xff0000u)>>16u) * TVPRecipTable256[(tmp2 & 0xff0000u)>>16u];
+tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u ) << 8u;
 *dest= tmp3;
 dest++;
 src++;
@@ -5178,13 +5178,13 @@ EOF
 $content = <<EOF;
 {
 tmp2 = ~*src;
-tmp = (*dest & 0xff) * TVPRecipTable256[tmp2 & 0xff] >> 8;
-tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100) >> 31)) & 0xff;
-tmp = ((*dest & 0xff00)>>8) * TVPRecipTable256[(tmp2 & 0xff00)>>8];
-tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00;
-tmp = ((*dest & 0xff0000)>>16) * TVPRecipTable256[(tmp2 & 0xff0000)>>16];
-tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00 ) << 8;
-*dest= tmp3 + (*dest & 0xff000000);
+tmp = (*dest & 0xffu) * TVPRecipTable256[tmp2 & 0xffu] >> 8u;
+tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100u) >> 31u)) & 0xffu;
+tmp = ((*dest & 0xff00u)>>8u) * TVPRecipTable256[(tmp2 & 0xff00u)>>8u];
+tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u;
+tmp = ((*dest & 0xff0000u)>>16u) * TVPRecipTable256[(tmp2 & 0xff0000u)>>16u];
+tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u ) << 8u;
+*dest= tmp3 + (*dest & 0xff000000u);
 dest++;
 src++;
 }
@@ -5220,14 +5220,14 @@ EOF
 
 $content = <<EOF;
 {
-tmp2 = ~ (( ((*src&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (*src&0xff00ff) * opa >> 8)&0xff00ff) );
-tmp = (*dest & 0xff) * TVPRecipTable256[tmp2 & 0xff] >> 8;
-tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100) >> 31)) & 0xff;
-tmp = ((*dest & 0xff00)>>8) * TVPRecipTable256[(tmp2 & 0xff00)>>8];
-tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00;
-tmp = ((*dest & 0xff0000)>>16) * TVPRecipTable256[(tmp2 & 0xff0000)>>16];
-tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00 ) << 8;
+tmp2 = ~ (( ((*src&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (*src&0xff00ffu) * opa >> 8u)&0xff00ffu) );
+tmp = (*dest & 0xffu) * TVPRecipTable256[tmp2 & 0xffu] >> 8u;
+tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100u) >> 31u)) & 0xffu;
+tmp = ((*dest & 0xff00u)>>8u) * TVPRecipTable256[(tmp2 & 0xff00u)>>8u];
+tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u;
+tmp = ((*dest & 0xff0000u)>>16u) * TVPRecipTable256[(tmp2 & 0xff0000u)>>16u];
+tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u ) << 8u;
 *dest= tmp3;
 dest++;
 src++;
@@ -5264,15 +5264,15 @@ EOF
 
 $content = <<EOF;
 {
-tmp2 = ~ (( ((*src&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (*src&0xff00ff) * opa >> 8)&0xff00ff) );
-tmp = (*dest & 0xff) * TVPRecipTable256[tmp2 & 0xff] >> 8;
-tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100) >> 31)) & 0xff;
-tmp = ((*dest & 0xff00)>>8) * TVPRecipTable256[(tmp2 & 0xff00)>>8];
-tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00;
-tmp = ((*dest & 0xff0000)>>16) * TVPRecipTable256[(tmp2 & 0xff0000)>>16];
-tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000) >> 31)) & 0xff00 ) << 8;
-*dest= tmp3 + (*dest & 0xff000000);
+tmp2 = ~ (( ((*src&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (*src&0xff00ffu) * opa >> 8u)&0xff00ffu) );
+tmp = (*dest & 0xffu) * TVPRecipTable256[tmp2 & 0xffu] >> 8u;
+tmp3 = (tmp | ((tjs_int32)~(tmp - 0x100u) >> 31u)) & 0xffu;
+tmp = ((*dest & 0xff00u)>>8u) * TVPRecipTable256[(tmp2 & 0xff00u)>>8u];
+tmp3 |= (tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u;
+tmp = ((*dest & 0xff0000u)>>16u) * TVPRecipTable256[(tmp2 & 0xff0000u)>>16u];
+tmp3 |= ((tmp | ((tjs_int32)~(tmp - 0x10000u) >> 31u)) & 0xff00u ) << 8u;
+*dest= tmp3 + (*dest & 0xff000000u);
 dest++;
 src++;
 }
@@ -5311,8 +5311,8 @@ EOF
 $content = <<EOF;
 {
 m_src = ~*src;
-tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 *dest ^= (*dest ^ *src) & tmp;
 dest++;
 src++;
@@ -5350,9 +5350,9 @@ EOF
 $content = <<EOF;
 {
 m_src = ~*src;
-tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
-*dest ^= ((*dest ^ *src) & tmp) & 0xffffff;
+tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
+*dest ^= ((*dest ^ *src) & tmp) & 0xffffffu;
 dest++;
 src++;
 }
@@ -5389,14 +5389,14 @@ EOF
 $content = <<EOF;
 {
 m_src = ~*src;
-tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 tmp = *dest ^ ((*dest ^ *src) & tmp);
-d1 = *dest & 0xff00ff;
-d1 = (d1 + (((tmp & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff;
-m_src = *dest & 0xff00;
-tmp &= 0xff00;
-*dest = d1 + ((m_src + ((tmp - m_src) * opa >> 8)) & 0xff00);
+d1 = *dest & 0xff00ffu;
+d1 = (d1 + (((tmp & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu;
+m_src = *dest & 0xff00u;
+tmp &= 0xff00u;
+*dest = d1 + ((m_src + ((tmp - m_src) * opa >> 8u)) & 0xff00u);
 dest++;
 src++;
 
@@ -5434,14 +5434,14 @@ EOF
 $content = <<EOF;
 {
 m_src = ~*src;
-tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
-tmp = *dest ^ (((*dest ^ *src) & tmp) & 0xffffff);
-d1 = *dest & 0xff00ff;
-d1 = ((d1 + (((tmp & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff) + (*dest & 0xff000000); /* hda */
-m_src = *dest & 0xff00;
-tmp &= 0xff00;
-*dest = d1 + ((m_src + ((tmp - m_src) * opa >> 8)) & 0xff00);
+tmp = ((m_src & *dest) + (((m_src ^ *dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
+tmp = *dest ^ (((*dest ^ *src) & tmp) & 0xffffffu);
+d1 = *dest & 0xff00ffu;
+d1 = ((d1 + (((tmp & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu) + (*dest & 0xff000000u); /* hda */
+m_src = *dest & 0xff00u;
+tmp &= 0xff00u;
+*dest = d1 + ((m_src + ((tmp - m_src) * opa >> 8u)) & 0xff00u);
 dest++;
 src++;
 }
@@ -5480,8 +5480,8 @@ EOF
 $content = <<EOF;
 {
 m_dest = ~*dest;
-tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 *dest ^= (*dest ^ *src) & tmp;
 dest++;
 src++;
@@ -5519,9 +5519,9 @@ EOF
 $content = <<EOF;
 {
 m_dest = ~*dest;
-tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
-*dest ^= ((*dest ^ *src) & tmp) & 0xffffff;
+tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
+*dest ^= ((*dest ^ *src) & tmp) & 0xffffffu;
 dest++;
 src++;
 }
@@ -5559,14 +5559,14 @@ EOF
 $content = <<EOF;
 {
 m_dest = ~*dest;
-tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
+tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
 tmp = *dest ^ ((*dest ^ *src) & tmp);
-d1 = *dest & 0xff00ff;
-d1 = (d1 + (((tmp & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff;
-m_dest = *dest & 0xff00;
-tmp &= 0xff00;
-*dest = d1 + ((m_dest + ((tmp - m_dest) * opa >> 8)) & 0xff00);
+d1 = *dest & 0xff00ffu;
+d1 = (d1 + (((tmp & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu;
+m_dest = *dest & 0xff00u;
+tmp &= 0xff00u;
+*dest = d1 + ((m_dest + ((tmp - m_dest) * opa >> 8u)) & 0xff00u);
 dest++;
 src++;
 
@@ -5605,14 +5605,14 @@ EOF
 $content = <<EOF;
 {
 m_dest = ~*dest;
-tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-tmp = (tmp << 1) - (tmp >> 7);
-tmp = *dest ^ (((*dest ^ *src) & tmp) & 0xffffff);
-d1 = *dest & 0xff00ff;
-d1 = ((d1 + (((tmp & 0xff00ff) - d1) * opa >> 8)) & 0xff00ff) + (*dest & 0xff000000); /* hda */
-m_dest = *dest & 0xff00;
-tmp &= 0xff00;
-*dest = d1 + ((m_dest + ((tmp - m_dest) * opa >> 8)) & 0xff00);
+tmp = ((*src & m_dest) + (((*src ^ m_dest) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+tmp = (tmp << 1u) - (tmp >> 7u);
+tmp = *dest ^ (((*dest ^ *src) & tmp) & 0xffffffu);
+d1 = *dest & 0xff00ffu;
+d1 = ((d1 + (((tmp & 0xff00ffu) - d1) * opa >> 8u)) & 0xff00ffu) + (*dest & 0xff000000u); /* hda */
+m_dest = *dest & 0xff00u;
+tmp &= 0xff00u;
+*dest = d1 + ((m_dest + ((tmp - m_dest) * opa >> 8u)) & 0xff00u);
 dest++;
 src++;
 }
@@ -5652,10 +5652,10 @@ $content = <<EOF;
 {
 s = ~*src;
 d = ~*dest;
-tmp  = (d & 0xff) * (s & 0xff) & 0xff00;
-tmp |= ((d & 0xff00) >> 8) * (s & 0xff00) & 0xff0000;
-tmp |= ((d & 0xff0000) >> 16) * (s & 0xff0000) & 0xff000000;
-tmp >>= 8;
+tmp  = (d & 0xffu) * (s & 0xffu) & 0xff00u;
+tmp |= ((d & 0xff00u) >> 8u) * (s & 0xff00u) & 0xff0000u;
+tmp |= ((d & 0xff0000u) >> 16u) * (s & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
 *dest = ~tmp;
 dest++;
 src++;
@@ -5695,11 +5695,11 @@ $content = <<EOF;
 {
 s = ~*src;
 d = ~*dest;
-tmp  = (d & 0xff) * (s & 0xff) & 0xff00;
-tmp |= ((d & 0xff00) >> 8) * (s & 0xff00) & 0xff0000;
-tmp |= ((d & 0xff0000) >> 16) * (s & 0xff0000) & 0xff000000;
-tmp >>= 8;
-*dest = ~tmp ^ (d & 0xff000000);
+tmp  = (d & 0xffu) * (s & 0xffu) & 0xff00u;
+tmp |= ((d & 0xff00u) >> 8u) * (s & 0xff00u) & 0xff0000u;
+tmp |= ((d & 0xff0000u) >> 16u) * (s & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
+*dest = ~tmp ^ (d & 0xff000000u);
 dest++;
 src++;
 }
@@ -5738,12 +5738,12 @@ $content = <<EOF;
 {
 d = ~*dest;
 s = *src;
-s = ~( ( ((s&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (s&0xff00ff) * opa >> 8)&0xff00ff));
-tmp  = (d & 0xff) * (s & 0xff) & 0xff00;
-tmp |= ((d & 0xff00) >> 8) * (s & 0xff00) & 0xff0000;
-tmp |= ((d & 0xff0000) >> 16) * (s & 0xff0000) & 0xff000000;
-tmp >>= 8;
+s = ~( ( ((s&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (s&0xff00ffu) * opa >> 8u)&0xff00ffu));
+tmp  = (d & 0xffu) * (s & 0xffu) & 0xff00u;
+tmp |= ((d & 0xff00u) >> 8u) * (s & 0xff00u) & 0xff0000u;
+tmp |= ((d & 0xff0000u) >> 16u) * (s & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
 *dest = tmp;
 dest++;
 src++;
@@ -5784,13 +5784,13 @@ $content = <<EOF;
 {
 d = ~*dest;
 s = *src;
-s = ~( ( ((s&0x00ff00)  * opa >> 8)&0x00ff00) +
-	(( (s&0xff00ff) * opa >> 8)&0xff00ff));
-tmp  = (d & 0xff) * (s & 0xff) & 0xff00;
-tmp |= ((d & 0xff00) >> 8) * (s & 0xff00) & 0xff0000;
-tmp |= ((d & 0xff0000) >> 16) * (s & 0xff0000) & 0xff000000;
-tmp >>= 8;
-*dest = ~tmp ^ (d & 0xff000000);
+s = ~( ( ((s&0x00ff00u)  * opa >> 8u)&0x00ff00u) +
+	(( (s&0xff00ffu) * opa >> 8u)&0xff00ffu));
+tmp  = (d & 0xffu) * (s & 0xffu) & 0xff00u;
+tmp |= ((d & 0xff00u) >> 8u) * (s & 0xff00u) & 0xff0000u;
+tmp |= ((d & 0xff0000u) >> 16u) * (s & 0xff0000u) & 0xff000000u;
+tmp >>= 8u;
+*dest = ~tmp ^ (d & 0xff000000u);
 dest++;
 src++;
 }
@@ -5826,15 +5826,15 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = src[srcstart >> 16];
+			dest[0u] = src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest[1] = src[srcstart >> 16];
+			dest[1u] = src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest[2] = src[srcstart >> 16];
+			dest[2u] = src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest[3] = src[srcstart >> 16];
+			dest[3u] = src[srcstart >> 16u];
 			srcstart += srcstep;
-			dest += 4;
+			dest += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -5844,7 +5844,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = src[srcstart >> 16];
+		dest[0u] = src[srcstart >> 16u];
 		srcstart += srcstep;
 		dest ++;
 		destlen --;
@@ -5863,7 +5863,7 @@ TVP_GL_FUNC_DECL(void, TVPInterpStretchCopy_c, (tjs_uint32 *dest, tjs_int destle
 	tjs_int blend_x;
 	tjs_int sp;
 
-	blend_y += blend_y >> 7; /* adjust blend ratio */
+	blend_y += blend_y >> 7u; /* adjust blend ratio */
 EOF
 
 if($should_unroll == 1)
@@ -5872,23 +5872,23 @@ if($should_unroll == 1)
 		destlen -= 1;
 		while(destlen > 0)
 		{
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y);
 			srcstart += srcstep;
 
-			blend_x = (srcstart & 0xffff) >> 8;
-			sp = srcstart >> 16;
-			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+			blend_x = (srcstart & 0xffffu) >> 8u;
+			sp = srcstart >> 16u;
+			dest[1u] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 					blend_y);
 			srcstart += srcstep;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 		destlen += 1;
@@ -5898,11 +5898,11 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		blend_x = (srcstart & 0xffff) >> 8;
-		sp = srcstart >> 16;
-		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1], blend_x),
+		blend_x = (srcstart & 0xffffu) >> 8u;
+		sp = srcstart >> 16u;
+		dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src1[sp], src1[sp+1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(src2[sp], src2[sp+1u], blend_x),
 				blend_y);
 		srcstart += srcstep;
 		dest ++;
@@ -5915,7 +5915,7 @@ EOF
 ;#-----------------------------------------------------------------
 
 print FC <<EOF;
-#define AVG_PACKED(x, y) (((x) & (y)) + ((((x) ^ (y)) & 0xfefefefe) >> 1))
+#define AVG_PACKED(x, y) (((x) & (y)) + ((((x) ^ (y)) & 0xfefefefeu) >> 1u))
 
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPFastLinearInterpH2F_c, (tjs_uint32 *dest, tjs_int destlen, const tjs_uint32 *src))
@@ -5924,9 +5924,9 @@ TVP_GL_FUNC_DECL(void, TVPFastLinearInterpH2F_c, (tjs_uint32 *dest, tjs_int dest
 	destlen -= 2;
 	while(destlen > 0)
 	{
-		dest[0] = src[0];
-		dest[1] = AVG_PACKED(src[0], src[1]);
-		dest += 2;
+		dest[0u] = src[0u];
+		dest[1u] = AVG_PACKED(src[0u], src[1u]);
+		dest += 2u;
 		src ++;
 		destlen -= 2;
 	}
@@ -5935,7 +5935,7 @@ TVP_GL_FUNC_DECL(void, TVPFastLinearInterpH2F_c, (tjs_uint32 *dest, tjs_int dest
 
 	while(destlen > 0)
 	{
-		dest[0] = src[0];
+		dest[0u] = src[0u];
 		dest ++;
 		destlen --;
 	}
@@ -5953,9 +5953,9 @@ TVP_GL_FUNC_DECL(void, TVPFastLinearInterpH2B_c, (tjs_uint32 *dest, tjs_int dest
 	destlen -= 2;
 	while(destlen > 0)
 	{
-		dest[0] = src[0];
-		dest[1] = AVG_PACKED(src[0], src[-1]);
-		dest += 2;
+		dest[0u] = src[0u];
+		dest[1u] = AVG_PACKED(src[0u], src[-1u]);
+		dest += 2u;
 		src --;
 		destlen -= 2;
 	}
@@ -5964,7 +5964,7 @@ TVP_GL_FUNC_DECL(void, TVPFastLinearInterpH2B_c, (tjs_uint32 *dest, tjs_int dest
 
 	while(destlen > 0)
 	{
-		dest[0] = src[0];
+		dest[0u] = src[0u];
 		dest ++;
 		destlen --;
 	}
@@ -5987,13 +5987,13 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = AVG_PACKED(src0[0], src1[0]);
-			dest[1] = AVG_PACKED(src0[1], src1[1]);
-			dest[2] = AVG_PACKED(src0[2], src1[2]);
-			dest[3] = AVG_PACKED(src0[3], src1[3]);
-			dest += 4;
-			src0 += 4;
-			src1 += 4;
+			dest[0u] = AVG_PACKED(src0[0u], src1[0u]);
+			dest[1u] = AVG_PACKED(src0[1u], src1[1u]);
+			dest[2u] = AVG_PACKED(src0[2u], src1[2u]);
+			dest[3u] = AVG_PACKED(src0[3u], src1[3u]);
+			dest += 4u;
+			src0 += 4u;
+			src1 += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -6003,7 +6003,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = AVG_PACKED(src0[0], src1[0]);
+		dest[0u] = AVG_PACKED(src0[0u], src1[0u]);
 		dest ++;
 		src0 ++;
 		src1 ++;
@@ -6028,15 +6028,15 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = (dest[0] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			dest[0u] = (dest[0u] & 0xff000000u) + (src[srcstart >> 16u] & 0xffffffu);
 			srcstart += srcstep;
-			dest[1] = (dest[1] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			dest[1u] = (dest[1u] & 0xff000000u) + (src[srcstart >> 16u] & 0xffffffu);
 			srcstart += srcstep;
-			dest[2] = (dest[2] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			dest[2u] = (dest[2u] & 0xff000000u) + (src[srcstart >> 16u] & 0xffffffu);
 			srcstart += srcstep;
-			dest[3] = (dest[3] & 0xff000000) + (src[srcstart >> 16] & 0xffffff);
+			dest[3u] = (dest[3u] & 0xff000000u) + (src[srcstart >> 16u] & 0xffffffu);
 			srcstart += srcstep;
-			dest += 4;
+			dest += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -6046,7 +6046,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = (dest[0] & 0xff0000) + (src[srcstart >> 16] & 0xffffff);
+		dest[0u] = (dest[0u] & 0xff0000u) + (src[srcstart >> 16u] & 0xffffffu);
 		srcstart += srcstep;
 		dest ++;
 		destlen --;
@@ -6074,16 +6074,16 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[0u] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx, sy += stepy;
-			dest[1] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[1u] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx, sy += stepy;
-			dest[2] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[2u] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx, sy += stepy;
-			dest[3] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+			dest[3u] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 			sx += stepx, sy += stepy;
 
-			dest += 4;
+			dest += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -6093,7 +6093,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16));
+		dest[0u] = *( (const tjs_uint32*)((tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u));
 		sx += stepx, sy += stepy;
 		dest ++;
 		destlen --;
@@ -6121,31 +6121,31 @@ if($should_unroll == 1)
 			int blend_x, blend_y;
 			const tjs_uint32 *p0, *p1;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y);
 			sx += stepx, sy += stepy;
 
-			blend_x = (sx & 0xffff) >> 8;
-			blend_x += blend_x >> 7;
-			blend_y = (sy & 0xffff) >> 8;
-			blend_y += blend_y >> 7;
-			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+			blend_x = (sx & 0xffffu) >> 8u;
+			blend_x += blend_x >> 7u;
+			blend_y = (sy & 0xffffu) >> 8u;
+			blend_y += blend_y >> 7u;
+			p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 			p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-			dest[1] = TVP_GL_FUNCNAME(TVPBlendARGB)(
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+			dest[1u] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+				TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 					blend_y);
 			sx += stepx, sy += stepy;
 
-			dest += 2;
+			dest += 2u;
 			destlen -= 2;
 		}
 		destlen += 1;
@@ -6158,15 +6158,15 @@ print FC <<EOF;
 		int blend_x, blend_y;
 		const tjs_uint32 *p0, *p1;
 
-		blend_x = (sx & 0xffff) >> 8;
-		blend_x += blend_x >> 7;
-		blend_y = (sy & 0xffff) >> 8;
-		blend_y += blend_y >> 7;
-		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16)  )*srcpitch) + (sx>>16);
+		blend_x = (sx & 0xffffu) >> 8u;
+		blend_x += blend_x >> 7u;
+		blend_y = (sy & 0xffffu) >> 8u;
+		blend_y += blend_y >> 7u;
+		p0 = (const tjs_uint32*)((const tjs_uint8*)src + ((sy>>16u)  )*srcpitch) + (sx>>16u);
 		p1 = (const tjs_uint32*)((const tjs_uint8*)p0 + srcpitch);
-		dest[0] = TVP_GL_FUNCNAME(TVPBlendARGB)(
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0], p0[1], blend_x),
-			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0], p1[1], blend_x),
+		dest[0u] = TVP_GL_FUNCNAME(TVPBlendARGB)(
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p0[0u], p0[1u], blend_x),
+			TVP_GL_FUNCNAME(TVPBlendARGB)(p1[0u], p1[1u], blend_x),
 				blend_y);
 		sx += stepx, sy += stepy;
 
@@ -6192,16 +6192,16 @@ if($should_unroll == 1)
 		destlen -= 3;
 		while(destlen > 0)
 		{
-			dest[0] = (dest[0] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			dest[0u] = (dest[0u] & 0xff000000u) + (0x00ffffffu & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 			sx += stepx, sy += stepy;
-			dest[1] = (dest[1] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			dest[1u] = (dest[1u] & 0xff000000u) + (0x00ffffffu & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 			sx += stepx, sy += stepy;
-			dest[2] = (dest[2] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			dest[2u] = (dest[2u] & 0xff000000u) + (0x00ffffffu & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 			sx += stepx, sy += stepy;
-			dest[3] = (dest[3] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+			dest[3u] = (dest[3u] & 0xff000000u) + (0x00ffffffu & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 			sx += stepx, sy += stepy;
 
-			dest += 4;
+			dest += 4u;
 			destlen -= 4;
 		}
 		destlen += 3;
@@ -6211,7 +6211,7 @@ EOF
 print FC <<EOF;
 	while(destlen > 0)
 	{
-		dest[0] = (dest[0] & 0xff000000) + (0x00ffffff & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16)*srcpitch) + (sx>>16)));
+		dest[0u] = (dest[0u] & 0xff000000u) + (0x00ffffffu & *( (const tjs_uint32*)((const tjs_uint8*)src + (sy>>16u)*srcpitch) + (sx>>16u)));
 		sx += stepx, sy += stepy;
 		dest ++;
 		destlen --;
@@ -6252,14 +6252,14 @@ EOF
 }
 
 $content = <<EOF;
-	a = dest[{ofs}] & 0xffffff;;
-	if(a != key) a |= 0xff000000;;
+	a = dest[{ofs}] & 0xffffffu;;
+	if(a != key) a |= 0xff000000u;;
 	dest[{ofs}] = a;;
 EOF
 
 $content2 = <<EOF;
-	b = dest[{ofs}] & 0xffffff;;
-	if(b != key) b |= 0xff000000;;
+	b = dest[{ofs}] & 0xffffffu;;
+	if(b != key) b |= 0xff000000u;;
 	dest[{ofs}] = b;;
 EOF
 
@@ -6296,8 +6296,8 @@ EOF
 
 $content = <<EOF;
 		{
-			dest[{ofs}] = (dest[{ofs}] & 0xffffff) +
-				(src[{ofs}] & 0xff000000);
+			dest[{ofs}] = (dest[{ofs}] & 0xffffffu) +
+				(src[{ofs}] & 0xff000000u);
 		}
 EOF
 
@@ -6349,8 +6349,8 @@ EOF
 
 $content = <<EOF;
 {
-	dest[{ofs}] = (dest[{ofs}] & 0xff000000) +
-		(src[{ofs}] & 0x00ffffff);
+	dest[{ofs}] = (dest[{ofs}] & 0xff000000u) +
+		(src[{ofs}] & 0x00ffffffu);
 }
 EOF
 
@@ -6401,7 +6401,7 @@ EOF
 
 $content = <<EOF;
 {
-	main[{ofs}] = (main[{ofs}] & 0xffffff) + (mask[{ofs}] << 24);
+	main[{ofs}] = (main[{ofs}] & 0xffffffu) + (mask[{ofs}] << 24u);
 }
 EOF
 
@@ -6520,19 +6520,19 @@ EOF
 
 print FC <<EOF;
 
-	color &= 0xffffff;
+	color &= 0xffffffu;
 EOF
 
 $content = <<EOF;
 	t1 = dest[{ofs}];;
-	t1 &= 0xff000000;;
+	t1 &= 0xff000000u;;
 	t1 += color;;
 	dest[{ofs}] = t1;;
 EOF
 
 $content2 = <<EOF;
 	t2 = dest[{ofs}];;
-	t2 &= 0xff000000;;
+	t2 &= 0xff000000u;;
 	t2 += color;;
 	dest[{ofs}] = t2;;
 EOF
@@ -6580,19 +6580,19 @@ EOF
 }
 
 print FC <<EOF;
-	mask <<= 24;
+	mask <<= 24u;
 EOF
 
 $content = <<EOF;
 	t1 = dest[{ofs}];;
-	t1 &= 0x00ffffff;;
+	t1 &= 0x00ffffffu;;
 	t1 += mask;;
 	dest[{ofs}] = t1;;
 EOF
 
 $content2 = <<EOF;
 	t2 = dest[{ofs}];;
-	t2 &= 0x00ffffff;;
+	t2 &= 0x00ffffffu;;
 	t2 += mask;;
 	dest[{ofs}] = t2;;
 EOF
@@ -6626,10 +6626,10 @@ $content = <<EOF;
 	tjs_uint32 add, sub;
 	add = addline[{ofs}];
 	sub = subline[{ofs}];
-	dest[{ofs}*4+0] += ((add    ) & 0xff) - ((sub    ) & 0xff);
-	dest[{ofs}*4+1] += ((add>>8 ) & 0xff) - ((sub>>8 ) & 0xff);
-	dest[{ofs}*4+2] += ((add>>16) & 0xff) - ((sub>>16) & 0xff);
-	dest[{ofs}*4+3] += ((add>>24)       ) - ((sub>>24)       );
+	dest[{ofs}*4u+0u] += ((add    ) & 0xffu) - ((sub    ) & 0xffu);
+	dest[{ofs}*4u+1u] += ((add>>8u ) & 0xffu) - ((sub>>8u ) & 0xffu);
+	dest[{ofs}*4u+2u] += ((add>>16u) & 0xffu) - ((sub>>16u) & 0xffu);
+	dest[{ofs}*4u+3u] += ((add>>24u)       ) - ((sub>>24u)       );
 }
 EOF
 
@@ -6654,12 +6654,12 @@ $content = <<EOF;
 	tjs_int add_a, sub_a;
 	add = addline[{ofs}];
 	sub = subline[{ofs}];
-	dest[{ofs}*4+3] += (add_a = (add>>24)       ) - (sub_a = (sub>>24)       );
-	add_a += add_a >> 7;
-	sub_a += sub_a >> 7;
-	dest[{ofs}*4+0] += (((add    ) & 0xff) * add_a >> 8) - (((sub    ) & 0xff) * sub_a >> 8);
-	dest[{ofs}*4+1] += (((add>>8 ) & 0xff) * add_a >> 8) - (((sub>>8 ) & 0xff) * sub_a >> 8);
-	dest[{ofs}*4+2] += (((add>>16) & 0xff) * add_a >> 8) - (((sub>>16) & 0xff) * sub_a >> 8);
+	dest[{ofs}*4u+3u] += (add_a = (add>>24u)       ) - (sub_a = (sub>>24u)       );
+	add_a += add_a >> 7u;
+	sub_a += sub_a >> 7u;
+	dest[{ofs}*4u+0u] += (((add    ) & 0xffu) * add_a >> 8u) - (((sub    ) & 0xffu) * sub_a >> 8u);
+	dest[{ofs}*4u+1u] += (((add>>8u ) & 0xffu) * add_a >> 8u) - (((sub>>8u ) & 0xffu) * sub_a >> 8u);
+	dest[{ofs}*4u+2u] += (((add>>16u) & 0xffu) * add_a >> 8u) - (((sub>>16u) & 0xffu) * sub_a >> 8u);
 }
 EOF
 
@@ -6683,10 +6683,10 @@ $content = <<EOF;
 	tjs_uint32 add, sub;
 	add = addline[{ofs}];
 	sub = subline[{ofs}];
-	dest[{ofs}*4+0] += ((add    ) & 0xff) - ((sub    ) & 0xff);
-	dest[{ofs}*4+1] += ((add>>8 ) & 0xff) - ((sub>>8 ) & 0xff);
-	dest[{ofs}*4+2] += ((add>>16) & 0xff) - ((sub>>16) & 0xff);
-	dest[{ofs}*4+3] += ((add>>24)       ) - ((sub>>24)       );
+	dest[{ofs}*4u+0u] += ((add    ) & 0xffu) - ((sub    ) & 0xffu);
+	dest[{ofs}*4u+1u] += ((add>>8u ) & 0xffu) - ((sub>>8u ) & 0xffu);
+	dest[{ofs}*4u+2u] += ((add>>16u) & 0xffu) - ((sub>>16u) & 0xffu);
+	dest[{ofs}*4u+3u] += ((add>>24u)       ) - ((sub>>24u)       );
 }
 EOF
 
@@ -6711,12 +6711,12 @@ $content = <<EOF;
 	tjs_int add_a, sub_a;
 	add = addline[{ofs}];
 	sub = subline[{ofs}];
-	dest[{ofs}*4+3] += (add_a = (add>>24)       ) - (sub_a = (sub>>24)       );
-	add_a += add_a >> 7;
-	sub_a += sub_a >> 7;
-	dest[{ofs}*4+0] += (((add    ) & 0xff) * add_a >> 8) - (((sub    ) & 0xff) * sub_a >> 8);
-	dest[{ofs}*4+1] += (((add>>8 ) & 0xff) * add_a >> 8) - (((sub>>8 ) & 0xff) * sub_a >> 8);
-	dest[{ofs}*4+2] += (((add>>16) & 0xff) * add_a >> 8) - (((sub>>16) & 0xff) * sub_a >> 8);
+	dest[{ofs}*4u+3u] += (add_a = (add>>24u)       ) - (sub_a = (sub>>24u)       );
+	add_a += add_a >> 7u;
+	sub_a += sub_a >> 7u;
+	dest[{ofs}*4u+0u] += (((add    ) & 0xffu) * add_a >> 8u) - (((sub    ) & 0xffu) * sub_a >> 8u);
+	dest[{ofs}*4u+1u] += (((add>>8u ) & 0xffu) * add_a >> 8u) - (((sub>>8u ) & 0xffu) * sub_a >> 8u);
+	dest[{ofs}*4u+2u] += (((add>>16u) & 0xffu) * add_a >> 8u) - (((sub>>16u) & 0xffu) * sub_a >> 8u);
 }
 EOF
 
@@ -6733,22 +6733,22 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDoBoxBlurAvg16_c, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len))
 {
-	tjs_int rcp = (1<<16) / n;
-	tjs_int half_n = n >> 1;
+	tjs_int rcp = (1u<<16u) / n;
+	tjs_int half_n = n >> 1u;
 EOF
 
 $content = <<EOF;
 {
 	dest[{ofs}] =
-		(((sum[0] + half_n) * rcp >> 16)       )+
-		(((sum[1] + half_n) * rcp >> 16) << 8  )+
-		(((sum[2] + half_n) * rcp >> 16) << 16 )+
-		(((sum[3] + half_n) * rcp >> 16) << 24 );
+		(((sum[0u] + half_n) * rcp >> 16u)       )+
+		(((sum[1u] + half_n) * rcp >> 16u) << 8u  )+
+		(((sum[2u] + half_n) * rcp >> 16u) << 16u )+
+		(((sum[3u] + half_n) * rcp >> 16u) << 24u );
 
-	sum[0] += add[{ofs}*4+0] - sub[{ofs}*4+0];
-	sum[1] += add[{ofs}*4+1] - sub[{ofs}*4+1];
-	sum[2] += add[{ofs}*4+2] - sub[{ofs}*4+2];
-	sum[3] += add[{ofs}*4+3] - sub[{ofs}*4+3];
+	sum[0u] += add[{ofs}*4u+0u] - sub[{ofs}*4u+0u];
+	sum[1u] += add[{ofs}*4u+1u] - sub[{ofs}*4u+1u];
+	sum[2u] += add[{ofs}*4u+2u] - sub[{ofs}*4u+2u];
+	sum[3u] += add[{ofs}*4u+3u] - sub[{ofs}*4u+3u];
 }
 EOF
 
@@ -6765,24 +6765,24 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPDoBoxBlurAvg16_d_c, (tjs_uint32 *dest, tjs_uint16 *sum, const tjs_uint16 * add, const tjs_uint16 * sub, tjs_int n, tjs_int len))
 {
-	tjs_int rcp = (1<<16) / n;
-	tjs_int half_n = n >> 1;
+	tjs_int rcp = (1u<<16u) / n;
+	tjs_int half_n = n >> 1u;
 EOF
 
 $content = <<EOF;
 {
-	tjs_int a = ((sum[3] + half_n) * rcp >> 16);
-	tjs_uint8 * t = TVPDivTable + (a << 8);
+	tjs_int a = ((sum[3u] + half_n) * rcp >> 16u);
+	tjs_uint8 * t = TVPDivTable + (a << 8u);
 	dest[{ofs}] =
-		(t[(sum[0] + half_n) * rcp >> 16]       )+
-		(t[(sum[1] + half_n) * rcp >> 16] << 8  )+
-		(t[(sum[2] + half_n) * rcp >> 16] << 16 )+
-		(a << 24 );
+		(t[(sum[0u] + half_n) * rcp >> 16u]       )+
+		(t[(sum[1u] + half_n) * rcp >> 16u] << 8u  )+
+		(t[(sum[2u] + half_n) * rcp >> 16u] << 16u )+
+		(a << 24u );
 
-	sum[0] += add[{ofs}*4+0] - sub[{ofs}*4+0];
-	sum[1] += add[{ofs}*4+1] - sub[{ofs}*4+1];
-	sum[2] += add[{ofs}*4+2] - sub[{ofs}*4+2];
-	sum[3] += add[{ofs}*4+3] - sub[{ofs}*4+3];
+	sum[0u] += add[{ofs}*4u+0u] - sub[{ofs}*4u+0u];
+	sum[1u] += add[{ofs}*4u+1u] - sub[{ofs}*4u+1u];
+	sum[2u] += add[{ofs}*4u+2u] - sub[{ofs}*4u+2u];
+	sum[3u] += add[{ofs}*4u+3u] - sub[{ofs}*4u+3u];
 }
 EOF
 
@@ -6800,21 +6800,21 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPDoBoxBlurAvg32_c, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len))
 {
 	/* This function is very slow since using divisiion in loop. Function written in assembly should be used. */
-	tjs_int half_n = n >> 1;
+	tjs_int half_n = n >> 1u;
 EOF
 
 $content = <<EOF;
 {
 	dest[{ofs}] =
-		(((sum[0] + half_n) / n)       )+
-		(((sum[1] + half_n) / n) << 8  )+
-		(((sum[2] + half_n) / n) << 16 )+
-		(((sum[3] + half_n) / n) << 24 );
+		(((sum[0u] + half_n) / n)       )+
+		(((sum[1u] + half_n) / n) << 8u  )+
+		(((sum[2u] + half_n) / n) << 16u )+
+		(((sum[3u] + half_n) / n) << 24u );
 
-	sum[0] += add[{ofs}*4+0] - sub[{ofs}*4+0];
-	sum[1] += add[{ofs}*4+1] - sub[{ofs}*4+1];
-	sum[2] += add[{ofs}*4+2] - sub[{ofs}*4+2];
-	sum[3] += add[{ofs}*4+3] - sub[{ofs}*4+3];
+	sum[0u] += add[{ofs}*4u+0u] - sub[{ofs}*4u+0u];
+	sum[1u] += add[{ofs}*4u+1u] - sub[{ofs}*4u+1u];
+	sum[2u] += add[{ofs}*4u+2u] - sub[{ofs}*4u+2u];
+	sum[3u] += add[{ofs}*4u+3u] - sub[{ofs}*4u+3u];
 }
 EOF
 
@@ -6832,23 +6832,23 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPDoBoxBlurAvg32_d_c, (tjs_uint32 *dest, tjs_uint32 *sum, const tjs_uint32 * add, const tjs_uint32 * sub, tjs_int n, tjs_int len))
 {
 	/* This function is very slow since using divisiion in loop. Function written in assembly should be used. */
-	tjs_int half_n = n >> 1;
+	tjs_int half_n = n >> 1u;
 EOF
 
 $content = <<EOF;
 {
-	tjs_int a = ((sum[3] + half_n) / n);
-	tjs_uint8 * t = TVPDivTable + (a << 8);
+	tjs_int a = ((sum[3u] + half_n) / n);
+	tjs_uint8 * t = TVPDivTable + (a << 8u);
 	dest[{ofs}] =
-		(t[(sum[0] + half_n) / n]       )+
-		(t[(sum[1] + half_n) / n] << 8  )+
-		(t[(sum[2] + half_n) / n] << 16 )+
-		(a << 24 );
+		(t[(sum[0u] + half_n) / n]       )+
+		(t[(sum[1u] + half_n) / n] << 8u  )+
+		(t[(sum[2u] + half_n) / n] << 16u )+
+		(a << 24u );
 
-	sum[0] += add[{ofs}*4+0] - sub[{ofs}*4+0];
-	sum[1] += add[{ofs}*4+1] - sub[{ofs}*4+1];
-	sum[2] += add[{ofs}*4+2] - sub[{ofs}*4+2];
-	sum[3] += add[{ofs}*4+3] - sub[{ofs}*4+3];
+	sum[0u] += add[{ofs}*4u+0u] - sub[{ofs}*4u+0u];
+	sum[1u] += add[{ofs}*4u+1u] - sub[{ofs}*4u+1u];
+	sum[2u] += add[{ofs}*4u+2u] - sub[{ofs}*4u+2u];
+	sum[3u] += add[{ofs}*4u+3u] - sub[{ofs}*4u+3u];
 }
 EOF
 
@@ -6874,7 +6874,7 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPSwapLine8_c, (tjs_uint8 *line1, tjs_uint8 *line2, tjs_int len))
 {
-	#define swap_tmp_buf_size 256
+	#define swap_tmp_buf_size 256u
 	tjs_uint8 swap_tmp_buf[swap_tmp_buf_size];
 	while(len > 0)
 	{
@@ -6964,8 +6964,8 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPReverse8_c, (tjs_uint8 *pixels, tjs_int len))
 {
-	tjs_uint8 *pixels2 = pixels + len -1;
-	len/=2;
+	tjs_uint8 *pixels2 = pixels + len -1u;
+	len/=2u;
 EOF
 
 $content = <<EOF;
@@ -7004,8 +7004,8 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPReverse32_c, (tjs_uint32 *pixels, tjs_int len))
 {
-	tjs_uint32 *pixels2 = pixels + len -1;
-	len/=2;
+	tjs_uint32 *pixels2 = pixels + len -1u;
+	len/=2u;
 EOF
 
 $content = <<EOF;
@@ -7065,19 +7065,19 @@ EOF
 
 $content = <<EOF;
 	s1 = dest[{ofs}];;
-	d1 = (s1&0xff)*19;;
-	d1 += ((s1 >> 8)&0xff)*183;;
-	d1 += ((s1 >> 16)&0xff)*54;;
-	d1 = (d1 >> 8) * 0x10101 + (s1 & 0xff000000);;
+	d1 = (s1&0xffu)*19u;;
+	d1 += ((s1 >> 8u)&0xffu)*183u;;
+	d1 += ((s1 >> 16u)&0xffu)*54u;;
+	d1 = (d1 >> 8u) * 0x10101u + (s1 & 0xff000000u);;
 	dest[{ofs}] = d1;;
 EOF
 
 $content2 = <<EOF;
 	s2 = dest[{ofs}];;
-	d2 = (s2&0xff)*19;;
-	d2 += ((s2 >> 8)&0xff)*183;;
-	d2 += ((s2 >> 16)&0xff)*54;;
-	d2 = (d2 >> 8) * 0x10101 + (s2 & 0xff000000);;
+	d2 = (s2&0xffu)*19u;;
+	d2 += ((s2 >> 8u)&0xffu)*183u;;
+	d2 += ((s2 >> 16u)&0xffu)*54u;;
+	d2 = (d2 >> 8u) * 0x10101u + (s2 & 0xff000000u);;
 	dest[{ofs}] = d2;;
 EOF
 
@@ -7113,7 +7113,7 @@ EOF
 $content = <<EOF;
 {
 	tjs_uint32 s = *dest;
-	*dest = ( ( ( s & 0xff0000 ) >> 16 ) | ( s & 0xff00ff00 ) | ( ( s & 0xff ) << 16 ) );
+	*dest = ( ( ( s & 0xff0000u ) >> 16u ) | ( s & 0xff00ff00u ) | ( ( s & 0xffu ) << 16u ) );
 	dest++;
 }
 EOF
@@ -7136,7 +7136,7 @@ EOF
 $content = <<EOF;
 {
 	tjs_uint32 s = *src;
-	*dest = ( ( ( s & 0xff0000 ) >> 16 ) | ( s & 0xff00ff00 ) | ( ( s & 0xff ) << 16 ) );
+	*dest = ( ( ( s & 0xff0000u ) >> 16u ) | ( s & 0xff00ff00u ) | ( ( s & 0xffu ) << 16u ) );
 	src++;
 	dest++;
 }
@@ -7232,15 +7232,15 @@ EOF
 
 $content = <<EOF;
 	d1 = dest[{ofs}];;
-	if(d1 > 0x00ffffff)
+	if(d1 > 0x00ffffffu)
 	{
 		/* process only non-fully-transparent pixel */
-		t1 = temp->B[d1 & 0xff];;
-		d1 >>= 8;;
-		t1 += (temp->G[d1 & 0xff]<<8);;
-		d1 >>= 8;;
-		t1 += (temp->R[d1 & 0xff]<<16);;
-		t1 += ((d1 & 0xff00) << 16);;
+		t1 = temp->B[d1 & 0xffu];;
+		d1 >>= 8u;;
+		t1 += (temp->G[d1 & 0xffu]<<8u);;
+		d1 >>= 8u;;
+		t1 += (temp->R[d1 & 0xffu]<<16u);;
+		t1 += ((d1 & 0xff00u) << 16u);;
 		dest[{ofs}] = t1;;
 	}
 EOF
@@ -7269,45 +7269,45 @@ $content = <<EOF;
 
 	d = dest[{ofs}];
 
-	if(d >= 0xff000000)
+	if(d >= 0xff000000u)
 	{
 		/* completely opaque */
-		t = d & 0xff;
+		t = d & 0xffu;
 		d_tmp =   temp->B[t];
-		t = (d>>8) & 0xff;
-		d_tmp |=  temp->G[t] << 8;
-		t = (d>>16) & 0xff; 
-		d_tmp |=  temp->R[t] << 16;
-		d_tmp |= 0xff000000;
+		t = (d>>8u) & 0xffu;
+		d_tmp |=  temp->G[t] << 8u;
+		t = (d>>16u) & 0xffu; 
+		d_tmp |=  temp->R[t] << 16u;
+		d_tmp |= 0xff000000u;
 		dest[{ofs}] = d_tmp;
 	}
-	else if(d != 0)
+	else if(d != 0u)
 	{
 		/* not completely transparent */
-		alpha = d >> 24;
-		alpha_adj = alpha + (alpha >> 7);
+		alpha = d >> 24u;
+		alpha_adj = alpha + (alpha >> 7u);
 		recip = TVPRecipTable256_16[alpha];
 
 		/* B */
-		t = d & 0xff;
+		t = d & 0xffu;
 		if(t > alpha)
-			d_tmp = (temp->B[255] * alpha_adj >> 8) + t - alpha;
+			d_tmp = (temp->B[255u] * alpha_adj >> 8u) + t - alpha;
 		else
-			d_tmp = temp->B[recip * t >> 8] * alpha_adj >> 8;
+			d_tmp = temp->B[recip * t >> 8u] * alpha_adj >> 8u;
 		/* G */
-		t = (d>>8) & 0xff; 
+		t = (d>>8u) & 0xffu; 
 		if(t > alpha)
-			d_tmp |= ((temp->G[255] * alpha_adj >> 8) + t - alpha) << 8;
+			d_tmp |= ((temp->G[255u] * alpha_adj >> 8u) + t - alpha) << 8u;
 		else
-			d_tmp |= (temp->G[recip * t >> 8] * alpha_adj >> 8) << 8;
+			d_tmp |= (temp->G[recip * t >> 8u] * alpha_adj >> 8u) << 8u;
 		/* R */
-		t = (d>>16) & 0xff; 
+		t = (d>>16u) & 0xffu; 
 		if(t > alpha)
-			d_tmp |= ((temp->R[255] * alpha_adj >> 8) + t - alpha) << 16;
+			d_tmp |= ((temp->R[255u] * alpha_adj >> 8u) + t - alpha) << 16u;
 		else
-			d_tmp |= (temp->R[recip * t >> 8] * alpha_adj >> 8) << 16;
+			d_tmp |= (temp->R[recip * t >> 8u] * alpha_adj >> 8u) << 16u;
 		/* A */
-		d_tmp |= d & 0xff000000;
+		d_tmp |= d & 0xff000000u;
 
 		dest[{ofs}] = d_tmp;
 	}
@@ -7355,14 +7355,14 @@ EOF
 }
 
 $content = <<EOF;
-	a = (src[{ofs}] * level >> 18);;
-	if(a>=64) a = 64;;
+	a = (src[{ofs}] * level >> 18u);;
+	if(a>=64u) a = 64u;;
 	dest[{ofs}] = a;;
 EOF
 
 $content2 = <<EOF;
-	b = (src[{ofs}] * level >> 18);;
-	if(b>=64) b = 64;;
+	b = (src[{ofs}] * level >> 18u);;
+	if(b>=64u) b = 64u;;
 	dest[{ofs}] = b;;
 EOF
 
@@ -7409,14 +7409,14 @@ EOF
 }
 
 $content = <<EOF;
-	a = dest[{ofs}] +(src[{ofs}] * level >> 18);;
-	if(a>=64) a = 64;;
+	a = dest[{ofs}] +(src[{ofs}] * level >> 18u);;
+	if(a>=64u) a = 64u;;
 	dest[{ofs}] = a;;
 EOF
 
 $content2 = <<EOF;
-	b = dest[{ofs}] +(src[{ofs}] * level >> 18);;
-	if(b>=64) b = 64;;
+	b = dest[{ofs}] +(src[{ofs}] * level >> 18u);;
+	if(b>=64u) b = 64u;;
 	dest[{ofs}] = b;;
 EOF
 
@@ -7460,8 +7460,8 @@ TVP_GL_FUNC_STATIC_DECL(tjs_uint, fast_int_hypot, (tjs_int lx, tjs_int ly))
 		len1 = ly ; len2 = lx;
 	}
 
-	t = len2 + (len2 >> 1) ;
-	length = len1 - (len1 >> 5) - (len1 >> 7) + (t >> 2) + (t >> 6) ;
+	t = len2 + (len2 >> 1u) ;
+	length = len1 - (len1 >> 5u) - (len1 >> 7u) + (t >> 2u) + (t >> 6u) ;
 	return length;
 }
 
@@ -7484,21 +7484,21 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy65_c, (tjs_uint8 *dest, tjs_int destpitch, t
 	tjs_int lvsum, x, y;
 
 	/* clear destination */
-	memset(dest, 0, destpitch*destheight);
+	memset(dest, 0u, destpitch*destheight);
 
 	/* compute filter level */
-	lvsum = 0;
+	lvsum = 0u;
 	for(y = -blurwidth; y <= blurwidth; y++)
 	{
 		for(x = -blurwidth; x <= blurwidth; x++)
 		{
 			tjs_int len = TVP_GL_FUNCNAME(fast_int_hypot)(x, y);
 			if(len <= blurwidth)
-				lvsum += (blurwidth - len +1);
+				lvsum += (blurwidth - len +1u);
 		}
 	}
 
-	if(lvsum) lvsum = (1<<18)/lvsum; else lvsum=(1<<18);
+	if(lvsum) lvsum = (1u<<18u)/lvsum; else lvsum=(1u<<18u);
 
 	/* apply */
 	for(y = -blurwidth; y <= blurwidth; y++)
@@ -7510,10 +7510,10 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy65_c, (tjs_uint8 *dest, tjs_int destpitch, t
 			{
 				tjs_int sy;
 
-				len = blurwidth - len +1;
+				len = blurwidth - len +1u;
 				len *= lvsum;
 				len *= blurlevel;
-				len >>= 8;
+				len >>= 8u;
 				for(sy = 0; sy < srcheight; sy++)
 				{
 					TVPChBlurAddMulCopy65(dest + (y + sy + blurwidth)*destpitch + x + blurwidth, 
@@ -7564,35 +7564,35 @@ EOF
 
 if($should_unroll == 1) {
 print FC <<EOF;
-		int ___index = 0;
+		int ___index = 0u;
 EOF
 	print FC <<EOF;
-		len -= (4-1);
+		len -= (4u-1u);
 
 		while(___index < len)
 		{
-			a = (src[(___index+(0*2))] * level >> 18);
-			b = (src[(___index+(0*2+1))] * level >> 18);
-			if(a>=255) a = 255;
-			if(b>=255) b = 255;
-			dest[(___index+(0*2))] = a;
-			dest[(___index+(0*2+1))] = b;
-			a = (src[(___index+(1*2))] * level >> 18);
-			b = (src[(___index+(1*2+1))] * level >> 18);
-			if(a>=255) a = 255;
-			if(b>=255) b = 255;
-			dest[(___index+(1*2))] = a;
-			dest[(___index+(1*2+1))] = b;
-			___index += 4;
+			a = (src[(___index+(0u*2u))] * level >> 18u);
+			b = (src[(___index+(0u*2u+1u))] * level >> 18u);
+			if(a>=255u) a = 255u;
+			if(b>=255u) b = 255u;
+			dest[(___index+(0u*2u))] = a;
+			dest[(___index+(0u*2u+1u))] = b;
+			a = (src[(___index+(1u*2u))] * level >> 18u);
+			b = (src[(___index+(1u*2u+1u))] * level >> 18u);
+			if(a>=255u) a = 255u;
+			if(b>=255u) b = 255u;
+			dest[(___index+(1u*2u))] = a;
+			dest[(___index+(1u*2u+1u))] = b;
+			___index += 4u;
 		}
 
-		len += (4-1);
+		len += (4u-1u);
 EOF
 print FC <<EOF;
 		while(___index < len)
 		{
-			a = (src[___index] * level >> 18);;
-			if(a>=255) a = 255;
+			a = (src[___index] * level >> 18u);;
+			if(a>=255u) a = 255u;
 			dest[___index] = a;;
 			___index ++;
 		}
@@ -7601,10 +7601,10 @@ EOF
 else
 {
 print FC <<EOF;
-		for(int ___index = 0; ___index < len; ___index++)
+		for(int ___index = 0u; ___index < len; ___index++)
 		{
-			a = (src[___index] * level >> 18);;
-			if(a>=255) a = 255;
+			a = (src[___index] * level >> 18u);;
+			if(a>=255u) a = 255u;
 			dest[___index] = a;;
 		}
 EOF
@@ -7655,35 +7655,35 @@ EOF
 
 if($should_unroll == 1) {
 print FC <<EOF;
-		int ___index = 0;
+		int ___index = 0u;
 EOF
 	print FC <<EOF;
-		len -= (4-1);
+		len -= (4u-1u);
 
 		while(___index < len)
 		{
-			a = dest[(___index+(0*2))] +(src[(___index+(0*2))] * level >> 18);
-			b = dest[(___index+(0*2+1))] +(src[(___index+(0*2+1))] * level >> 18);
-			if(a>=255) a = 255;
-			if(b>=255) b = 255;
-			dest[(___index+(0*2))] = a;
-			dest[(___index+(0*2+1))] = b;
-			a = dest[(___index+(1*2))] +(src[(___index+(1*2))] * level >> 18);
-			b = dest[(___index+(1*2+1))] +(src[(___index+(1*2+1))] * level >> 18);
-			if(a>=255) a = 255;
-			if(b>=255) b = 255;
-			dest[(___index+(1*2))] = a;
-			dest[(___index+(1*2+1))] = b;
-			___index += 4;
+			a = dest[(___index+(0u*2u))] +(src[(___index+(0u*2u))] * level >> 18u);
+			b = dest[(___index+(0u*2u+1u))] +(src[(___index+(0u*2u+1u))] * level >> 18u);
+			if(a>=255u) a = 255u;
+			if(b>=255u) b = 255u;
+			dest[(___index+(0u*2u))] = a;
+			dest[(___index+(0u*2u+1u))] = b;
+			a = dest[(___index+(1u*2u))] +(src[(___index+(1u*2u))] * level >> 18u);
+			b = dest[(___index+(1u*2u+1u))] +(src[(___index+(1u*2u+1u))] * level >> 18u);
+			if(a>=255u) a = 255u;
+			if(b>=255u) b = 255u;
+			dest[(___index+(1u*2u))] = a;
+			dest[(___index+(1u*2u+1u))] = b;
+			___index += 4u;
 		}
 
-		len += (4-1);
+		len += (4u-1u);
 EOF
 print FC <<EOF;
 		while(___index < len)
 		{
-			a = dest[___index] +(src[___index] * level >> 18);;
-			if(a>=255) a = 255;;
+			a = dest[___index] +(src[___index] * level >> 18u);;
+			if(a>=255u) a = 255u;;
 			dest[___index] = a;;
 			___index ++;
 		}
@@ -7692,10 +7692,10 @@ EOF
 else
 {
 print FC <<EOF;
-		for(int ___index = 0; ___index < len; ___index++)
+		for(int ___index = 0u; ___index < len; ___index++)
 		{
-			a = dest[___index] +(src[___index] * level >> 18);;
-			if(a>=255) a = 255;;
+			a = dest[___index] +(src[___index] * level >> 18u);;
+			if(a>=255u) a = 255u;;
 			dest[___index] = a;;
 			___index ++;
 		}
@@ -7728,7 +7728,7 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs
 	tjs_int lvsum, x, y;
 
 	/* clear destination */
-	memset(dest, 0, destpitch*destheight);
+	memset(dest, 0u, destpitch*destheight);
 
 	/* compute filter level */
 	lvsum = 0;
@@ -7742,7 +7742,7 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs
 		}
 	}
 
-	if(lvsum) lvsum = (1<<18)/lvsum; else lvsum=(1<<18);
+	if(lvsum) lvsum = (1u<<18u)/lvsum; else lvsum=(1u<<18u);
 
 	/* apply */
 	for(y = -blurwidth; y <= blurwidth; y++)
@@ -7754,11 +7754,11 @@ TVP_GL_FUNC_DECL(void, TVPChBlurCopy_c, (tjs_uint8 *dest, tjs_int destpitch, tjs
 			{
 				tjs_int sy;
 
-				len = blurwidth - len +1;
+				len = blurwidth - len +1u;
 				len *= lvsum;
 				len *= blurlevel;
-				len >>= 8;
-				for(sy = 0; sy < srcheight; sy++)
+				len >>= 8u;
+				for(sy = 0u; sy < srcheight; sy++)
 				{
 					TVPChBlurAddMulCopy(dest + (y + sy + blurwidth)*destpitch + x + blurwidth, 
 						src + sy * srcpitch, srcwidth, len);
@@ -7788,27 +7788,27 @@ TVP_GL_FUNC_DECL(void, TVPBLExpand1BitTo8BitPal_c, (tjs_uint8 *dest, const tjs_u
 	tjs_uint8 *d=dest, *dlim;
 	tjs_uint8 b;
 
-	p[0] = pal[0]&0xff, p[1] = pal[1]&0xff;
-	dlim = dest + len-7;
+	p[0u] = pal[0u]&0xffu, p[1u] = pal[1u]&0xffu;
+	dlim = dest + len-7u;
 	while(d < dlim)
 	{
 		b = *(buf++);
-		d[0] = p[(tjs_uint)(b&(tjs_uint)0x80)>>7];
-		d[1] = p[(tjs_uint)(b&(tjs_uint)0x40)>>6];
-		d[2] = p[(tjs_uint)(b&(tjs_uint)0x20)>>5];
-		d[3] = p[(tjs_uint)(b&(tjs_uint)0x10)>>4];
-		d[4] = p[(tjs_uint)(b&(tjs_uint)0x08)>>3];
-		d[5] = p[(tjs_uint)(b&(tjs_uint)0x04)>>2];
-		d[6] = p[(tjs_uint)(b&(tjs_uint)0x02)>>1];
-		d[7] = p[(tjs_uint)(b&(tjs_uint)0x01)   ];
-		d += 8;
+		d[0u] = p[(tjs_uint)(b&(tjs_uint)0x80u)>>7u];
+		d[1u] = p[(tjs_uint)(b&(tjs_uint)0x40u)>>6u];
+		d[2u] = p[(tjs_uint)(b&(tjs_uint)0x20u)>>5u];
+		d[3u] = p[(tjs_uint)(b&(tjs_uint)0x10u)>>4u];
+		d[4u] = p[(tjs_uint)(b&(tjs_uint)0x08u)>>3u];
+		d[5u] = p[(tjs_uint)(b&(tjs_uint)0x04u)>>2u];
+		d[6u] = p[(tjs_uint)(b&(tjs_uint)0x02u)>>1u];
+		d[7u] = p[(tjs_uint)(b&(tjs_uint)0x01u)   ];
+		d += 8u;
 	}
 	dlim = dest + len;
 	b = *buf;
 	while(d<dlim)
 	{
-		*(d++) = (b&0x80) ? p[1] : p[0];
-		b<<=1;
+		*(d++) = (b&0x80u) ? p[1u] : p[0u];
+		b<<=1u;
 	}
 }
 EOF
@@ -7822,26 +7822,26 @@ TVP_GL_FUNC_DECL(void, TVPBLExpand1BitTo8Bit_c, (tjs_uint8 *dest, const tjs_uint
 	tjs_uint8 *d=dest, *dlim;
 	tjs_uint8 b;
 
-	dlim = dest + len-7;
+	dlim = dest + len-7u;
 	while(d < dlim)
 	{
 		b = *(buf++);
-		d[0] = (tjs_uint8)((b&(tjs_uint)0x80)>>7);
-		d[1] = (tjs_uint8)((b&(tjs_uint)0x40)>>6);
-		d[2] = (tjs_uint8)((b&(tjs_uint)0x20)>>5);
-		d[3] = (tjs_uint8)((b&(tjs_uint)0x10)>>4);
-		d[4] = (tjs_uint8)((b&(tjs_uint)0x08)>>3);
-		d[5] = (tjs_uint8)((b&(tjs_uint)0x04)>>2);
-		d[6] = (tjs_uint8)((b&(tjs_uint)0x02)>>1);
-		d[7] = (tjs_uint8)((b&(tjs_uint)0x01)   );
-		d += 8;
+		d[0u] = (tjs_uint8)((b&(tjs_uint)0x80u)>>7u);
+		d[1u] = (tjs_uint8)((b&(tjs_uint)0x40u)>>6u);
+		d[2u] = (tjs_uint8)((b&(tjs_uint)0x20u)>>5u);
+		d[3u] = (tjs_uint8)((b&(tjs_uint)0x10u)>>4u);
+		d[4u] = (tjs_uint8)((b&(tjs_uint)0x08u)>>3u);
+		d[5u] = (tjs_uint8)((b&(tjs_uint)0x04u)>>2u);
+		d[6u] = (tjs_uint8)((b&(tjs_uint)0x02u)>>1u);
+		d[7u] = (tjs_uint8)((b&(tjs_uint)0x01u)   );
+		d += 8u;
 	}
 	dlim = dest + len;
 	b = *buf;
 	while(d<dlim)
 	{
-		*(d++) = (b&0x80) ? 1 : 0;
-		b<<=1;
+		*(d++) = (b&0x80u) ? 1u : 0u;
+		b<<=1u;
 	}
 }
 EOF
@@ -7852,31 +7852,31 @@ print FC <<EOF;
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPBLExpand1BitTo32BitPal_c, (tjs_uint32 *dest, const tjs_uint8 *buf, tjs_int len, const tjs_uint32 *pal))
 {
-	tjs_uint32 p[2];
+	tjs_uint32 p[2u];
 	tjs_uint32 *d=dest, *dlim;
 	tjs_uint8 b;
 
-	p[0] = pal[0], p[1] = pal[1];
-	dlim = dest + len-7;
+	p[0u] = pal[0u], p[1u] = pal[1u];
+	dlim = dest + len-7u;
 	while(d < dlim)
 	{
 		b = *(buf++);
-		d[0] = p[(tjs_uint)(b&(tjs_uint)0x80)>>7];
-		d[1] = p[(tjs_uint)(b&(tjs_uint)0x40)>>6];
-		d[2] = p[(tjs_uint)(b&(tjs_uint)0x20)>>5];
-		d[3] = p[(tjs_uint)(b&(tjs_uint)0x10)>>4];
-		d[4] = p[(tjs_uint)(b&(tjs_uint)0x08)>>3];
-		d[5] = p[(tjs_uint)(b&(tjs_uint)0x04)>>2];
-		d[6] = p[(tjs_uint)(b&(tjs_uint)0x02)>>1];
-		d[7] = p[(tjs_uint)(b&(tjs_uint)0x01)   ];
-		d += 8;
+		d[0u] = p[(tjs_uint)(b&(tjs_uint)0x80u)>>7u];
+		d[1u] = p[(tjs_uint)(b&(tjs_uint)0x40u)>>6u];
+		d[2u] = p[(tjs_uint)(b&(tjs_uint)0x20u)>>5u];
+		d[3u] = p[(tjs_uint)(b&(tjs_uint)0x10u)>>4u];
+		d[4u] = p[(tjs_uint)(b&(tjs_uint)0x08u)>>3u];
+		d[5u] = p[(tjs_uint)(b&(tjs_uint)0x04u)>>2u];
+		d[6u] = p[(tjs_uint)(b&(tjs_uint)0x02u)>>1u];
+		d[7u] = p[(tjs_uint)(b&(tjs_uint)0x01u)   ];
+		d += 8u;
 	}
 	dlim = dest + len;
 	b = *buf;
 	while(d<dlim)
 	{
-		*(d++) = (b&0x80) ? p[1] : p[0];
-		b<<=1;
+		*(d++) = (b&0x80u) ? p[1u] : p[0u];
+		b<<=1u;
 	}
 }
 EOF
@@ -7890,18 +7890,18 @@ TVP_GL_FUNC_DECL(void, TVPBLExpand4BitTo8BitPal_c, (tjs_uint8 *dest, const tjs_u
 	tjs_uint8 *d=dest, *dlim;
 	tjs_uint8 b;
 
-	dlim = dest + (len & ~1);
+	dlim = dest + (len & ~1u);
 	while(d < dlim)
 	{
 		b = *(buf++);
-		d[0] = (tjs_uint8)pal[(b&0xf0)>>4];
-		d[1] = (tjs_uint8)pal[b&0x0f];
-		d += 2;
+		d[0u] = (tjs_uint8)pal[(b&0xf0u)>>4u];
+		d[1u] = (tjs_uint8)pal[b&0x0fu];
+		d += 2u;
 	}
-	if(len & 1)
+	if(len & 1u)
 	{
 		b = *buf;
-		if(d<dlim) *d = (tjs_uint8)pal[(b&0xf0)>>4];
+		if(d<dlim) *d = (tjs_uint8)pal[(b&0xf0u)>>4u];
 	}
 }
 EOF
@@ -7914,18 +7914,18 @@ TVP_GL_FUNC_DECL(void, TVPBLExpand4BitTo8Bit_c, (tjs_uint8 *dest, const tjs_uint
 	tjs_uint8 *d=dest, *dlim;
 	tjs_uint8 b;
 
-	dlim = dest + (len & ~1);
+	dlim = dest + (len & ~1u);
 	while(d < dlim)
 	{
 		b = *(buf++);
-		d[0] = (tjs_uint8)((b&0xf0)>>4);
-		d[1] = (tjs_uint8)(b&0x0f);
-		d += 2;
+		d[0u] = (tjs_uint8)((b&0xf0u)>>4u);
+		d[1u] = (tjs_uint8)(b&0x0fu);
+		d += 2u;
 	}
-	if(len & 1)
+	if(len & 1u)
 	{
 		b = *buf;
-		if(d<dlim) *d = (tjs_uint8)((b&0xf0)>>4);
+		if(d<dlim) *d = (tjs_uint8)((b&0xf0u)>>4u);
 	}
 }
 EOF
@@ -7939,18 +7939,18 @@ TVP_GL_FUNC_DECL(void, TVPBLExpand4BitTo32BitPal_c, (tjs_uint32 *dest, const tjs
 	tjs_uint32 *d=dest, *dlim;
 	tjs_uint8 b;
 
-	dlim = dest + (len & ~1);
+	dlim = dest + (len & ~1u);
 	while(d < dlim)
 	{
 		b = *(buf++);
-		d[0] = pal[(b&0xf0)>>4];
-		d[1] = pal[b&0x0f];
-		d += 2;
+		d[0u] = pal[(b&0xf0u)>>4u];
+		d[1u] = pal[b&0x0fu];
+		d += 2u;
 	}
-	if(len & 1)
+	if(len & 1u)
 	{
 		b = *buf;
-		*d = pal[(b&0xf0)>>4];
+		*d = pal[(b&0xf0u)>>4u];
 	}
 }
 EOF
@@ -7966,7 +7966,7 @@ EOF
 
 $content = <<EOF;
 {
-	dest[{ofs}] = pal[buf[{ofs}]]&0xff;
+	dest[{ofs}] = pal[buf[{ofs}]]&0xffu;
 }
 EOF
 
@@ -8023,12 +8023,12 @@ EOF
 
 $content = <<EOF;
 	a = buf[{ofs}];;
-	dest[{ofs}] = 0xff000000 + (a * 0x10101);;
+	dest[{ofs}] = 0xff000000u + (a * 0x10101u);;
 EOF
 
 $content2 = <<EOF;
 	b = buf[{ofs}];;
-	dest[{ofs}] = 0xff000000 + (b * 0x10101);;
+	dest[{ofs}] = 0xff000000u + (b * 0x10101u);;
 EOF
 
 &loop_unroll_c_int_2($content, $content2, 'len', 8);
@@ -8050,12 +8050,12 @@ EOF
 $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
-	tjs_uint16 s = *(tjs_uint8*)(buf+{ofs}) << 8 + *((tjs_uint8*)(buf+{ofs})+1);
+	tjs_uint16 s = *(tjs_uint8*)(buf+{ofs}) << 8u + *((tjs_uint8*)(buf+{ofs})+1u);
 #else
 	tjs_uint16 s = buf[{ofs}];
 #endif
 	dest[{ofs}] =
-		((s&0x7c00)*56+ (s&0x03e0)*(187<<5)+ (s&0x001f)*(21<<10)) >> 15;
+		((s&0x7c00u)*56u+ (s&0x03e0u)*(187u<<5u)+ (s&0x001fu)*(21u<<10u)) >> 15u;
 }
 EOF
 
@@ -8077,17 +8077,17 @@ EOF
 $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
-	tjs_uint16 s = *(tjs_uint8*)(buf+{ofs}) << 8 + *((tjs_uint8*)(buf+{ofs})+1);
+	tjs_uint16 s = *(tjs_uint8*)(buf+{ofs}) << 8u + *((tjs_uint8*)(buf+{ofs})+1u);
 #else
 	tjs_uint16 s = buf[{ofs}];
 #endif
-	tjs_int r = s&0x7c00;
-	tjs_int g = s&0x03e0;
-	tjs_int b = s&0x001f;
-	dest[{ofs}] = 0xff000000 +
-		(r <<  9) + ((r&0x7000)<<4) +
-		(g <<  6) + ((g&0x0380)<<1) +
-		(b <<  3) + (b>>2);
+	tjs_int r = s&0x7c00u;
+	tjs_int g = s&0x03e0u;
+	tjs_int b = s&0x001fu;
+	dest[{ofs}] = 0xff000000u +
+		(r <<  9u) + ((r&0x7000u)<<4u) +
+		(g <<  6u) + ((g&0x0380u)<<1u) +
+		(b <<  3u) + (b>>2u);
 }
 EOF
 
@@ -8102,7 +8102,7 @@ EOF
 
 
 print FC <<EOF;
-# define compose_grayscale(r,g,b) ((unsigned char)((((tjs_int)(b)*19 + (tjs_int)(g)*183 + (tjs_int)(r)*54)>>8)))
+# define compose_grayscale(r,g,b) ((unsigned char)((((tjs_int)(b)*19u + (tjs_int)(g)*183u + (tjs_int)(r)*54u)>>8u)))
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPBLConvert24BitTo8Bit_c, (tjs_uint8 *dest, const tjs_uint8 *buf, tjs_int len))
 {
@@ -8111,15 +8111,15 @@ EOF
 
 if($should_unroll == 1) {
 	print FC <<EOF;
-		tjs_uint8 *slimglims = slimglim - 3;
+		tjs_uint8 *slimglims = slimglim - 3u;
 		while(dest < slimglims)
 		{
-			dest[0] = compose_grayscale(buf[2], buf[1], buf[0]);
-			dest[1] = compose_grayscale(buf[5], buf[4], buf[3]);
-			dest[2] = compose_grayscale(buf[8], buf[7], buf[6]);
-			dest[3] = compose_grayscale(buf[11], buf[10], buf[9]);
-			dest += 4;
-			buf += 12;
+			dest[0u] = compose_grayscale(buf[2u], buf[1u], buf[0u]);
+			dest[1u] = compose_grayscale(buf[5u], buf[4u], buf[3u]);
+			dest[2u] = compose_grayscale(buf[8u], buf[7u], buf[6u]);
+			dest[3u] = compose_grayscale(buf[11u], buf[10u], buf[9u]);
+			dest += 4u;
+			buf += 12u;
 		}
 EOF
 }
@@ -8127,9 +8127,9 @@ EOF
 print FC <<EOF;
 	while(dest < slimglim)
 	{
-		dest[0] = compose_grayscale(buf[2], buf[1], buf[0]);
+		dest[0u] = compose_grayscale(buf[2u], buf[1u], buf[0u]);
 		dest ++;
-		buf += 3;
+		buf += 3u;
 	}
 }
 
@@ -8147,39 +8147,39 @@ EOF
 
 if($should_unroll == 1) {
 	print FC <<EOF;
-	tjs_uint32 *slimglims = slimglim - 7;
+	tjs_uint32 *slimglims = slimglim - 7u;
 	while(dest < slimglims)
 	{
 #if TJS_HOST_IS_BIG_ENDIAN
-		dest[0] = 0xff000000 + buf[0] + (buf[1]<<8) + (buf[2]<<16);
-		dest[1] = 0xff000000 + buf[3] + (buf[4]<<8) + (buf[5]<<16);
-		dest[2] = 0xff000000 + buf[6] + (buf[7]<<8) + (buf[8]<<16);
-		dest[3] = 0xff000000 + buf[9] + (buf[10]<<8) + (buf[11]<<16);
-		dest += 4;
-		buf += 12;
-		dest[0] = 0xff000000 + buf[0] + (buf[1]<<8) + (buf[2]<<16);
-		dest[1] = 0xff000000 + buf[3] + (buf[4]<<8) + (buf[5]<<16);
-		dest[2] = 0xff000000 + buf[6] + (buf[7]<<8) + (buf[8]<<16);
-		dest[3] = 0xff000000 + buf[9] + (buf[10]<<8) + (buf[11]<<16);
-		dest += 4;
-		buf += 12;
+		dest[0u] = 0xff000000u + buf[0u] + (buf[1u]<<8u) + (buf[2u]<<16u);
+		dest[1u] = 0xff000000u + buf[3u] + (buf[4u]<<8u) + (buf[5u]<<16u);
+		dest[2u] = 0xff000000u + buf[6u] + (buf[7u]<<8u) + (buf[8u]<<16u);
+		dest[3u] = 0xff000000u + buf[9u] + (buf[10u]<<8u) + (buf[11u]<<16u);
+		dest += 4u;
+		buf += 12u;
+		dest[0u] = 0xff000000u + buf[0u] + (buf[1u]<<8u) + (buf[2u]<<16u);
+		dest[1u] = 0xff000000u + buf[3u] + (buf[4u]<<8u) + (buf[5u]<<16u);
+		dest[2u] = 0xff000000u + buf[6u] + (buf[7u]<<8u) + (buf[8u]<<16u);
+		dest[3u] = 0xff000000u + buf[9u] + (buf[10u]<<8u) + (buf[11u]<<16u);
+		dest += 4u;
+		buf += 12u;
 #else
 		tjs_uint32 a = *(tjs_uint32*)buf, b;
-		tjs_uint32 c = *(tjs_uint32*)(buf+12), d;
-		dest[0] = 0xff000000 + (a & 0x00ffffff);
-		dest[4] = 0xff000000 + (c & 0x00ffffff);
-		b = *(tjs_uint32*)(buf+4);
-		d = *(tjs_uint32*)(buf+16);
-		dest[1] = 0xff000000 + ((a >> 24) + ((b & 0xffff)<<8));
-		dest[5] = 0xff000000 + ((c >> 24) + ((d & 0xffff)<<8));
-		a = *(tjs_uint32*)(buf+8);
-		c = *(tjs_uint32*)(buf+20);
-		dest[2] = 0xff000000 + ((b >> 16) + ((a & 0xff)<<16));
-		dest[6] = 0xff000000 + ((d >> 16) + ((c & 0xff)<<16));
-		dest[3] = 0xff000000 + (a >> 8);
-		dest[7] = 0xff000000 + (c >> 8);
-		dest += 8;
-		buf += 24;
+		tjs_uint32 c = *(tjs_uint32*)(buf+12u), d;
+		dest[0u] = 0xff000000u + (a & 0x00ffffffu);
+		dest[4u] = 0xff000000u + (c & 0x00ffffffu);
+		b = *(tjs_uint32*)(buf+4u);
+		d = *(tjs_uint32*)(buf+16u);
+		dest[1u] = 0xff000000u + ((a >> 24u) + ((b & 0xffffu)<<8u));
+		dest[5u] = 0xff000000u + ((c >> 24u) + ((d & 0xffffu)<<8u));
+		a = *(tjs_uint32*)(buf+8u);
+		c = *(tjs_uint32*)(buf+20u);
+		dest[2u] = 0xff000000u + ((b >> 16u) + ((a & 0xffu)<<16u));
+		dest[6u] = 0xff000000u + ((d >> 16u) + ((c & 0xffu)<<16u));
+		dest[3u] = 0xff000000u + (a >> 8u);
+		dest[7u] = 0xff000000u + (c >> 8u);
+		dest += 8u;
+		buf += 24u;
 #endif
 	}
 EOF
@@ -8189,11 +8189,11 @@ print FC <<EOF;
 	while(dest < slimglim)
 	{
 #if TJS_HOST_IS_BIG_ENDIAN
-		*(dest++) = 0xff000000 + buf[0] + (buf[1]<<8) + (buf[2]<<16);
+		*(dest++) = 0xff000000u + buf[0u] + (buf[1u]<<8u) + (buf[2u]<<16u);
 #else
-		*(dest++) = 0xff000000 + buf[0] + (buf[1]<<8) + (buf[2]<<16);
+		*(dest++) = 0xff000000u + buf[0u] + (buf[1u]<<8u) + (buf[2u]<<16u);
 #endif
-		buf += 3;
+		buf += 3u;
 	}
 }
 EOF
@@ -8210,25 +8210,25 @@ EOF
 
 if($should_unroll == 1) {
 	print FC <<EOF;
-	tjs_uint32 *slimglims = slimglim - 7;
+	tjs_uint32 *slimglims = slimglim - 7u;
 	while(dest < slimglims)
 	{
 		tjs_uint32 a = *(tjs_uint32*)buf, b;
-		tjs_uint32 c = *(tjs_uint32*)(buf+12), d;
-		dest[0] = 0xff000000 + (a & 0x00ffffff);
-		dest[4] = 0xff000000 + (c & 0x00ffffff);
-		b = *(tjs_uint32*)(buf+4);
-		d = *(tjs_uint32*)(buf+16);
-		dest[1] = 0xff000000 + ((a >> 24) + ((b & 0xffff)<<8));
-		dest[5] = 0xff000000 + ((c >> 24) + ((d & 0xffff)<<8));
-		a = *(tjs_uint32*)(buf+8);
-		c = *(tjs_uint32*)(buf+20);
-		dest[2] = 0xff000000 + ((b >> 16) + ((a & 0xff)<<16));
-		dest[6] = 0xff000000 + ((d >> 16) + ((c & 0xff)<<16));
-		dest[3] = 0xff000000 + (a >> 8);
-		dest[7] = 0xff000000 + (c >> 8);
-		dest += 8;
-		buf += 24;
+		tjs_uint32 c = *(tjs_uint32*)(buf+12u), d;
+		dest[0u] = 0xff000000u + (a & 0x00ffffffu);
+		dest[4u] = 0xff000000u + (c & 0x00ffffffu);
+		b = *(tjs_uint32*)(buf+4u);
+		d = *(tjs_uint32*)(buf+16u);
+		dest[1u] = 0xff000000u + ((a >> 24u) + ((b & 0xffffu)<<8u));
+		dest[5u] = 0xff000000u + ((c >> 24u) + ((d & 0xffffu)<<8u));
+		a = *(tjs_uint32*)(buf+8u);
+		c = *(tjs_uint32*)(buf+20u);
+		dest[2u] = 0xff000000u + ((b >> 16u) + ((a & 0xffu)<<16u));
+		dest[6u] = 0xff000000u + ((d >> 16u) + ((c & 0xffu)<<16u));
+		dest[3u] = 0xff000000u + (a >> 8u);
+		dest[7u] = 0xff000000u + (c >> 8u);
+		dest += 8u;
+		buf += 24u;
 	}
 EOF
 }
@@ -8236,8 +8236,8 @@ EOF
 print FC <<EOF;
 	while(dest < slimglim)
 	{
-		*(dest++) = 0xff000000 + buf[0] + (buf[1]<<8) + (buf[2]<<16);
-		buf += 3;
+		*(dest++) = 0xff000000u + buf[0u] + (buf[1u]<<8u) + (buf[2u]<<16u);
+		buf += 3u;
 	}
 }
 EOF
@@ -8254,10 +8254,10 @@ $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
 	tjs_uint32 d = buf[{ofs}];
-	dest[{ofs}] = compose_grayscale(d&0xff, (d&0xff00)>>8, (d&0xff0000)>>16);
+	dest[{ofs}] = compose_grayscale(d&0xffu, (d&0xff00u)>>8u, (d&0xff0000u)>>16u);
 #else
 	tjs_uint32 d = buf[{ofs}];
-	dest[{ofs}] = compose_grayscale((d&0xff0000)>>16, (d&0xff00)>>8, d&0xff);
+	dest[{ofs}] = compose_grayscale((d&0xff0000u)>>16u, (d&0xff00u)>>8u, d&0xffu);
 #endif
 }
 EOF
@@ -8282,10 +8282,10 @@ $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
 	tjs_uint32 d = buf[{ofs}];
-	dest[{ofs}] = 0xff000000 + ((d&0xff00)<<8) +  ((d&0xff0000)>>8) + ((d&0xff000000)>>24);
+	dest[{ofs}] = 0xff000000u + ((d&0xff00u)<<8u) +  ((d&0xff0000u)>>8u) + ((d&0xff000000u)>>24u);
 #else
 	tjs_uint32 d = buf[{ofs}];
-	dest[{ofs}] = d | 0xff000000;
+	dest[{ofs}] = d | 0xff000000u;
 #endif
 }
 EOF
@@ -8312,7 +8312,7 @@ $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
 	tjs_uint32 d = buf[{ofs}];
-	dest[{ofs}] = ((d&0xff)<<24) + ((d&0xff00)<<8) +  ((d&0xff0000)>>8) + ((d&0xff000000)>>24);
+	dest[{ofs}] = ((d&0xffu)<<24u) + ((d&0xff00u)<<8u) +  ((d&0xff0000u)>>8u) + ((d&0xff000000u)>>24u);
 #else
 	tjs_uint32 d = buf[{ofs}];
 	dest[{ofs}] = d;
@@ -8341,12 +8341,12 @@ $content = <<EOF;
 {
 #if TJS_HOST_IS_BIG_ENDIAN
 	tjs_uint32 d = buf[{ofs}];
-	tjs_uint8 *t = TVPDivTable + ((d & 0xff)<<8);
-	dest[{ofs}] = ((d&0xff)<<24) + (t[(d&0xff00)>>8]<<16) +  (t[(d&0xff0000)>>16]<<8) + (t[(d&0xff000000)>>24]);
+	tjs_uint8 *t = TVPDivTable + ((d & 0xffu)<<8u);
+	dest[{ofs}] = ((d&0xffu)<<24u) + (t[(d&0xff00u)>>8u]<<16u) +  (t[(d&0xff0000u)>>16u]<<8u) + (t[(d&0xff000000u)>>24u]);
 #else
 	tjs_uint32 d = buf[{ofs}];
-	tjs_uint8 *t = TVPDivTable + ((d>>16) & 0xff00);
-	dest[{ofs}] = (d&0xff000000) + (t[(d&0xff0000)>>16]<<16) + (t[(d&0xff00)>>8]<<8) + (t[d&0xff]);
+	tjs_uint8 *t = TVPDivTable + ((d>>16u) & 0xff00u);
+	dest[{ofs}] = (d&0xff000000u) + (t[(d&0xff0000u)>>16u]<<16u) + (t[(d&0xff00u)>>8u]<<8u) + (t[d&0xffu]);
 #endif
 }
 EOF
@@ -8370,8 +8370,8 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPDither32BitTo16Bit565_c, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
 {
 
-tjs_uint8 *line = TVPDitherTable_5_6[yofs & 0x03][0][0];
-tjs_int x = (xofs & 0x03) << 9;
+tjs_uint8 *line = TVPDitherTable_5_6[yofs & 0x03u][0u][0u];
+tjs_int x = (xofs & 0x03u) << 9u;
 
 
 EOF
@@ -8379,12 +8379,12 @@ EOF
 $content = <<EOF;
 {
 tjs_uint32 v = *src;
-*dest = (line[x + ((v >> 16) & 0xff)] << 11)+  (line[x + (v & 0xff)]) +
-	(line[x + 256 + ((v >> 8) & 0xff)] << 5);
+*dest = (line[x + ((v >> 16u) & 0xffu)] << 11u)+  (line[x + (v & 0xffu)]) +
+	(line[x + 256u + ((v >> 8u) & 0xffu)] << 5u);
 dest++;
 src++;
-x+= 0x200;
-x &= 0x600;
+x+= 0x200u;
+x &= 0x600u;
 }
 EOF
 
@@ -8404,8 +8404,8 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPDither32BitTo16Bit555_c, (tjs_uint16 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
 {
 
-tjs_uint8 *line = TVPDitherTable_5_6[yofs & 0x03][0][0];
-tjs_int x = (xofs & 0x03) << 9;
+tjs_uint8 *line = TVPDitherTable_5_6[yofs & 0x03u][0u][0u];
+tjs_int x = (xofs & 0x03u) << 9u;
 
 
 EOF
@@ -8413,12 +8413,12 @@ EOF
 $content = <<EOF;
 {
 tjs_uint32 v = *src;
-*dest = (line[x + ((v >> 16) & 0xff)] << 10) + (line[x + (v & 0xff)]) +
-	(line[x + ((v >> 8) & 0xff)] << 5);
+*dest = (line[x + ((v >> 16u) & 0xffu)] << 10u) + (line[x + (v & 0xffu)]) +
+	(line[x + ((v >> 8u) & 0xffu)] << 5u);
 dest++;
 src++;
-x+= 0x200;
-x &= 0x600;
+x+= 0x200u;
+x &= 0x600u;
 }
 EOF
 
@@ -8431,7 +8431,7 @@ print FC <<EOF;
 EOF
 
 ;#-----------------------------------------------------------------
-;# conversion of 32bpp->8bpp(6*7*6) with dithering
+;# conversion of 32bpp->8bpp(6u*7u*6u) with dithering
 ;#-----------------------------------------------------------------
 
 
@@ -8441,8 +8441,8 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPDither32BitTo8Bit_c, (tjs_uint8 *dest, const tjs_uint32 *src, tjs_int len, tjs_int xofs, tjs_int yofs))
 {
 
-tjs_uint8 *line = &(TVPDitherTable_676[0][yofs & 0x03][0][0]);
-tjs_int x = (xofs & 0x03) << 8;
+tjs_uint8 *line = &(TVPDitherTable_676[0u][yofs & 0x03u][0u][0u]);
+tjs_int x = (xofs & 0x03u) << 8u;
 
 
 EOF
@@ -8450,12 +8450,12 @@ EOF
 $content = <<EOF;
 {
 tjs_uint32 v = *src;
-*dest = (line[x + ((v >> 16) & 0xff)])+ (line[(256 * 16 * 2) + x + (v & 0xff)]) +
-	(line[(16 * 256) + x + ((v >> 8) & 0xff)]);
+*dest = (line[x + ((v >> 16u) & 0xffu)])+ (line[(256u * 16u * 2u) + x + (v & 0xffu)]) +
+	(line[(16u * 256u) + x + ((v >> 8u) & 0xffu)]);
 dest++;
 src++;
-x += 0x100;
-x &= 0x300;
+x += 0x100u;
+x &= 0x300u;
 }
 EOF
 
@@ -8480,22 +8480,22 @@ print FC <<EOF;
 TVP_GL_FUNC_DECL(void, TVPTLG5ComposeColors3To4_c, (tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 * const * buf, tjs_int width))
 {
 	tjs_int x;
-	tjs_uint8 pc[3];
-	tjs_uint8 c[3];
-	pc[0] = pc[1] = pc[2] = 0;
-	for(x = 0; x < width; x++)
+	tjs_uint8 pc[3u];
+	tjs_uint8 c[3u];
+	pc[0u] = pc[1u] = pc[2u] = 0u;
+	for(x = 0u; x < width; x++)
 	{
-		c[0] = buf[0][x];
-		c[1] = buf[1][x];
-		c[2] = buf[2][x];
-		c[0] += c[1]; c[2] += c[1];
+		c[0u] = buf[0u][x];
+		c[1u] = buf[1u][x];
+		c[2u] = buf[2u][x];
+		c[0u] += c[1u]; c[2u] += c[1u];
 		*(tjs_uint32 *)outp =
-								((((pc[0] += c[0]) + upper[0]) & 0xff)      ) +
-								((((pc[1] += c[1]) + upper[1]) & 0xff) <<  8) +
-								((((pc[2] += c[2]) + upper[2]) & 0xff) << 16) +
-								0xff000000;
-		outp += 4;
-		upper += 4;
+								((((pc[0u] += c[0u]) + upper[0u]) & 0xffu)      ) +
+								((((pc[1u] += c[1u]) + upper[1u]) & 0xffu) <<  8u) +
+								((((pc[2u] += c[2u]) + upper[2u]) & 0xffu) << 16u) +
+								0xff000000u;
+		outp += 4u;
+		upper += 4u;
 	}
 }
 
@@ -8503,23 +8503,23 @@ TVP_GL_FUNC_DECL(void, TVPTLG5ComposeColors3To4_c, (tjs_uint8 *outp, const tjs_u
 TVP_GL_FUNC_DECL(void, TVPTLG5ComposeColors4To4_c, (tjs_uint8 *outp, const tjs_uint8 *upper, tjs_uint8 * const* buf, tjs_int width))
 {
 	tjs_int x;
-	tjs_uint8 pc[4];
-	tjs_uint8 c[4];
-	pc[0] = pc[1] = pc[2] = pc[3] = 0;
-	for(x = 0; x < width; x++)
+	tjs_uint8 pc[4u];
+	tjs_uint8 c[4u];
+	pc[0u] = pc[1u] = pc[2u] = pc[3u] = 0u;
+	for(x = 0u; x < width; x++)
 	{
-		c[0] = buf[0][x];
-		c[1] = buf[1][x];
-		c[2] = buf[2][x];
-		c[3] = buf[3][x];
-		c[0] += c[1]; c[2] += c[1];
+		c[0u] = buf[0u][x];
+		c[1u] = buf[1u][x];
+		c[2u] = buf[2u][x];
+		c[3u] = buf[3u][x];
+		c[0u] += c[1u]; c[2u] += c[1u];
 		*(tjs_uint32 *)outp =
-								((((pc[0] += c[0]) + upper[0]) & 0xff)      ) +
-								((((pc[1] += c[1]) + upper[1]) & 0xff) <<  8) +
-								((((pc[2] += c[2]) + upper[2]) & 0xff) << 16) +
-								((((pc[3] += c[3]) + upper[3]) & 0xff) << 24);
-		outp += 4;
-		upper += 4;
+								((((pc[0u] += c[0u]) + upper[0u]) & 0xffu)      ) +
+								((((pc[1u] += c[1u]) + upper[1u]) & 0xffu) <<  8u) +
+								((((pc[2u] += c[2u]) + upper[2u]) & 0xffu) << 16u) +
+								((((pc[3u] += c[3u]) + upper[3u]) & 0xffu) << 24u);
+		outp += 4u;
+		upper += 4u;
 	}
 }
 
@@ -8527,36 +8527,36 @@ TVP_GL_FUNC_DECL(void, TVPTLG5ComposeColors4To4_c, (tjs_uint8 *outp, const tjs_u
 TVP_GL_FUNC_DECL(tjs_int, TVPTLG5DecompressSlide_c, (tjs_uint8 *out, const tjs_uint8 *in, tjs_int insize, tjs_uint8 *text, tjs_int initialr))
 {
 	tjs_int r = initialr;
-	tjs_uint flags = 0;
+	tjs_uint flags = 0u;
 	const tjs_uint8 *inlim = in + insize;
 	while(in < inlim)
 	{
-		if(((flags >>= 1) & 256) == 0)
+		if(((flags >>= 1u) & 256u) == 0u)
 		{
-			flags = 0[in++] | 0xff00;
+			flags = 0u[in++] | 0xff00u;
 		}
-		if(flags & 1)
+		if(flags & 1u)
 		{
-			tjs_int mpos = in[0] | ((in[1] & 0xf) << 8);
-			tjs_int mlen = (in[1] & 0xf0) >> 4;
-			in += 2;
-			mlen += 3;
-			if(mlen == 18) mlen += 0[in++];
+			tjs_int mpos = in[0u] | ((in[1u] & 0xfu) << 8u);
+			tjs_int mlen = (in[1u] & 0xf0u) >> 4u;
+			in += 2u;
+			mlen += 3u;
+			if(mlen == 18u) mlen += 0u[in++];
 
 			while(mlen--)
 			{
-				0[out++] = text[r++] = text[mpos++];
-				mpos &= (4096 - 1);
-				r &= (4096 - 1);
+				0u[out++] = text[r++] = text[mpos++];
+				mpos &= (4096u - 1u);
+				r &= (4096u - 1u);
 			}
 		}
 		else
 		{
-			unsigned char c = 0[in++];
-			0[out++] = c;
+			unsigned char c = 0u[in++];
+			0u[out++] = c;
 			text[r++] = c;
-/*			0[out++] = text[r++] = 0[in++];*/
-			r &= (4096 - 1);
+/*			0u[out++] = text[r++] = 0u[in++];*/
+			r &= (4096u - 1u);
 		}
 	}
 	return r;
@@ -8574,10 +8574,10 @@ print FC <<EOF;
 #if TJS_HOST_IS_BIG_ENDIAN
 	#define TVP_TLG6_BYTEOF(a, x) (((tjs_uint8*)(a))[(x)])
 
-	#define TVP_TLG6_FETCH_32BITS(addr) ((tjs_uint32)TVP_TLG6_BYTEOF((addr), 0) +  \\
-									((tjs_uint32)TVP_TLG6_BYTEOF((addr), 1) << 8) + \\
-									((tjs_uint32)TVP_TLG6_BYTEOF((addr), 2) << 16) + \\
-									((tjs_uint32)TVP_TLG6_BYTEOF((addr), 3) << 24) )
+	#define TVP_TLG6_FETCH_32BITS(addr) ((tjs_uint32)TVP_TLG6_BYTEOF((addr), 0u) +  \\
+									((tjs_uint32)TVP_TLG6_BYTEOF((addr), 1u) << 8u) + \\
+									((tjs_uint32)TVP_TLG6_BYTEOF((addr), 2u) << 16u) + \\
+									((tjs_uint32)TVP_TLG6_BYTEOF((addr), 3u) << 24u) )
 #else
 	#define TVP_TLG6_FETCH_32BITS(addr) (*(tjs_uint32*)addr)
 #endif
@@ -8595,13 +8595,13 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValuesForFirst_c, (tjs_int8 *pixelbuf,
 		clearing with zero except for blue (least siginificant byte).
 	*/
 
-	int n = TVP_TLG6_GOLOMB_N_COUNT - 1; /* output counter */
-	int a = 0; /* summary of absolute values of errors */
+	int n = TVP_TLG6_GOLOMB_N_COUNT - 1u; /* output counter */
+	int a = 0u; /* summary of absolute values of errors */
 
-	tjs_int bit_pos = 1;
-	tjs_uint8 zero = (*bit_pool & 1)?0:1;
+	tjs_int bit_pos = 1u;
+	tjs_uint8 zero = (*bit_pool & 1u)?0u:1u;
 
-	tjs_int8 * limit = pixelbuf + pixel_count*4;
+	tjs_int8 * limit = pixelbuf + pixel_count*4u;
 
 	while(pixelbuf < limit)
 	{
@@ -8610,31 +8610,31 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValuesForFirst_c, (tjs_int8 *pixelbuf,
 
 		{
 			tjs_uint32 t = TVP_TLG6_FETCH_32BITS(bit_pool) >> bit_pos;
-			tjs_int b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+			tjs_int b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 			int bit_count = b;
 			while(!b)
 			{
 				bit_count += TVP_TLG6_LeadingZeroTable_BITS;
 				bit_pos += TVP_TLG6_LeadingZeroTable_BITS;
-				bit_pool += bit_pos >> 3;
-				bit_pos &= 7;
+				bit_pool += bit_pos >> 3u;
+				bit_pos &= 7u;
 				t = TVP_TLG6_FETCH_32BITS(bit_pool) >> bit_pos;
-				b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+				b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 				bit_count += b;
 			}
 
 
 			bit_pos += b;
-			bit_pool += bit_pos >> 3;
-			bit_pos &= 7;
+			bit_pool += bit_pos >> 3u;
+			bit_pos &= 7u;
 
 			bit_count --;
-			count = 1 << bit_count;
-			count += ((TVP_TLG6_FETCH_32BITS(bit_pool) >> (bit_pos)) & (count-1));
+			count = 1u << bit_count;
+			count += ((TVP_TLG6_FETCH_32BITS(bit_pool) >> (bit_pos)) & (count-1u));
 
 			bit_pos += bit_count;
-			bit_pool += bit_pos >> 3;
-			bit_pos &= 7;
+			bit_pool += bit_pos >> 3u;
+			bit_pos &= 7u;
 
 		}
 
@@ -8643,9 +8643,9 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValuesForFirst_c, (tjs_int8 *pixelbuf,
 			/* zero values */
 
 			/* fill distination with zero */
-			do { *(tjs_uint32*)pixelbuf = 0; pixelbuf+=4; } while(--count);
+			do { *(tjs_uint32*)pixelbuf = 0u; pixelbuf+=4u; } while(--count);
 
-			zero ^= 1;
+			zero ^= 1u;
 		}
 		else
 		{
@@ -8662,47 +8662,47 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValuesForFirst_c, (tjs_int8 *pixelbuf,
 				tjs_int b;
 				if(t)
 				{
-					b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+					b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 					bit_count = b;
 					while(!b)
 					{
 						bit_count += TVP_TLG6_LeadingZeroTable_BITS;
 						bit_pos += TVP_TLG6_LeadingZeroTable_BITS;
-						bit_pool += bit_pos >> 3;
-						bit_pos &= 7;
+						bit_pool += bit_pos >> 3u;
+						bit_pos &= 7u;
 						t = TVP_TLG6_FETCH_32BITS(bit_pool) >> bit_pos;
-						b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+						b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 						bit_count += b;
 					}
 					bit_count --;
 				}
 				else
 				{
-					bit_pool += 5;
-					bit_count = bit_pool[-1];
-					bit_pos = 0;
+					bit_pool += 5u;
+					bit_count = bit_pool[-1u];
+					bit_pos = 0u;
 					t = TVP_TLG6_FETCH_32BITS(bit_pool);
-					b = 0;
+					b = 0u;
 				}
 
 
-				v = (bit_count << k) + ((t >> b) & ((1<<k)-1));
-				sign = (v & 1) - 1;
-				v >>= 1;
+				v = (bit_count << k) + ((t >> b) & ((1u<<k)-1u));
+				sign = (v & 1u) - 1u;
+				v >>= 1u;
 				a += v;
-				*(tjs_uint32*)pixelbuf = (unsigned char) ((v ^ sign) + sign + 1);
-				pixelbuf += 4;
+				*(tjs_uint32*)pixelbuf = (unsigned char) ((v ^ sign) + sign + 1u);
+				pixelbuf += 4u;
 
 				bit_pos += b;
 				bit_pos += k;
-				bit_pool += bit_pos >> 3;
-				bit_pos &= 7;
+				bit_pool += bit_pos >> 3u;
+				bit_pos &= 7u;
 
-				if (--n < 0) {
-					a >>= 1;  n = TVP_TLG6_GOLOMB_N_COUNT - 1;
+				if (--n < 0u) {
+					a >>= 1u;  n = TVP_TLG6_GOLOMB_N_COUNT - 1u;
 				}
 			} while(--count);
-			zero ^= 1;
+			zero ^= 1u;
 		}
 	}
 }
@@ -8715,13 +8715,13 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValues_c, (tjs_int8 *pixelbuf, tjs_int
 		values are coded using golomb code.
 	*/
 
-	int n = TVP_TLG6_GOLOMB_N_COUNT - 1; /* output counter */
-	int a = 0; /* summary of absolute values of errors */
+	int n = TVP_TLG6_GOLOMB_N_COUNT - 1u; /* output counter */
+	int a = 0u; /* summary of absolute values of errors */
 
-	tjs_int bit_pos = 1;
-	tjs_uint8 zero = (*bit_pool & 1)?0:1;
+	tjs_int bit_pos = 1u;
+	tjs_uint8 zero = (*bit_pool & 1u)?0u:1u;
 
-	tjs_int8 * limit = pixelbuf + pixel_count*4;
+	tjs_int8 * limit = pixelbuf + pixel_count*4u;
 
 	while(pixelbuf < limit)
 	{
@@ -8730,31 +8730,31 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValues_c, (tjs_int8 *pixelbuf, tjs_int
 
 		{
 			tjs_uint32 t = TVP_TLG6_FETCH_32BITS(bit_pool) >> bit_pos;
-			tjs_int b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+			tjs_int b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 			int bit_count = b;
 			while(!b)
 			{
 				bit_count += TVP_TLG6_LeadingZeroTable_BITS;
 				bit_pos += TVP_TLG6_LeadingZeroTable_BITS;
-				bit_pool += bit_pos >> 3;
-				bit_pos &= 7;
+				bit_pool += bit_pos >> 3u;
+				bit_pos &= 7u;
 				t = TVP_TLG6_FETCH_32BITS(bit_pool) >> bit_pos;
-				b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+				b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 				bit_count += b;
 			}
 
 
 			bit_pos += b;
-			bit_pool += bit_pos >> 3;
-			bit_pos &= 7;
+			bit_pool += bit_pos >> 3u;
+			bit_pos &= 7u;
 
 			bit_count --;
-			count = 1 << bit_count;
-			count += ((TVP_TLG6_FETCH_32BITS(bit_pool) >> (bit_pos)) & (count-1));
+			count = 1u << bit_count;
+			count += ((TVP_TLG6_FETCH_32BITS(bit_pool) >> (bit_pos)) & (count-1u));
 
 			bit_pos += bit_count;
-			bit_pool += bit_pos >> 3;
-			bit_pos &= 7;
+			bit_pool += bit_pos >> 3u;
+			bit_pos &= 7u;
 
 		}
 
@@ -8763,9 +8763,9 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValues_c, (tjs_int8 *pixelbuf, tjs_int
 			/* zero values */
 
 			/* fill distination with zero */
-			do { *pixelbuf = 0; pixelbuf+=4; } while(--count);
+			do { *pixelbuf = 0u; pixelbuf+=4u; } while(--count);
 
-			zero ^= 1;
+			zero ^= 1u;
 		}
 		else
 		{
@@ -8782,47 +8782,47 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValues_c, (tjs_int8 *pixelbuf, tjs_int
 				tjs_int b;
 				if(t)
 				{
-					b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+					b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 					bit_count = b;
 					while(!b)
 					{
 						bit_count += TVP_TLG6_LeadingZeroTable_BITS;
 						bit_pos += TVP_TLG6_LeadingZeroTable_BITS;
-						bit_pool += bit_pos >> 3;
-						bit_pos &= 7;
+						bit_pool += bit_pos >> 3u;
+						bit_pos &= 7u;
 						t = TVP_TLG6_FETCH_32BITS(bit_pool) >> bit_pos;
-						b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1)];
+						b = TVPTLG6LeadingZeroTable[t&(TVP_TLG6_LeadingZeroTable_SIZE-1u)];
 						bit_count += b;
 					}
 					bit_count --;
 				}
 				else
 				{
-					bit_pool += 5;
-					bit_count = bit_pool[-1];
-					bit_pos = 0;
+					bit_pool += 5u;
+					bit_count = bit_pool[-1u];
+					bit_pos = 0u;
 					t = TVP_TLG6_FETCH_32BITS(bit_pool);
-					b = 0;
+					b = 0u;
 				}
 
 
-				v = (bit_count << k) + ((t >> b) & ((1<<k)-1));
-				sign = (v & 1) - 1;
-				v >>= 1;
+				v = (bit_count << k) + ((t >> b) & ((1u<<k)-1u));
+				sign = (v & 1u) - 1u;
+				v >>= 1u;
 				a += v;
-				*pixelbuf = (char) ((v ^ sign) + sign + 1);
-				pixelbuf += 4;
+				*pixelbuf = (char) ((v ^ sign) + sign + 1u);
+				pixelbuf += 4u;
 
 				bit_pos += b;
 				bit_pos += k;
-				bit_pool += bit_pos >> 3;
-				bit_pos &= 7;
+				bit_pool += bit_pos >> 3u;
+				bit_pos &= 7u;
 
-				if (--n < 0) {
-					a >>= 1;  n = TVP_TLG6_GOLOMB_N_COUNT - 1;
+				if (--n < 0u) {
+					a >>= 1u;  n = TVP_TLG6_GOLOMB_N_COUNT - 1u;
 				}
 			} while(--count);
-			zero ^= 1;
+			zero ^= 1u;
 		}
 	}
 }
@@ -8832,14 +8832,14 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeGolombValues_c, (tjs_int8 *pixelbuf, tjs_int
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, make_gt_mask, (tjs_uint32 a, tjs_uint32 b))
 {
 	tjs_uint32 tmp2 = ~b;
-	tjs_uint32 tmp = ((a & tmp2) + (((a ^ tmp2) >> 1) & 0x7f7f7f7f) ) & 0x80808080;
-	tmp = ((tmp >> 7) + 0x7f7f7f7f) ^ 0x7f7f7f7f;
+	tjs_uint32 tmp = ((a & tmp2) + (((a ^ tmp2) >> 1u) & 0x7f7f7f7fu) ) & 0x80808080u;
+	tmp = ((tmp >> 7u) + 0x7f7f7f7fu) ^ 0x7f7f7f7fu;
 	return tmp;
 }
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, packed_bytes_add, (tjs_uint32 a, tjs_uint32 b))
 {
-	tjs_uint32 tmp = (((a & b)<<1) + ((a ^ b) & 0xfefefefe) ) & 0x01010100;
+	tjs_uint32 tmp = (((a & b)<<1u) + ((a ^ b) & 0xfefefefeu) ) & 0x01010100u;
 	return a+b-tmp;
 }
 /*not export*/
@@ -8861,8 +8861,8 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, med, (tjs_uint32 a, tjs_uint32 b, tjs_uint32
 	return TVP_GL_FUNCNAME(packed_bytes_add)(TVP_GL_FUNCNAME(med2)(a, b, c), v);
 }
 
-#define TLG6_AVG_PACKED(x, y) ((((x) & (y)) + ((((x) ^ (y)) & 0xfefefefe) >> 1)) +\\
-			(((x)^(y))&0x01010101))
+#define TLG6_AVG_PACKED(x, y) ((((x) & (y)) + ((((x) ^ (y)) & 0xfefefefeu) >> 1u)) +\\
+			(((x)^(y))&0x01010101u))
 
 /*not export*/
 TVP_GL_FUNC_INLINE_DECL(tjs_uint32, avg, (tjs_uint32 a, tjs_uint32 b, tjs_uint32 c, tjs_uint32 v))
@@ -8874,7 +8874,7 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, avg, (tjs_uint32 a, tjs_uint32 b, tjs_uint32
 			{ \\
 				tjs_uint32 u = *prevline; \\
 				p = TVP_GL_FUNCNAME(med)(p, u, up, \\
-					(0xff0000 & ((R)<<16)) + (0xff00 & ((G)<<8)) + (0xff & (B)) + ((A) << 24) ); \\
+					(0xff0000u & ((R)<<16u)) + (0xff00u & ((G)<<8u)) + (0xffu & (B)) + ((A) << 24u) ); \\
 				up = u; \\
 				*curline = p; \\
 				curline ++; \\
@@ -8885,16 +8885,16 @@ TVP_GL_FUNC_INLINE_DECL(tjs_uint32, avg, (tjs_uint32 a, tjs_uint32 b, tjs_uint32
 			{ \\
 				tjs_uint32 u = *prevline; \\
 				p = TVP_GL_FUNCNAME(avg)(p, u, up, \\
-					(0xff0000 & ((R)<<16)) + (0xff00 & ((G)<<8)) + (0xff & (B)) + ((A) << 24) ); \\
+					(0xff0000u & ((R)<<16u)) + (0xff00u & ((G)<<8u)) + (0xffu & (B)) + ((A) << 24u) ); \\
 				up = u; \\
 				*curline = p; \\
 				curline ++; \\
 				prevline ++; \\
 				POST_INCREMENT \\
 			} while(--w);
-#define TVP_TLG6_DO_CHROMA_DECODE(N, R, G, B) case (N<<1): \\
+#define TVP_TLG6_DO_CHROMA_DECODE(N, R, G, B) case (N<<1u): \\
 	TVP_TLG6_DO_CHROMA_DECODE_PROTO(R, G, B, IA, {in+=step;}) break; \\
-	case (N<<1)+1: \\
+	case (N<<1u)+1u: \\
 	TVP_TLG6_DO_CHROMA_DECODE_PROTO2(R, G, B, IA, {in+=step;}) break;
 
 /*export*/
@@ -8911,8 +8911,8 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeLineGeneric_c, (tjs_uint32 *prevline, tjs_ui
 	{
 		prevline += start_block * TVP_TLG6_W_BLOCK_SIZE;
 		curline  += start_block * TVP_TLG6_W_BLOCK_SIZE;
-		p  = curline[-1];
-		up = prevline[-1];
+		p  = curline[-1u];
+		up = prevline[-1u];
 	}
 	else
 	{
@@ -8920,45 +8920,45 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeLineGeneric_c, (tjs_uint32 *prevline, tjs_ui
 	}
 
 	in += skipblockbytes * start_block;
-	step = (dir&1)?1:-1;
+	step = (dir&1u)?1u:-1u;
 
 	for(i = start_block; i < block_limit; i ++)
 	{
 		int w = width - i*TVP_TLG6_W_BLOCK_SIZE, ww;
 		if(w > TVP_TLG6_W_BLOCK_SIZE) w = TVP_TLG6_W_BLOCK_SIZE;
 		ww = w;
-		if(step==-1) in += ww-1;
-		if(i&1) in += oddskip * ww;
+		if(step==-1u) in += ww-1u;
+		if(i&1u) in += oddskip * ww;
 		switch(filtertypes[i])
 		{
-#define IA	(char)((*in>>24)&0xff)
-#define IR	(char)((*in>>16)&0xff)
-#define IG  (char)((*in>>8 )&0xff)
-#define IB  (char)((*in    )&0xff)
-		TVP_TLG6_DO_CHROMA_DECODE( 0, IB, IG, IR); 
-		TVP_TLG6_DO_CHROMA_DECODE( 1, IB+IG, IG, IR+IG); 
-		TVP_TLG6_DO_CHROMA_DECODE( 2, IB, IG+IB, IR+IB+IG); 
-		TVP_TLG6_DO_CHROMA_DECODE( 3, IB+IR+IG, IG+IR, IR); 
-		TVP_TLG6_DO_CHROMA_DECODE( 4, IB+IR, IG+IB+IR, IR+IB+IR+IG); 
-		TVP_TLG6_DO_CHROMA_DECODE( 5, IB+IR, IG+IB+IR, IR); 
-		TVP_TLG6_DO_CHROMA_DECODE( 6, IB+IG, IG, IR); 
-		TVP_TLG6_DO_CHROMA_DECODE( 7, IB, IG+IB, IR); 
-		TVP_TLG6_DO_CHROMA_DECODE( 8, IB, IG, IR+IG); 
-		TVP_TLG6_DO_CHROMA_DECODE( 9, IB+IG+IR+IB, IG+IR+IB, IR+IB); 
-		TVP_TLG6_DO_CHROMA_DECODE(10, IB+IR, IG+IR, IR); 
-		TVP_TLG6_DO_CHROMA_DECODE(11, IB, IG+IB, IR+IB); 
-		TVP_TLG6_DO_CHROMA_DECODE(12, IB, IG+IR+IB, IR+IB); 
-		TVP_TLG6_DO_CHROMA_DECODE(13, IB+IG, IG+IR+IB+IG, IR+IB+IG); 
-		TVP_TLG6_DO_CHROMA_DECODE(14, IB+IG+IR, IG+IR, IR+IB+IG+IR); 
-		TVP_TLG6_DO_CHROMA_DECODE(15, IB, IG+(IB<<1), IR+(IB<<1));
+#define IA	(char)((*in>>24u)&0xffu)
+#define IR	(char)((*in>>16u)&0xffu)
+#define IG  (char)((*in>>8u )&0xffu)
+#define IB  (char)((*in     )&0xffu)
+		TVP_TLG6_DO_CHROMA_DECODE( 0u, IB, IG, IR); 
+		TVP_TLG6_DO_CHROMA_DECODE( 1u, IB+IG, IG, IR+IG); 
+		TVP_TLG6_DO_CHROMA_DECODE( 2u, IB, IG+IB, IR+IB+IG); 
+		TVP_TLG6_DO_CHROMA_DECODE( 3u, IB+IR+IG, IG+IR, IR); 
+		TVP_TLG6_DO_CHROMA_DECODE( 4u, IB+IR, IG+IB+IR, IR+IB+IR+IG); 
+		TVP_TLG6_DO_CHROMA_DECODE( 5u, IB+IR, IG+IB+IR, IR); 
+		TVP_TLG6_DO_CHROMA_DECODE( 6u, IB+IG, IG, IR); 
+		TVP_TLG6_DO_CHROMA_DECODE( 7u, IB, IG+IB, IR); 
+		TVP_TLG6_DO_CHROMA_DECODE( 8u, IB, IG, IR+IG); 
+		TVP_TLG6_DO_CHROMA_DECODE( 9u, IB+IG+IR+IB, IG+IR+IB, IR+IB); 
+		TVP_TLG6_DO_CHROMA_DECODE(10u, IB+IR, IG+IR, IR); 
+		TVP_TLG6_DO_CHROMA_DECODE(11u, IB, IG+IB, IR+IB); 
+		TVP_TLG6_DO_CHROMA_DECODE(12u, IB, IG+IR+IB, IR+IB); 
+		TVP_TLG6_DO_CHROMA_DECODE(13u, IB+IG, IG+IR+IB+IG, IR+IB+IG); 
+		TVP_TLG6_DO_CHROMA_DECODE(14u, IB+IG+IR, IG+IR, IR+IB+IG+IR); 
+		TVP_TLG6_DO_CHROMA_DECODE(15u, IB, IG+(IB<<1u), IR+(IB<<1u));
 
 		default: return;
 		}
-		if(step == 1)
+		if(step == 1u)
 			in += skipblockbytes - ww;
 		else
-			in += skipblockbytes + 1;
-		if(i&1) in -= oddskip * ww;
+			in += skipblockbytes + 1u;
+		if(i&1u) in -= oddskip * ww;
 #undef IR
 #undef IG
 #undef IB
@@ -8968,7 +8968,7 @@ TVP_GL_FUNC_DECL(void, TVPTLG6DecodeLineGeneric_c, (tjs_uint32 *prevline, tjs_ui
 /*export*/
 TVP_GL_FUNC_DECL(void, TVPTLG6DecodeLine_c, (tjs_uint32 *prevline, tjs_uint32 *curline, tjs_int width, tjs_int block_count, tjs_uint8 *filtertypes, tjs_int skipblockbytes, tjs_uint32 *in, tjs_uint32 initialp, tjs_int oddskip, tjs_int dir))
 {
-	TVPTLG6DecodeLineGeneric(prevline, curline, width, 0, block_count,
+	TVPTLG6DecodeLineGeneric(prevline, curline, width, 0u, block_count,
 		filtertypes, skipblockbytes, in, initialp, oddskip, dir);
 }
 
@@ -9094,9 +9094,9 @@ TVP_GL_FUNC_EXTERN_DECL(void, TVPUninitTVPGL, ());
 /*]*/
 /* some utilities */
 /*[*/
-#define TVP_RGB2COLOR(r,g,b) ((((r)<<16) + ((g)<<8) + (b)) | 0xff000000)
+#define TVP_RGB2COLOR(r,g,b) ((((r)<<16u) + ((g)<<8u) + (b)) | 0xff000000u)
 #define TVP_RGBA2COLOR(r,g,b,a) \\
-	(((a)<<24) +  (((r)<<16) + ((g)<<8) + (b)))
+	(((a)<<24u) +  (((r)<<16u) + ((g)<<8u) + (b)))
 /*]*/
 
 #endif

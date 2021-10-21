@@ -2203,9 +2203,9 @@ void TVPBltDispatch(inout highp uint dest, in highp uint src, in lowp uint opa)
 void main()
 {
 	vec4 color0 = texture( s_tex0, v_texCoord );
-	highp uint src = (uint(color0.b * 255.0) << 24u) | (uint(color0.g * 255.0) << 16u) | (uint(color0.r * 255.0) << 8u) | uint(color0.a * 255.0);
+	highp uint src = (uint(round(color0.b * 255.0)) << 24u) | (uint(round(color0.g * 255.0)) << 16u) | (uint(round(color0.r * 255.0)) << 8u) | uint(round(color0.a * 255.0));
 	vec4 color1 = texture( s_tex1, v_texCoord );
-	highp uint dest = (uint(color1.b * 255.0) << 24u) | (uint(color1.g * 255.0) << 16u) | (uint(color1.r * 255.0) << 8u) | uint(color1.a * 255.0);
+	highp uint dest = (uint(round(color1.b * 255.0)) << 24u) | (uint(round(color1.g * 255.0)) << 16u) | (uint(round(color1.r * 255.0)) << 8u) | uint(round(color1.a * 255.0));
 	TVPBltDispatch(dest, src, uint(a_opa));
 	color1.b = float((dest >> 24u) & 255u) / 255.0;
 	color1.g = float((dest >> 16u) & 255u) / 255.0;

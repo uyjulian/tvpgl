@@ -25,6 +25,14 @@ void TVPGL_IA32_behavior_c_Init()
 
 	TVPAdditiveAlphaBlend_a =  TVP_GL_IA32_FUNCNAME(TVPAdditiveAlphaBlend_a_c);
 
+	TVPAddBlend =  TVP_GL_IA32_FUNCNAME(TVPAddBlend_c);
+
+	TVPAddBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPAddBlend_HDA_c);
+
+	TVPAddBlend_o =  TVP_GL_IA32_FUNCNAME(TVPAddBlend_o_c);
+
+	TVPAddBlend_HDA_o =  TVP_GL_IA32_FUNCNAME(TVPAddBlend_HDA_o_c);
+
 #if 1
 	TVPLinTransConstAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPLinTransConstAlphaBlend_c);
 
@@ -36,6 +44,8 @@ void TVPGL_IA32_behavior_c_Init()
 	TVPAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPAlphaBlend_c);
 
 	TVPAlphaBlend_o =  TVP_GL_IA32_FUNCNAME(TVPAlphaBlend_o_c);
+
+	TVPAlphaBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPAlphaBlend_HDA_c);
 
 	TVPAlphaBlend_d =  TVP_GL_IA32_FUNCNAME(TVPAlphaBlend_d_c);
 
@@ -62,16 +72,28 @@ void TVPGL_IA32_behavior_c_Init()
 #endif
 
 #if 1
+	TVPDarkenBlend =  TVP_GL_IA32_FUNCNAME(TVPDarkenBlend_c);
+
 	TVPDarkenBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPDarkenBlend_HDA_c);
 #endif
+
+	TVPLightenBlend =  TVP_GL_IA32_FUNCNAME(TVPLightenBlend_c);
+
+	TVPLightenBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPLightenBlend_HDA_c);
 
 	TVPMulBlend =  TVP_GL_IA32_FUNCNAME(TVPMulBlend_c);
 
 	TVPMulBlend_o =  TVP_GL_IA32_FUNCNAME(TVPMulBlend_o_c);
 
+	TVPMulBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPMulBlend_HDA_c);
+
+	TVPMulBlend_HDA_o =  TVP_GL_IA32_FUNCNAME(TVPMulBlend_HDA_o_c);
+
 	TVPScreenBlend =  TVP_GL_IA32_FUNCNAME(TVPScreenBlend_c);
 
 	TVPScreenBlend_o =  TVP_GL_IA32_FUNCNAME(TVPScreenBlend_o_c);
+
+	TVPScreenBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPScreenBlend_HDA_c);
 
 	TVPScreenBlend_HDA_o =  TVP_GL_IA32_FUNCNAME(TVPScreenBlend_HDA_o_c);
 
@@ -88,6 +110,12 @@ void TVPGL_IA32_behavior_c_Init()
 
 	TVPInterpStretchAdditiveAlphaBlend_o =  TVP_GL_IA32_FUNCNAME(TVPInterpStretchAdditiveAlphaBlend_o_c);
 #endif
+
+	TVPSubBlend =  TVP_GL_IA32_FUNCNAME(TVPSubBlend_c);
+
+	TVPSubBlend_HDA =  TVP_GL_IA32_FUNCNAME(TVPSubBlend_HDA_c);
+
+	TVPSubBlend_HDA_o =  TVP_GL_IA32_FUNCNAME(TVPSubBlend_HDA_o_c);
 
 	TVPPsAlphaBlend =  TVP_GL_IA32_FUNCNAME(TVPPsAlphaBlend_c);
 

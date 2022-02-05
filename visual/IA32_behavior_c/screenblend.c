@@ -24,6 +24,26 @@ TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_c, (tjs_uint32 *dest, const tjs_uint3
 		}, len, src, dest);
 }
 
+// Output matching with C version
+TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+{
+	FOREACH_CHANNEL(
+		{
+			if (j % 4 == 3)
+			{
+				continue;
+			}
+			tjs_uint16 k = s[j];
+			k ^= 0xff;
+			tjs_uint16 l = d[j];
+			l ^= 0xff;
+			k *= l;
+			k >>= 8;
+			k ^= 0xff;
+			d[j] = k;
+		}, len, src, dest);
+}
+
 TVP_GL_IA32_FUNC_DECL(void, TVPScreenBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	FOREACH_CHANNEL(

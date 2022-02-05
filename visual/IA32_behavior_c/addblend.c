@@ -9,34 +9,23 @@
 
 #include "tvpgl_ia32_intf_behavior_c.h"
 
-TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+// Output matching with C version
+TVP_GL_IA32_FUNC_DECL(void, TVPAddBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	FOREACH_CHANNEL(
 		{
 			tjs_uint16 k = s[j];
-			k *= d[j];
-			k >>= 8;
-			d[j] = k;
-		}, len, src, dest);
-}
-
-TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
-{
-	FOREACH_CHANNEL(
-		{
-			tjs_uint16 k = s[j];
-			k ^= 0xff;
-			k *= opa;
-			k >>= 8;
-			k ^= 0xff;
-			k *= d[j];
-			k >>= 8;
+			k += d[j];
+			if (k > 0xff)
+			{
+				k = 0xff;
+			}
 			d[j] = k;
 		}, len, src, dest);
 }
 
 // Output matching with C version
-TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+TVP_GL_IA32_FUNC_DECL(void, TVPAddBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	FOREACH_CHANNEL(
 		{
@@ -45,14 +34,42 @@ TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint
 				continue;
 			}
 			tjs_uint16 k = s[j];
-			k *= d[j];
-			k >>= 8;
+			k += d[j];
+			if (k > 0xff)
+			{
+				k = 0xff;
+			}
 			d[j] = k;
 		}, len, src, dest);
 }
 
 // Output matching with C version
-TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
+TVP_GL_IA32_FUNC_DECL(void, TVPAddBlend_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
+{
+	FOREACH_CHANNEL(
+		{
+			tjs_uint16 k = s[j];
+			if (j % 4 != 3)
+			{
+				k *= opa;
+				k >>= 8;
+			}
+			else
+			{
+				k = 0;
+			}
+			k += d[j];
+			if (k > 0xff)
+			{
+				k = 0xff;
+			}
+
+			d[j] = k;
+		}, len, src, dest);
+}
+
+// Output matching with C version
+TVP_GL_IA32_FUNC_DECL(void, TVPAddBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len, tjs_int opa))
 {
 	FOREACH_CHANNEL(
 		{
@@ -61,12 +78,13 @@ TVP_GL_IA32_FUNC_DECL(void, TVPMulBlend_HDA_o_c, (tjs_uint32 *dest, const tjs_ui
 				continue;
 			}
 			tjs_uint16 k = s[j];
-			k ^= 0xff;
 			k *= opa;
 			k >>= 8;
-			k ^= 0xff;
-			k *= d[j];
-			k >>= 8;
+			k += d[j];
+			if (k > 0xff)
+			{
+				k = 0xff;
+			}
 			d[j] = k;
 		}, len, src, dest);
 }

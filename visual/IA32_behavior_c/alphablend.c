@@ -40,6 +40,24 @@ TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_o_c, (tjs_uint32 *dest, const tjs_uint
 		}, len, src, dest);
 }
 
+// Output matching with C version
+TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+{
+	FOREACH_CHANNEL(
+		{
+			if (j % 4 == 3)
+			{
+				continue;
+			}
+			tjs_uint16 k = s[j];
+			k -= d[j];
+			k *= *sa;
+			k >>= 8;
+			k += d[j];
+			d[j] = k;
+		}, len, src, dest);
+}
+
 TVP_GL_IA32_FUNC_DECL(void, TVPAlphaBlend_d_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	FOREACH_CHANNEL_PIXELBODY(

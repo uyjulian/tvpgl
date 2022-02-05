@@ -10,25 +10,26 @@
 #include "tvpgl_ia32_intf_behavior_c.h"
 
 // Output matching with C version
-TVP_GL_IA32_FUNC_DECL(void, TVPDarkenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+TVP_GL_IA32_FUNC_DECL(void, TVPLightenBlend_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	FOREACH_CHANNEL(
 		{
 			tjs_uint16 m = s[j];
 			tjs_uint16 k = d[j];
-			m = k - m;
+			m = m - k;
 			if (m > 0xff)
 			{
 				m = 0;
 			}
 			m &= 0xff;
-			m = k - m;
+			m = m + k;
 			m &= 0xff;
 			d[j] = m;
 		}, len, src, dest);
 }
 
-TVP_GL_IA32_FUNC_DECL(void, TVPDarkenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
+// Output matching with C version
+TVP_GL_IA32_FUNC_DECL(void, TVPLightenBlend_HDA_c, (tjs_uint32 *dest, const tjs_uint32 *src, tjs_int len))
 {
 	FOREACH_CHANNEL(
 		{
@@ -37,14 +38,14 @@ TVP_GL_IA32_FUNC_DECL(void, TVPDarkenBlend_HDA_c, (tjs_uint32 *dest, const tjs_u
 				continue;
 			}
 			tjs_uint16 m = s[j];
-			tjs_uint16 k = d[j] | 0xff;
-			m = k - m;
+			tjs_uint16 k = d[j];
+			m = m - k;
 			if (m > 0xff)
 			{
 				m = 0;
 			}
 			m &= 0xff;
-			m = k - m;
+			m = m + k;
 			m &= 0xff;
 			d[j] = m;
 		}, len, src, dest);

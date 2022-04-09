@@ -61,6 +61,19 @@ static tjs_uint8  *testrule_backup = NULL;
 		} \
 	}
 
+static tjs_uint64 testdata_rand_seed = 0;
+
+static void testdata_rand_srand(tjs_uint32 s)
+{
+	testdata_rand_seed = s - 1;
+}
+
+static tjs_uint32 testdata_rand_rand(void)
+{
+	testdata_rand_seed = 6364136223846793005ULL * testdata_rand_seed + 1;
+	return testdata_rand_seed >> 32;
+}
+
 static void InitOrigTestData()
 {
 	if (testtable_backup && testrule_backup && testdata1_backup && testdata2_backup)
@@ -72,14 +85,14 @@ static void InitOrigTestData()
 	ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata1_backup);
 	ENSURE_ALLOCATED(tjs_uint32, 256 * 256, testdata2_backup);
 
-	srand(1);
+	testdata_rand_srand(1);
 	for (int x = 0; x < 256 * TEST_SIZE_MULTIPLIER; x += 1)
 	{
-		testtable_backup[x] = rand() & 0xFF;
+		testtable_backup[x] = testdata_rand_rand() & 0xFF;
 	}
 	for (int x = 0; x < 256 * 256 * TEST_SIZE_MULTIPLIER; x += 1)
 	{
-		testrule_backup[x] = rand() & 0xFF;
+		testrule_backup[x] = testdata_rand_rand() & 0xFF;
 	}
 	int obfu = 65531;
 	for (int x = 0; x < (256 * TEST_SIZE_MULTIPLIER); x += 1)

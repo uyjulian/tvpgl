@@ -219,21 +219,16 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPInitUnivTransBlendTable_c,  (tjs_uint32 *
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_c,  (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len));
 TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_switch_c,  (tjs_uint32 *dest, const tjs_uint32 *src1, const tjs_uint32 *src2, const tjs_uint8 *rule, const tjs_uint32 *table, tjs_int len, tjs_int src1lv, tjs_int src2lv));
 
-// TODO: verify that channels are correct
 #define FOREACH_CHANNEL(body, len, src, dest) \
 	{ \
+		const tjs_uint32 *restrict src_restrict = src; \
+		tjs_uint32 *restrict dest_restrict = dest; \
 		for (tjs_int i = 0; i < len; i += 1) \
 		{ \
-			__attribute__ ((unused)) const tjs_uint8 *s = (const tjs_uint8 *)&src[i]; \
-			__attribute__ ((unused)) const tjs_uint8 *sr = s + 0; \
-			__attribute__ ((unused)) const tjs_uint8 *sg = s + 1; \
-			__attribute__ ((unused)) const tjs_uint8 *sb = s + 2; \
-			__attribute__ ((unused)) const tjs_uint8 *sa = s + 3; \
-			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest[i]; \
-			__attribute__ ((unused)) tjs_uint8 *dr = d + 0; \
-			__attribute__ ((unused)) tjs_uint8 *dg = d + 1; \
-			__attribute__ ((unused)) tjs_uint8 *db = d + 2; \
-			__attribute__ ((unused)) tjs_uint8 *da = d + 3; \
+			__attribute__ ((unused)) const tjs_uint8 *restrict s = (const tjs_uint8 *)&src_restrict[i]; \
+			__attribute__ ((unused)) const tjs_uint8 *restrict sa = s + 3; \
+			__attribute__ ((unused)) tjs_uint8 *restrict d = (tjs_uint8 *)&dest_restrict[i]; \
+			__attribute__ ((unused)) tjs_uint8 *restrict da = d + 3; \
 			for (tjs_int j = 0; j < 4; j += 1) \
 			{ \
 				body \
@@ -243,17 +238,13 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_switch_c,  (tjs_uint32 *de
 
 #define FOREACH_CHANNEL_PIXELBODY(body_for_channel, body_for_pixel, len, src, dest) \
 	{ \
+		const tjs_uint32 *restrict src_restrict = src; \
+		tjs_uint32 *restrict dest_restrict = dest; \
 		for (tjs_int i = 0; i < len; i += 1) \
 		{ \
-			__attribute__ ((unused)) const tjs_uint8 *s = (const tjs_uint8 *)&src[i]; \
-			__attribute__ ((unused)) const tjs_uint8 *sr = s + 0; \
-			__attribute__ ((unused)) const tjs_uint8 *sg = s + 1; \
-			__attribute__ ((unused)) const tjs_uint8 *sb = s + 2; \
+			__attribute__ ((unused)) const tjs_uint8 *s = (const tjs_uint8 *)&src_restrict[i]; \
 			__attribute__ ((unused)) const tjs_uint8 *sa = s + 3; \
-			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest[i]; \
-			__attribute__ ((unused)) tjs_uint8 *dr = d + 0; \
-			__attribute__ ((unused)) tjs_uint8 *dg = d + 1; \
-			__attribute__ ((unused)) tjs_uint8 *db = d + 2; \
+			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest_restrict[i]; \
 			__attribute__ ((unused)) tjs_uint8 *da = d + 3; \
 			{ \
 				body_for_pixel \
@@ -267,22 +258,16 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_switch_c,  (tjs_uint32 *de
 
 #define FOREACH_CHANNEL_2SRC(body, len, src1, src2, dest) \
 	{ \
+		const tjs_uint32 *restrict src1_restrict = src1; \
+		const tjs_uint32 *restrict src2_restrict = src2; \
+		tjs_uint32 *restrict dest_restrict = dest; \
 		for (tjs_int i = 0; i < len; i += 1) \
 		{ \
-			__attribute__ ((unused)) const tjs_uint8 *s1 = (const tjs_uint8 *)&src1[i]; \
-			__attribute__ ((unused)) const tjs_uint8 *s1r = s1 + 0; \
-			__attribute__ ((unused)) const tjs_uint8 *s1g = s1 + 1; \
-			__attribute__ ((unused)) const tjs_uint8 *s1b = s1 + 2; \
+			__attribute__ ((unused)) const tjs_uint8 *s1 = (const tjs_uint8 *)&src1_restrict[i]; \
 			__attribute__ ((unused)) const tjs_uint8 *s1a = s1 + 3; \
-			__attribute__ ((unused)) const tjs_uint8 *s2 = (const tjs_uint8 *)&src2[i]; \
-			__attribute__ ((unused)) const tjs_uint8 *s2r = s2 + 0; \
-			__attribute__ ((unused)) const tjs_uint8 *s2g = s2 + 1; \
-			__attribute__ ((unused)) const tjs_uint8 *s2b = s2 + 2; \
+			__attribute__ ((unused)) const tjs_uint8 *s2 = (const tjs_uint8 *)&src2_restrict[i]; \
 			__attribute__ ((unused)) const tjs_uint8 *s2a = s2 + 3; \
-			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest[i]; \
-			__attribute__ ((unused)) tjs_uint8 *dr = d + 0; \
-			__attribute__ ((unused)) tjs_uint8 *dg = d + 1; \
-			__attribute__ ((unused)) tjs_uint8 *db = d + 2; \
+			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest_restrict[i]; \
 			__attribute__ ((unused)) tjs_uint8 *da = d + 3; \
 			for (tjs_int j = 0; j < 4; j += 1) \
 			{ \
@@ -293,6 +278,7 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_switch_c,  (tjs_uint32 *de
 
 #define FOREACH_CHANNEL_COLOR(body, len, color, dest) \
 	{ \
+		tjs_uint32 *restrict dest_restrict = dest; \
 		for (tjs_int i = 0; i < len; i += 1) \
 		{ \
 			__attribute__ ((unused)) const tjs_uint8 *c = (const tjs_uint8 *)&color; \
@@ -300,10 +286,7 @@ TVP_GL_IA32_FUNC_EXTERN_DECL(void,  TVPUnivTransBlend_switch_c,  (tjs_uint32 *de
 			__attribute__ ((unused)) const tjs_uint8 *cg = c + 1; \
 			__attribute__ ((unused)) const tjs_uint8 *cb = c + 2; \
 			__attribute__ ((unused)) const tjs_uint8 *ca = c + 3; \
-			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest[i]; \
-			__attribute__ ((unused)) tjs_uint8 *dr = d + 0; \
-			__attribute__ ((unused)) tjs_uint8 *dg = d + 1; \
-			__attribute__ ((unused)) tjs_uint8 *db = d + 2; \
+			__attribute__ ((unused)) tjs_uint8 *d = (tjs_uint8 *)&dest_restrict[i]; \
 			__attribute__ ((unused)) tjs_uint8 *da = d + 3; \
 			for (tjs_int j = 0; j < 4; j += 1) \
 			{ \
